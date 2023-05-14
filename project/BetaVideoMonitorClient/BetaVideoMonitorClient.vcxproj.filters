@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="res">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{7a8fde22-6e65-4589-8d5e-5e6cb451df1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common">
+      <UniqueIdentifier>{dad96dcf-a087-4b2c-b9d7-fae281dffeb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\CMessageBox">
+      <UniqueIdentifier>{572cae0a-7441-4269-a8ee-9ba8418d7320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\TitleBar">
+      <UniqueIdentifier>{d5270382-3188-4157-a063-12e0d3442698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\util">
+      <UniqueIdentifier>{5e71549b-deeb-4cdc-8195-1d9b830ad008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\Loading">
+      <UniqueIdentifier>{2d085438-de48-40e0-813b-1e1c1687429a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\ListWidget">
+      <UniqueIdentifier>{9dc0570b-c9ad-4221-9a3f-aa168155e413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\Frameless">
+      <UniqueIdentifier>{567036dc-6cc0-4892-a3b3-e2af6b6fb4dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\Toast">
+      <UniqueIdentifier>{be5d1019-5532-48c5-98af-1635f2e3731e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\app">
+      <UniqueIdentifier>{3d0dc326-109c-434d-bfae-c4f1fc790e3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\player">
+      <UniqueIdentifier>{5953ed11-e1cc-40f2-8497-3fca54174936}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\common\CMessageBox\CConfirmBox.cpp">
+      <Filter>src\common\CMessageBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\CMessageBox\CInfoBox.cpp">
+      <Filter>src\common\CMessageBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\CMessageBox\CMessageBox.cpp">
+      <Filter>src\common\CMessageBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\CMessageBox\IMessageBox.cpp">
+      <Filter>src\common\CMessageBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\IListWidget\CListWidget.cpp">
+      <Filter>src\common\ListWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\IListWidget\IListWidget.cpp">
+      <Filter>src\common\ListWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\Loading\LoadingWidget.cpp">
+      <Filter>src\common\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\TitleBar\ITitleBar.cpp">
+      <Filter>src\common\TitleBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\Toast\Toast.cpp">
+      <Filter>src\common\Toast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\util.cpp">
+      <Filter>src\common\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\D3DVidRender.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\CPlayerCore.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\BetaPlayer.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\ffmpeg_dxva2.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\IPlayerCore.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\AlphaPlayer.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\player\FFmpegHelper.cpp">
+      <Filter>src\common\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\CTransparentLabel.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\LoadingLabel.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\CBigScreen.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\CCenter.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\CMainWindow.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\CSmallScreen.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\flowlayout.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\GlobalConfig.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\GlobalSignalSlot.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\IFlowWidget.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\main.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\app\SimplePageNavigator.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\CMessageBox\CMessageBox.h">
+      <Filter>src\common\CMessageBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\CMessageBox\IMessageBox.h">
+      <Filter>src\common\CMessageBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\util.h">
+      <Filter>src\common\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\player\D3DVidRender.h">
+      <Filter>src\common\player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\player\ffmpeg_dxva2.h">
+      <Filter>src\common\player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\player\FFmpegHelper.h">
+      <Filter>src\common\player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\common.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\Dump.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\ErrorCode.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\GlobalDefine.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\log.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\app\flowlayout.h">
+      <Filter>src\app</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\..\common\CMessageBox\CConfirmBox.h">
+      <Filter>src\common\CMessageBox</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\CMessageBox\CInfoBox.h">
+      <Filter>src\common\CMessageBox</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\IListWidget\CListWidget.h">
+      <Filter>src\common\ListWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\IListWidget\IListWidget.h">
+      <Filter>src\common\ListWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\Loading\LoadingWidget.h">
+      <Filter>src\common\Loading</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\TitleBar\ITitleBar.h">
+      <Filter>src\common\TitleBar</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\Toast\Toast.h">
+      <Filter>src\common\Toast</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\player\CPlayerCore.h">
+      <Filter>src\common\player</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\player\BetaPlayer.h">
+      <Filter>src\common\player</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\player\IPlayerCore.h">
+      <Filter>src\common\player</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\player\AlphaPlayer.h">
+      <Filter>src\common\player</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\CTransparentLabel.h">
+      <Filter>src\common</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\common\LoadingLabel.h">
+      <Filter>src\common</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\CBigScreen.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\CCenter.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\CMainWindow.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\CSmallScreen.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\GlobalConfig.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\GlobalSignalSlot.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\IFlowWidget.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\app\SimplePageNavigator.h">
+      <Filter>src\app</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="..\..\common\CMessageBox\CConfirmBox.ui">
+      <Filter>src\common\CMessageBox</Filter>
+    </QtUic>
+    <QtUic Include="..\..\common\CMessageBox\CInfoBox.ui">
+      <Filter>src\common\CMessageBox</Filter>
+    </QtUic>
+    <QtUic Include="..\..\common\IListWidget\CListWidget.ui">
+      <Filter>src\common\ListWidget</Filter>
+    </QtUic>
+    <QtUic Include="..\..\common\IListWidget\IListWidget.ui">
+      <Filter>src\common\ListWidget</Filter>
+    </QtUic>
+    <QtUic Include="..\..\common\Loading\LoadingWidget.ui">
+      <Filter>src\common\Loading</Filter>
+    </QtUic>
+    <QtUic Include="..\..\common\Toast\Toast.ui">
+      <Filter>src\common\Toast</Filter>
+    </QtUic>
+    <QtUic Include="..\..\common\CTransparentLabel.ui">
+      <Filter>src\common</Filter>
+    </QtUic>
+    <QtUic Include="..\..\src\app\CBigScreen.ui">
+      <Filter>src\app</Filter>
+    </QtUic>
+    <QtUic Include="..\..\src\app\CMainWindow.ui">
+      <Filter>src\app</Filter>
+    </QtUic>
+    <QtUic Include="..\..\src\app\CSmallScreen.ui">
+      <Filter>src\app</Filter>
+    </QtUic>
+    <QtUic Include="..\..\src\app\IFlowWidget.ui">
+      <Filter>src\app</Filter>
+    </QtUic>
+    <QtUic Include="..\..\src\app\SimplePageNavigator.ui">
+      <Filter>src\app</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\res\icon.ico">
+      <Filter>res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="..\..\res\res.qrc">
+      <Filter>res</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BetaVideoMonitorClient.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

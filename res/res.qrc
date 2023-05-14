@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>close_gray.png</file>
+        <file>unfold.png</file>
+        <file>maxBtn210706.png</file>
+        <file>minBtn210706.png</file>
+        <file>closeBtn2_2x.png</file>
+        <file>close4.png</file>
+        <file>minBtn_2x.png</file>
+        <file>gray_ellipse.png</file>
+        <file>green_ellipse.png</file>
+        <file>red_ellipse.png</file>
+        <file>close.png</file>
+        <file>setting.png</file>
+        <file>arrow.png</file>
+        <file>close2.png</file>
+        <file>down_arrow.png</file>
+        <file>up_arrow.png</file>
+        <file>pic.png</file>
+        <file>add.png</file>
+        <file>remove.png</file>
+        <file>loading.gif</file>
+        <file>loading2.gif</file>
+        <file>check.png</file>
+        <file>uncheck.png</file>
+        <file>logo1.png</file>
+        <file>logo2.jpg</file>
+        <file>bg.jpg</file>
+        <file>close3.png</file>
+        <file>setting2.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,69 @@
+Language: Cpp
+
+# 基于Google格式
+BasedOnStyle: Google
+
+# 使用支持的最新标准
+Standard: Latest
+
+# 设置行的长度，0：不限制长度
+ColumnLimit: 100
+
+# 缩进4个空格
+IndentWidth: 4
+
+# 左花括号在名称之后
+BreakBeforeBraces: Attach
+
+# 函数参数的小括号与函数名间不空格, 控制语句的小括号与语句间空格
+SpaceBeforeParens: ControlStatements
+
+# 函数返回值与函数在同一行
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+
+# 指针符号贴在类型边
+PointerAlignment: Left
+
+# 继承最常用的指针和引用的对齐方式，如果不设置或者设置为true，则可能出现类型和*之间有一个空格的问题
+DerivePointerAlignment: false
+
+# 访问修饰符贴在左边
+AccessModifierOffset: -4
+
+# case和default之前缩进
+IndentCaseLabels: true
+
+# 初始化列表左右侧不留空格
+Cpp11BracedListStyle: true
+
+# 连续声明时，对齐所有声明的变量名
+AlignConsecutiveDeclarations: true
+
+# 让多行的等式以等号对齐
+AlignConsecutiveAssignments: true
+
+UseTab: Never
+TabWidth: 4
+
+# 允许if语句在同一行
+AllowShortIfStatementsOnASingleLine: true
+
+# 命名空间里的函数缩进
+NamespaceIndentation: All
+
+# 列表初始化
+# 在构造函数的初始化列表的逗号前换行
+BreakConstructorInitializersBeforeComma: true
+
+# 构造函数的初始化列表要么都在同一行，要么都各自一行
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+
+# 构造函数的初始化列表的缩进宽度
+ConstructorInitializerIndentWidth: 4
+
+# 去除C++11的列表初始化的大括号{后和}前的空格
+#Cpp11BracedListStyle: false
+
+#BreakConstructorInitializers: AfterColon
+
