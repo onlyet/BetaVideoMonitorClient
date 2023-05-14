@@ -127,7 +127,8 @@ bool GlobalConfig::init()
     m_disableStartBtnTime = setting.value(DisableStartBtnTime).toInt();
     m_aPageSeatCnt = setting.value(APageSeatCnt, 24).toInt();
 
-    if (1 && util::haveNvidiaGpu())
+    // FIXME: 有bug
+    if (0 && util::haveNvidiaGpu())
     {
         qInfo() << qstr("前%1个座位用GPU解码渲染").arg(m_gpuSeatCnt);
         qInfo() << qstr("大屏使用GPU解码渲染");
