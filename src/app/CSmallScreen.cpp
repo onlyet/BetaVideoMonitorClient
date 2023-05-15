@@ -33,16 +33,18 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
     ui->camera_left->setWaitPic(CONFIG.logoPixmap());
     ui->camera_right->setWaitPic(CONFIG.logoPixmap());
 
-    static int s_j = 0;
+    static int s_num = 0;
     QString tmpLeftUrl = util::getSetting("Url/leftUrl", "").toString();
     QString tmpRightUrl = util::getSetting("Url/rightUrl", "").toString();
-    if (!tmpLeftUrl.isEmpty()) {
-        setLeftUrl(tmpLeftUrl);
+    if (0 == s_num) {
+        if (!tmpLeftUrl.isEmpty()) {
+            setLeftUrl(tmpLeftUrl);
+        }
+        if (!tmpRightUrl.isEmpty()) {
+            setRightUrl(tmpRightUrl);
+        }
     }
-    if (!tmpRightUrl.isEmpty()) {
-        setRightUrl(tmpRightUrl);
-    }
-    ++s_j;
+    ++s_num;
 }
 
 CSmallScreen::~CSmallScreen()
@@ -121,66 +123,60 @@ void CSmallScreen::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CSmallScreen::setLeftUrl(const QString &url)
 {
-    if (1)
-    {
-        if (url.isEmpty())
-        {
-            m_leftPlayUrl = "";
-            m_leftSaveUrl = "";
-            return;
-        }
-        QString subUrl = url;
+    if (url.isEmpty()) {
+        m_leftPlayUrl = "";
+        m_leftSaveUrl = "";
+        return;
+    }
+    QString subUrl = url;
+
+    if (url.startsWith("rtsp")) {
         int index = url.size() - 1;
         // 海康
         // 最后一位：1主码流，2子码流
-        if (url.contains("Streaming/Channels"))
-        {
+        if (url.contains("Streaming/Channels")) {
             subUrl.replace(index, 1, '2');
         }
         // 大华
         // subtype: 0主码流，1子码流
-        else
-        {
+        else {
             subUrl.replace(index, 1, '1');
         }
-        ui->camera_left->setPlayRtspUrl(subUrl);
-        ui->camera_left->setSaveRtspUrl(url);
-
-        m_leftPlayUrl = subUrl;
-        m_leftSaveUrl = url;
     }
+    ui->camera_left->setPlayRtspUrl(subUrl);
+    ui->camera_left->setSaveRtspUrl(url);
+
+    m_leftPlayUrl = subUrl;
+    m_leftSaveUrl = url;
 }
 
 void CSmallScreen::setRightUrl(const QString &url)
 {
-    if (1)
-    {
-        if (url.isEmpty())
-        {
-            m_rightPlayUrl = "";
-            m_rightSaveUrl = "";
-            return;
-        }
-        QString subUrl = url;
+    if (url.isEmpty()) {
+        m_rightPlayUrl = "";
+        m_rightSaveUrl = "";
+        return;
+    }
+    QString subUrl = url;
+
+    if (url.startsWith("rtsp")) {
         int index = url.size() - 1;
-        // 海康 
+        // 海康
         // 最后一位：1主码流，2子码流
-        if (url.contains("Streaming/Channels"))
-        {
+        if (url.contains("Streaming/Channels")) {
             subUrl.replace(index, 1, '2');
         }
-        // 大华 
+        // 大华
         // subtype: 0主码流，1子码流
-        else
-        {
+        else {
             subUrl.replace(index, 1, '1');
         }
-        ui->camera_right->setPlayRtspUrl(subUrl);
-        ui->camera_right->setSaveRtspUrl(url);
-
-        m_rightPlayUrl = subUrl;
-        m_rightSaveUrl = url;
     }
+    ui->camera_right->setPlayRtspUrl(subUrl);
+    ui->camera_right->setSaveRtspUrl(url);
+
+    m_rightPlayUrl = subUrl;
+    m_rightSaveUrl = url;
 }
 
 const QString &CSmallScreen::leftUrl() const
