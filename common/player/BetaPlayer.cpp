@@ -28,9 +28,7 @@ BetaPlayer::BetaPlayer(QWidget *parent)
 
 BetaPlayer::~BetaPlayer()
 {
-    //qDebug() << "~BetaPlayer() 1";
     stop();
-    //qDebug() << "~BetaPlayer() 2";
 }
 
 bool BetaPlayer::isOpened() const
@@ -74,7 +72,6 @@ void BetaPlayer::play() {
         connect(m_CPlayerCore, &IPlayerCore::begin, this, &BetaPlayer::onXBegin);
         connect(m_CPlayerCore, &IPlayerCore::IpcParamsError, this, &BetaPlayer::setPlayErrorTips);
         connect(this, &BetaPlayer::openSubStream, m_CPlayerCore, &CPlayerCore::dopen);
-        //connect(this, &BetaPlayer::reopenSubStream, m_CPlayerCore, &CPlayerCore::reopen);
 
         if (m_hwDecode) {
             m_CPlayerCore->enableHwDecode();
@@ -96,12 +93,10 @@ void BetaPlayer::play() {
 
 void BetaPlayer::stop()
 {
-    //QTime t9 = QTime::currentTime();
     if (m_render)
     {
         m_render->setFFmpeg(nullptr);
     }
-    //qDebug() << "t9 time:" << t9.elapsed();
 
     if (!m_CPlayerCore)
     {
@@ -136,7 +131,7 @@ void BetaPlayer::addOutput(const QString& mp4Path) {
     // 打开主码流rtsp地址
     if (!m_savePlayerCore)
     {
-        // 单码流，比如某USB版本
+        // 单码流
         if (m_saveRtspUrl == m_playRtspUrl)
         {
             m_savePlayerCore = m_CPlayerCore;
@@ -290,12 +285,6 @@ bool BetaPlayer::event(QEvent * event)
     return QWidget::event(event);
 }
 
-//void BetaPlayer::paintEvent(QPaintEvent *e)
-//{
-//    QPainter painter(this);
-//    painter.drawLine(0, 0, 20, 20);
-//}
-
 void BetaPlayer::setResizeType(BetaPlayer::ResizeType resizeType, qreal aspectRatio)
 {
     m_resizeType = resizeType;
@@ -401,10 +390,9 @@ void BetaPlayer::setPlayErrorTips(const QString &tips)
 
 void BetaPlayer::setSaveErrorTips(const QString & tips)
 {
-    // 单码流，比如某USB版本
+    // 单码流
     if (m_saveRtspUrl == m_playRtspUrl)
     {
-        // TODO
         return;
     }
 
@@ -417,7 +405,6 @@ void BetaPlayer::setErrorTips()
     m_errorTips = "";
     if (!m_playErrorTips.isEmpty())
     {
-        //m_errorTips.append(qstr("%1\n\n").arg(m_playErrorTips));
         m_errorTips = m_playErrorTips;
     }
     if (!m_saveErrorTips.isEmpty())
@@ -433,11 +420,10 @@ void BetaPlayer::setErrorTips()
         return;
     }
 
-    // 显示红点
     QPixmap pix(size());
     pix.fill(QColor(83, 83, 83));
     QPainter painter(&pix);
-    painter.fillRect(pix.width() - 20, 0, 20, 20, QBrush(QColor(255, 0, 0)));
+    painter.fillRect(pix.width() - 20, 0, 20, 20, QBrush(QColor(113, 81, 168)));
     QPixmap logo(m_waitPic);
     if (!logo.isNull())
     {

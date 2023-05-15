@@ -638,10 +638,6 @@ int IPlayerCore::stepVideoOnly()
 
     {
         QMutexLocker locker(&m_mutex_output);
-        //foreach(Outputer* writer, m_outputs)
-        //{
-        //    writer->write(&pkt);
-        //}
         for (const auto &writer : m_outputs)
         {
             writer->write(&pkt);
@@ -655,7 +651,7 @@ int IPlayerCore::stepVideoOnly()
         return 0;
     }
 
-    decode(&pkt);           // 解码帧数据
+    decode(&pkt);
     av_packet_unref(&pkt);
 
     return type;
@@ -884,12 +880,14 @@ void DecodeThread::run()
     if (!m_playerCore)return;
     m_isContinue = true;
 
-    while (m_isContinue)
-    {
+    //QTime t;
+    while (m_isContinue) {
         // 主码流不解码，子码流暂时也不解码音频
-        {
-            m_playerCore->stepVideoOnly();
-            continue;
+        //t.restart();
+        m_playerCore->stepVideoOnly();
+        int remainingTime = 1;
+        if (m_isContinue && remainingTime > 0) {
+            msleep(remainingTime);
         }
     }
     exec();
@@ -996,27 +994,21 @@ void RenderThread::run()
             if (w > 0 && h > 0)
             {
                 QImage img(w, h, QImage::Format_ARGB32);
-                //QTime  t10 = QTime::currentTime();
                 if (m_playerCore->toRgb(img.bits(), w, h)) // 很耗时，需要优化
                 {
 #ifndef Enable_D3dRender
-                    /*
-                     * FIXME: 压测播放40路以上视频时，下面两行代码的表现不同，第一行崩溃的几率较低，第二行似乎必定崩溃
-                     */
-//                    emit draw(img.copy(), m_playerCore->path());
                     emit draw(img, m_playerCore->path());
 #endif // !Enable_D3dRender
                 }
-                //qDebug() << "t10 time:" << t10.elapsed();
             }
         }
 
         lock.unlock();
 
-        int st = m_duration - tt.elapsed();
-        if (m_isContinue && st > 0)
+        int remainingTime = m_duration - tt.elapsed();
+        if (m_isContinue && remainingTime > 0)
         {
-            msleep(st);
+            msleep(remainingTime);
         }
     }
 }
