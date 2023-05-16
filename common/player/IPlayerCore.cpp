@@ -922,8 +922,35 @@ void RenderThread::pause(bool isPause)
 
 void RenderThread::setDstWinHandle(int handle)
 {
-	m_winHandle = handle;
+	m_winHandle = handle; }
+
+#ifdef Enable_D3dRender
+bool RenderThread::initD3D_NV12(HWND hwnd, int img_width, int img_height) {
+    m_d3d.InitD3D_NV12(hwnd, img_width, img_height);
+    return true;
 }
+
+bool RenderThread::initD3D_YUVJ420P(HWND hwnd, int img_width, int img_height) {
+    bool b = m_d3d.InitD3D_YUV(hwnd, img_width, img_height);
+    if (!b) {
+        qWarning() << "m_d3d.InitD3D_YUV failed";
+    }
+    return b;
+}
+
+void RenderThread::onD3d9Render() {
+
+    if (!m_playerCore) return;
+    int intputWidth  = m_playerCore->getSize().width();
+    int intputHeight = m_playerCore->getSize().height();
+#ifdef Enable_Hardcode
+    // m_d3d.Render_NV12(m_nv12Buf, intputWidth, intputHeight);
+#else
+    m_d3d.Render_YUV(m_playerCore->frameBuf(), intputWidth, intputHeight);
+#endif  // !Enable_Hardcode
+}
+
+#endif
 
 void RenderThread::run() {
     qDebug() << "RenderThread started";
@@ -949,7 +976,8 @@ void RenderThread::run() {
 #ifdef Enable_Hardcode
         m_playerCore->initD3D_NV12((HWND)m_winHandle, w, h);
 #else
-        if (!m_playerCore->initD3D_YUVJ420P((HWND)m_winHandle, w, h)) {
+        //if (!m_playerCore->initD3D_YUVJ420P((HWND)m_winHandle, w, h)) {
+        if (!initD3D_YUVJ420P((HWND)m_winHandle, w, h)) {
             qDebug() << "RenderThread exited unexpectedly";
             return;
         }
@@ -971,6 +999,12 @@ void RenderThread::run() {
         }
 
         tt.restart();
+
+#ifdef Enable_D3dRender
+        if (!m_isPause && m_wid->isVisible()) {
+            onD3d9Render();
+        }
+#else
         if (!m_isPause && m_wid->isVisible()) {
             w = m_wid->width() / 2 * 2;
             h = m_wid->height() / 2 * 2;
@@ -978,12 +1012,26 @@ void RenderThread::run() {
                 QImage img(w, h, QImage::Format_ARGB32);
                 if (m_playerCore->toRgb(img.bits(), w, h))  // 很耗时，需要优化
                 {
-#ifndef Enable_D3dRender
                     emit draw(img, m_playerCore->path());
-#endif  // !Enable_D3dRender
                 }
             }
         }
+#endif  // !Enable_D3dRender
+
+//        if (!m_isPause && m_wid->isVisible()) {
+//
+//            w = m_wid->width() / 2 * 2;
+//            h = m_wid->height() / 2 * 2;
+//            if (w > 0 && h > 0) {
+//                QImage img(w, h, QImage::Format_ARGB32);
+//                if (m_playerCore->toRgb(img.bits(), w, h))  // 很耗时，需要优化
+//                {
+//#ifndef Enable_D3dRender
+//                    emit draw(img, m_playerCore->path());
+//#endif  // !Enable_D3dRender
+//                }
+//            }
+//        }
 
         lock.unlock();
 

@@ -20,7 +20,7 @@ extern "C"
 
 #include "D3DVidRender.h"
 
-#define Enable_D3dRender
+//#define Enable_D3dRender
 //#define Enable_Hardcode
 
 class DecodeThread;
@@ -49,6 +49,7 @@ public:
 #ifdef Enable_D3dRender
     bool initD3D_NV12(HWND hwnd, int img_width, int img_height);
     bool initD3D_YUVJ420P(HWND hwnd, int img_width, int img_height);
+    BYTE* frameBuf() { return m_frameBuf; }
 #endif
 
     void enableDecode(bool enabled);
@@ -160,7 +161,13 @@ public:
     void setFFmpeg(IPlayerCore *pFFmpeg);
     void stop();
     void pause(bool isPause);
-	void setDstWinHandle(int handle);
+    void setDstWinHandle(int handle);
+
+#ifdef Enable_D3dRender
+    bool initD3D_NV12(HWND hwnd, int img_width, int img_height);
+    bool initD3D_YUVJ420P(HWND hwnd, int img_width, int img_height);
+    void onD3d9Render();
+#endif
 
 protected:
     void run() Q_DECL_OVERRIDE;
@@ -176,6 +183,8 @@ private:
     std::atomic_bool m_isPause   = false;   // 是否暂停渲染
     int              m_winHandle = 0;       // 目标窗口句柄
     QMutex           m_iPlayerCoreMtx;  // 避免多线同时读写（主线程和渲染线程）
+
+    CD3DVidRender m_d3d;
 };
 
 class Outputer : public QObject
