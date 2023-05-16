@@ -30,17 +30,24 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
 
     initUi();
 
+#if 0
     ui->camera_left->setWaitPic(CONFIG.logoPixmap());
     ui->camera_right->setWaitPic(CONFIG.logoPixmap());
+#endif
 
-    static int s_j = 0;
     QString tmpLeftUrl = util::getSetting("Url/leftUrl", "").toString();
     QString tmpRightUrl = util::getSetting("Url/rightUrl", "").toString();
-    if (!tmpLeftUrl.isEmpty()) {
-        setLeftUrl(tmpLeftUrl);
-    }
-    if (!tmpRightUrl.isEmpty()) {
-        setRightUrl(tmpRightUrl);
+    static int s_j = 0;
+#if 1
+    if (s_j < 20)
+#endif
+    {
+        if (!tmpLeftUrl.isEmpty()) {
+            setLeftUrl(tmpLeftUrl);
+        }
+        if (!tmpRightUrl.isEmpty()) {
+            setRightUrl(tmpRightUrl);
+        }
     }
     ++s_j;
 }

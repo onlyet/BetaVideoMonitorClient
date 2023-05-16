@@ -20,7 +20,7 @@ extern "C"
 
 #include "D3DVidRender.h"
 
-//#define Enable_D3dRender
+#define Enable_D3dRender
 //#define Enable_Hardcode
 
 class DecodeThread;
@@ -46,8 +46,10 @@ public:
     void addOutput(const QString &url);
     void rmOutput(const QString &url);
 
+#ifdef Enable_D3dRender
     bool initD3D_NV12(HWND hwnd, int img_width, int img_height);
     bool initD3D_YUVJ420P(HWND hwnd, int img_width, int img_height);
+#endif
 
     void enableDecode(bool enabled);
 
@@ -119,8 +121,8 @@ private:
 
 #ifdef Enable_D3dRender
     CD3DVidRender	    m_d3d;
-    int                 m_yuvSize;
-    BYTE                *m_yuvBuf = nullptr;
+    int                 m_frameSize = 0;
+    BYTE                *m_frameBuf = nullptr;
 #endif
 
     // dxva‰÷»æÃÌº”

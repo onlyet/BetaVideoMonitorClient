@@ -37,9 +37,9 @@ AlphaPlayer::AlphaPlayer(QWidget *parent)
         m_playerCore = new IPlayerCore(this);
     }
 
-    connect(m_playerCore, &IPlayerCore::begin, this, &AlphaPlayer::onXBegin);
     connect(this, &AlphaPlayer::doOpen, m_playerCore, &IPlayerCore::open);
     connect(this, &AlphaPlayer::doClose, m_playerCore, &IPlayerCore::close);
+    connect(m_playerCore, &IPlayerCore::begin, this, &AlphaPlayer::onXBegin);
     connect(m_playerCore, &IPlayerCore::draw, this, &AlphaPlayer::draw);
 }
 

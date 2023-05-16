@@ -73,21 +73,22 @@ void BetaPlayer::play() {
         connect(m_CPlayerCore, &IPlayerCore::IpcParamsError, this, &BetaPlayer::setPlayErrorTips);
         connect(this, &BetaPlayer::openSubStream, m_CPlayerCore, &CPlayerCore::dopen);
 
-        if (m_hwDecode) {
-            m_CPlayerCore->enableHwDecode();
-        } else {
-            if (m_render) {
-                m_render->setFFmpeg(m_CPlayerCore);
-                if (!m_render->isRunning()) {
-                    m_render->start();
-                }
-            }
-        }
-
         // 小屏播放需要解码
         m_CPlayerCore->enableDecode(true);
         m_CPlayerCore->setWindowHandle((HWND)this->winId());
     }
+
+    if (m_hwDecode) {
+        m_CPlayerCore->enableHwDecode();
+    } else {
+        if (m_render) {
+            m_render->setFFmpeg(m_CPlayerCore);
+            if (!m_render->isRunning()) {
+                m_render->start();
+            }
+        }
+    }
+
     emit openSubStream();
 }
 
@@ -96,6 +97,7 @@ void BetaPlayer::stop()
     if (m_render)
     {
         m_render->setFFmpeg(nullptr);
+        m_render->stop();
     }
 
     if (!m_CPlayerCore)

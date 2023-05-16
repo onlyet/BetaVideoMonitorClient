@@ -198,6 +198,10 @@ void CMainWindow::initUi()
 
     ui->page_1->openAll();
 
+#if 1
+    ui->logoLabel->hide();
+    ui->label_info->hide();
+#endif
 }
 
 void CMainWindow::updateUi()

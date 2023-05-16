@@ -83,7 +83,7 @@ IPlayerCore::~IPlayerCore()
     m_mutex_output.unlock();
 
     m_destructed = true;
-    //qDebug() << "~IPlayerCore() 2";
+    qDebug() << "~IPlayerCore() 2";
 }
 
 void IPlayerCore::init()
@@ -118,10 +118,11 @@ void IPlayerCore::init()
 #ifdef Enable_Hardcode
 	// NV12
 #else
-    if (m_yuvBuf)
+    if (m_frameBuf)
     {
-        delete[] m_yuvBuf;
-        m_yuvBuf = nullptr;
+        delete[] m_frameBuf;
+        m_frameBuf = nullptr;
+        m_frameSize = 0;
     }
 #endif
 #endif
@@ -293,6 +294,7 @@ bool IPlayerCore::doOpen(const QString &path)
             }
 
             m_videoStream = i;
+            stream->r_frame_rate;
             m_fps = FFmpegHelper::r2d(stream->avg_frame_rate);
             m_size = QSize(m_vDecodeCtx->width, m_vDecodeCtx->height);
             m_codecCtxWidth = m_vDecodeCtx->width;
@@ -351,9 +353,9 @@ bool IPlayerCore::doOpen(const QString &path)
 #ifdef Enable_Hardcode
 	// NV12
 #else
-    m_yuvSize = m_size.width() * m_size.height();
-    m_yuvBuf = new BYTE[m_yuvSize * 3 / 2];
-    memset(m_yuvBuf, 0, m_yuvSize * 3 / 2);
+    m_frameSize = m_size.width() * m_size.height();
+    m_frameBuf = new BYTE[m_frameSize * 3 / 2];
+    memset(m_frameBuf, 0, m_frameSize * 3 / 2);
 #endif
 #endif
 
@@ -522,80 +524,67 @@ int IPlayerCore::decode(const AVPacket *pkt)
     return 0;
 }
 
-
-// 主线程和XScaleThread线程
-bool IPlayerCore::toRgb(uchar *out, int outWidth, int outHeight)
-{
-    if (!out || outWidth <= 0 || outHeight <= 0 || m_videoStream < 0)
-    {
+bool IPlayerCore::toRgb(uchar* out, int outWidth, int outHeight) {
+    if (!out || outWidth <= 0 || outHeight <= 0 || m_videoStream < 0) {
         return false;
     }
 
     try {
 #ifdef Enable_D3dRender
-        if (!m_pYuv || m_pYuv->linesize[0] == 0)
-        {
+        if (!m_pYuv || m_pYuv->linesize[0] == 0) {
             return false;
         }
 
-        int intputWidth = m_size.width();
+        int intputWidth  = m_size.width();
         int intputHeight = m_size.height();
 #ifdef Enable_Hardcode
-        //m_d3d.Render_NV12(m_nv12Buf, intputWidth, intputHeight);
+        // m_d3d.Render_NV12(m_nv12Buf, intputWidth, intputHeight);
         return true;
 #else
-        m_d3d.Render_YUV(m_yuvBuf, intputWidth, intputHeight);
+        m_d3d.Render_YUV(m_frameBuf, intputWidth, intputHeight);
         return true;
-#endif // !Enable_Hardcode
-#endif // Enable_D3dRender
+#endif  // !Enable_Hardcode
+#endif  // !Enable_D3dRender
 
         QMutexLocker locker(&m_mutex);
         // 避免分辨率改变导致sws_scale奔溃
-        if (m_resolutionChanged)
-        {
+        if (m_resolutionChanged) {
             return false;
         }
 
-        if (!m_pYuv || 0 == m_pYuv->linesize[0] ||
-            m_pYuv->width <= 0 || m_pYuv->height <= 0 ||
-            AV_PIX_FMT_NONE == m_pYuv->format)
-        {
+        if (!m_pYuv || 0 == m_pYuv->linesize[0] || m_pYuv->width <= 0 || m_pYuv->height <= 0 ||
+            AV_PIX_FMT_NONE == m_pYuv->format) {
             return false;
         }
 
         /*
-        * pix_fmt为AV_PIX_FMT_NONE（-1）的时候会崩溃，并且没有dmp文件，调试模式下直接退出了
-        * try-catch也捕获不到
-        * 日志输出：QObject::~QObject: Timers cannot be stopped from another thread
-        */
-        m_swsCtx = sws_getCachedContext(m_swsCtx,
-            m_pYuv->width, m_pYuv->height, (AVPixelFormat)m_pYuv->format,
-            outWidth, outHeight, AV_PIX_FMT_BGRA,
-            SWS_BICUBIC,
-            nullptr, nullptr, nullptr);
-        if (!m_swsCtx)
-        {
+         * pix_fmt为AV_PIX_FMT_NONE（-1）的时候会崩溃，并且没有dmp文件，调试模式下直接退出了
+         * try-catch也捕获不到
+         * 日志输出：QObject::~QObject: Timers cannot be stopped from another thread
+         */
+        m_swsCtx = sws_getCachedContext(m_swsCtx, m_pYuv->width, m_pYuv->height,
+                                        (AVPixelFormat)m_pYuv->format, outWidth, outHeight,
+                                        AV_PIX_FMT_BGRA, SWS_BICUBIC, nullptr, nullptr, nullptr);
+        if (!m_swsCtx) {
             qDebug() << "sws_getCachedContext failed";
             return false;
         }
 
-        uint8_t *data[AV_NUM_DATA_POINTERS] = { nullptr };
-        data[0] = out;     // 第一位输出RGB
-        int lineSize[AV_NUM_DATA_POINTERS] = { 0 };
-        lineSize[0] = outWidth * 4; // 一行的宽度为4个字节（32位）
+        uint8_t* data[AV_NUM_DATA_POINTERS] = {nullptr};
+        data[0]                             = out;  // 第一位输出RGB
+        int lineSize[AV_NUM_DATA_POINTERS]  = {0};
+        lineSize[0] = outWidth * 4;  // 一行的宽度为4个字节（32位）
 
         int h = sws_scale(m_swsCtx,
-            m_pYuv->data,             // 当前处理区域的每个通道的数据指针
-            m_pYuv->linesize,         // 每个通道行字节数
-            0,
-            m_pYuv->height,           // 原视频帧的高度
-            data,                     // 输出的每个通道数据指针
-            lineSize);                // 每个通道行字节数;
+                          m_pYuv->data,      // 当前处理区域的每个通道的数据指针
+                          m_pYuv->linesize,  // 每个通道行字节数
+                          0,
+                          m_pYuv->height,  // 原视频帧的高度
+                          data,            // 输出的每个通道数据指针
+                          lineSize);       // 每个通道行字节数;
 
         return h > 0;
-    }
-    catch (std::exception &e)
-    {
+    } catch (std::exception& e) {
         qCritical() << "std::exception: " << e.what();
         return false;
     }
@@ -862,7 +851,7 @@ DecodeThread::DecodeThread(IPlayerCore *iPlayerCore)
 DecodeThread::~DecodeThread()
 {
     stop();
-    //qDebug() << "~DecodeThread()";
+    qDebug() << "~DecodeThread()";
 }
 
 void DecodeThread::stop()
@@ -899,6 +888,7 @@ RenderThread::RenderThread(QWidget *wid, int duration)
     , m_wid(wid)
     , m_duration(duration)
 {
+    m_winHandle = (int)wid->winId();
     moveToThread(this);
 }
 
@@ -935,70 +925,62 @@ void RenderThread::setDstWinHandle(int handle)
 	m_winHandle = handle;
 }
 
-void RenderThread::run()
-{
-    if (!m_wid)
-    {
+void RenderThread::run() {
+    qDebug() << "RenderThread started";
+    if (!m_wid) {
         return;
     }
-
-	m_isContinue = true;
-	QTime tt;
-	int w = 0;
-	int h = 0;
+    m_isContinue = true;
+    int w        = 0;
+    int h        = 0;
 
 #ifdef Enable_D3dRender
-	while (m_isContinue)
-	{
+    while (m_isContinue) {
         w = m_playerCore->getSize().width();
         h = m_playerCore->getSize().height();
-        if (!m_playerCore || 0 == w || 0 == h)
-		{
-			msleep(40);
-		}
-		else
-		{
-			break;
-		}
-	}
+        if (!m_playerCore || 0 == w || 0 == h) {
+            msleep(40);
+        } else {
+            break;
+        }
+    }
 
-    if (m_playerCore)
-    {
+    if (m_playerCore) {
 #ifdef Enable_Hardcode
         m_playerCore->initD3D_NV12((HWND)m_winHandle, w, h);
 #else
-        m_playerCore->initD3D_YUVJ420P((HWND)m_winHandle, w, h);
-#endif // !Enable_Hardcode
+        if (!m_playerCore->initD3D_YUVJ420P((HWND)m_winHandle, w, h)) {
+            qDebug() << "RenderThread exited unexpectedly";
+            return;
+        }
+#endif  // !Enable_Hardcode
     }
-#endif // Enable_D3dRender
 
-    while(m_isContinue)
-    {
+#endif  // !Enable_D3dRender
+
+    QTime tt;
+    while (m_isContinue) {
         QMutexLocker lock(&m_iPlayerCoreMtx);
 
-        if (!m_playerCore)
-        {
+        if (!m_playerCore) {
             msleep(40);
             continue;
         }
-        if (m_duration <= 0)
-        {
+        if (m_duration <= 0) {
             m_duration = 1000 / m_playerCore->getFps();
         }
 
         tt.restart();
-        if (!m_isPause && m_wid->isVisible())
-        {
+        if (!m_isPause && m_wid->isVisible()) {
             w = m_wid->width() / 2 * 2;
             h = m_wid->height() / 2 * 2;
-            if (w > 0 && h > 0)
-            {
+            if (w > 0 && h > 0) {
                 QImage img(w, h, QImage::Format_ARGB32);
-                if (m_playerCore->toRgb(img.bits(), w, h)) // 很耗时，需要优化
+                if (m_playerCore->toRgb(img.bits(), w, h))  // 很耗时，需要优化
                 {
 #ifndef Enable_D3dRender
                     emit draw(img, m_playerCore->path());
-#endif // !Enable_D3dRender
+#endif  // !Enable_D3dRender
                 }
             }
         }
@@ -1006,11 +988,12 @@ void RenderThread::run()
         lock.unlock();
 
         int remainingTime = m_duration - tt.elapsed();
-        if (m_isContinue && remainingTime > 0)
-        {
+        if (m_isContinue && remainingTime > 0) {
             msleep(remainingTime);
         }
     }
+
+    qDebug() << "RenderThread exit";
 }
 
 void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
