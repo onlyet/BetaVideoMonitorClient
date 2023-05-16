@@ -126,11 +126,11 @@ private:
     // dxva渲染添加
 public:
     HWND                    m_windowHandle;
-    D3DPRESENT_PARAMETERS   m_d3dpp = { 0 };
-    IDirect3DSurface9       *m_pBackBuffer = NULL;
+    //D3DPRESENT_PARAMETERS   m_d3dpp = { 0 };
+    //IDirect3DSurface9       *m_pBackBuffer = NULL;
     InputStream             *m_inputStream = nullptr;
     bool                    m_hwDecode = false;         // 是否使用GPU解码和渲染
-    std::atomic<bool>       m_dxvaCbEnabled = true;     // 利用该标志位避免dxva2_release_buffer崩溃
+    //std::atomic<bool>       m_dxvaCbEnabled = true;     // 利用该标志位避免dxva2_release_buffer崩溃
 };
 
 class DecodeThread : public QThread

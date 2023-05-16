@@ -24,21 +24,27 @@
 #define IS_SET_FPS_WHEN_ERROR   1   ///< 当无法解析帧率时, 是否使用自定义的数值
 #define FPS_CUSTOM              25  ///< 当无法解析帧率时使用的自定义数值
 
-AVPixelFormat GetHwFormat(AVCodecContext *s, const AVPixelFormat *pix_fmts)
-{
-    //InputStream* ist = (InputStream*)s->opaque;
-    IPlayerCore* iPlayerCore = (IPlayerCore*)s->opaque;
-    if (nullptr == iPlayerCore)
-    {
-        return AV_PIX_FMT_NONE;
-    }
-    InputStream *ist = iPlayerCore->m_inputStream;
-    if (nullptr == ist)
-    {
-        return AV_PIX_FMT_NONE;
-    }
+//AVPixelFormat GetHwFormat(AVCodecContext *s, const AVPixelFormat *pix_fmts)
+//{
+//    //InputStream* ist = (InputStream*)s->opaque;
+//    IPlayerCore* iPlayerCore = (IPlayerCore*)s->opaque;
+//    if (nullptr == iPlayerCore)
+//    {
+//        return AV_PIX_FMT_NONE;
+//    }
+//    InputStream *ist = iPlayerCore->m_inputStream;
+//    if (nullptr == ist)
+//    {
+//        return AV_PIX_FMT_NONE;
+//    }
+//    ist->active_hwaccel_id = HWACCEL_DXVA2;
+//    ist->hwaccel_pix_fmt = AV_PIX_FMT_DXVA2_VLD;
+//    return ist->hwaccel_pix_fmt;
+//}
+AVPixelFormat GetHwFormat(AVCodecContext* s, const AVPixelFormat* pix_fmts) {
+    InputStream* ist       = (InputStream*)s->opaque;
     ist->active_hwaccel_id = HWACCEL_DXVA2;
-    ist->hwaccel_pix_fmt = AV_PIX_FMT_DXVA2_VLD;
+    ist->hwaccel_pix_fmt   = AV_PIX_FMT_DXVA2_VLD;
     return ist->hwaccel_pix_fmt;
 }
 
@@ -268,23 +274,41 @@ bool IPlayerCore::doOpen(const QString &path)
                 m_vDecodeCtx->coded_width = m_vDecodeCtx->width;
                 m_vDecodeCtx->coded_height = m_vDecodeCtx->height;
 
-                m_vDecodeCtx->thread_count = 1;  // Multithreading is apparently not compatible with hardware decoding
-                m_inputStream = new InputStream();
-                m_inputStream->hwaccel_id = HWACCEL_AUTO;
-                m_inputStream->active_hwaccel_id = HWACCEL_AUTO;
-                m_inputStream->hwaccel_device = const_cast<char*>("dxva2");
-                m_inputStream->dec = decoder;
-                m_inputStream->dec_ctx = m_vDecodeCtx;
+                //m_vDecodeCtx->thread_count = 1;  // Multithreading is apparently not compatible with hardware decoding
+                //m_inputStream = new InputStream();
+                //m_inputStream->hwaccel_id = HWACCEL_AUTO;
+                //m_inputStream->active_hwaccel_id = HWACCEL_AUTO;
+                //m_inputStream->hwaccel_device = const_cast<char*>("dxva2");
+                //m_inputStream->dec = decoder;
+                //m_inputStream->dec_ctx = m_vDecodeCtx;
 
-                m_vDecodeCtx->opaque = this;
-                if (dxva2_init(m_vDecodeCtx, m_windowHandle) != 0)
-                {
+                //m_vDecodeCtx->opaque = this;
+
+                //if (dxva2_init(m_vDecodeCtx, m_windowHandle) != 0) {
+                //    qDebug() << "dxva2_init failed";
+                //    doClose();
+                //    return false;
+                //}
+                //m_vDecodeCtx->get_buffer2           = m_inputStream->hwaccel_get_buffer;
+                //m_vDecodeCtx->get_format            = GetHwFormat;
+                // m_vDecodeCtx->thread_safe_callbacks = 1;
+
+                m_vDecodeCtx->thread_count = 1;
+                m_inputStream = new InputStream();
+                m_inputStream->hwaccel_id            = HWACCEL_AUTO;
+                m_inputStream->active_hwaccel_id     = HWACCEL_AUTO;
+                m_inputStream->hwaccel_device        = const_cast<char*>("dxva2");
+                m_inputStream->dec                   = decoder;
+                m_inputStream->dec_ctx               = m_vDecodeCtx;
+                m_vDecodeCtx->opaque                 = m_inputStream;
+
+                if (dxva2_init(m_vDecodeCtx, m_windowHandle) != 0) {
                     qDebug() << "dxva2_init failed";
                     doClose();
                     return false;
                 }
-                m_vDecodeCtx->get_buffer2 = m_inputStream->hwaccel_get_buffer;
-                m_vDecodeCtx->get_format = GetHwFormat;
+                m_vDecodeCtx->get_buffer2           = m_inputStream->hwaccel_get_buffer;
+                m_vDecodeCtx->get_format            = GetHwFormat;
                 m_vDecodeCtx->thread_safe_callbacks = 1;
             }
             else
@@ -369,7 +393,7 @@ bool IPlayerCore::doOpen(const QString &path)
     qDebug() << QString("open %1, time: %2ms").arg(util::logRtspUrl(m_path)).arg(t.elapsed());
 	m_isOpened = true;
 	emit inputOpened();
-    m_dxvaCbEnabled = true;
+    //m_dxvaCbEnabled = true;
     m_resolutionChanged = false;
     return true;
 }
@@ -402,12 +426,12 @@ void IPlayerCore::doClose()
 
     if (m_hwDecode)
     {
-        m_dxvaCbEnabled = false;
+        //m_dxvaCbEnabled = false;
 
-        if (m_vDecodeCtx)
-        {
-            dxva2_uninit(m_vDecodeCtx);
-        }
+        //if (m_vDecodeCtx)
+        //{
+        //    dxva2_uninit(m_vDecodeCtx);
+        //}
         if (m_inputStream)
         {
             delete m_inputStream;
