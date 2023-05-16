@@ -156,9 +156,6 @@
     <ClInclude Include="..\..\common\ErrorCode.h">
       <Filter>src\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\common\GlobalDefine.h">
-      <Filter>src\common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\common\log.h">
       <Filter>src\common</Filter>
     </ClInclude>

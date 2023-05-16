@@ -205,71 +205,28 @@ void CCenter::closeAll()
     }
 }
 
-void CCenter::allPeopleStart()
-{
+void CCenter::allPeopleStart() {
     qInfo() << qstr("所有座位开始播放和录制");
     QTime t = QTime::currentTime();
-    if (CONFIG.enableServer())
-    {
-        int size = 28;
-        if (size > m_maxSeatNum)
-        {
-            qDebug() << "logic error";
-            return;
-        }
-        for (int i = 0; i < size; ++i)
-        {
-            CSmallScreen *pSeat = m_seatWidgetList[i];
-            if (!pSeat) continue;
+    int   n = m_maxSeatNum;
+    for (int i = 0; i < n; ++i) {
+        CSmallScreen* tmpSeat = m_seatWidgetList[i];
+        if (!tmpSeat) continue;
 
-            pSeat->startRecord();
-        }
+        tmpSeat->startPlay();
+        tmpSeat->startRecord();
     }
-    else
-    {
-        // FIXME
-        int n = m_maxSeatNum;
-        //int n = 1;
-        for (int i = 0; i < n; ++i)
-        {
-            CSmallScreen *tmpSeat = m_seatWidgetList[i];
-            if (!tmpSeat) continue;
-
-            tmpSeat->startPlay();
-            tmpSeat->startRecord();
-        }
-    }
-    //qDebug() << "allPeopleStart time:" << t.elapsed();
 }
 
-void CCenter::allPeopleStop()
-{
+void CCenter::allPeopleStop() {
     qInfo() << qstr("所有座位结束播放和录制");
-    if (CONFIG.enableServer())
-    {
-        int num = 28;
-        for (int i = 0; i < num; ++i)
-        {
-            CSmallScreen *seat = m_seatWidgetList[i];
-            if (!seat) continue;
+    int n = m_maxSeatNum;
+    for (int i = 0; i < n; ++i) {
+        CSmallScreen* tmpSeat = m_seatWidgetList[i];
+        if (!tmpSeat) continue;
 
-            seat->stopRecord();
-            seat->stopPlay(); // 耗时
-
-        }
-    }
-    else
-    {
-        // FIXME
-        int n = m_maxSeatNum;
-        for (int i = 0; i < n; ++i)
-        {
-            CSmallScreen *tmpSeat = m_seatWidgetList[i];
-            if (!tmpSeat) continue;
-
-            tmpSeat->stopRecord();
-            tmpSeat->stopPlay();
-        }
+        tmpSeat->stopRecord();
+        tmpSeat->stopPlay();
     }
 }
 

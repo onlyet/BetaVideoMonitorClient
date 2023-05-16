@@ -263,7 +263,6 @@
     <QtMoc Include="..\..\common\CTransparentLabel.h" />
     <ClInclude Include="..\..\common\Dump.h" />
     <ClInclude Include="..\..\common\ErrorCode.h" />
-    <ClInclude Include="..\..\common\GlobalDefine.h" />
     <QtMoc Include="..\..\common\LoadingLabel.h" />
     <ClInclude Include="..\..\common\log.h" />
     <ClInclude Include="..\..\common\player\D3DVidRender.h" />
