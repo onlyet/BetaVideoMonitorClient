@@ -1018,21 +1018,6 @@ void RenderThread::run() {
         }
 #endif  // !Enable_D3dRender
 
-//        if (!m_isPause && m_wid->isVisible()) {
-//
-//            w = m_wid->width() / 2 * 2;
-//            h = m_wid->height() / 2 * 2;
-//            if (w > 0 && h > 0) {
-//                QImage img(w, h, QImage::Format_ARGB32);
-//                if (m_playerCore->toRgb(img.bits(), w, h))  // 很耗时，需要优化
-//                {
-//#ifndef Enable_D3dRender
-//                    emit draw(img, m_playerCore->path());
-//#endif  // !Enable_D3dRender
-//                }
-//            }
-//        }
-
         lock.unlock();
 
         int remainingTime = m_duration - tt.elapsed();
