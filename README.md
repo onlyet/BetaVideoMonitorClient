@@ -17,10 +17,19 @@
 单人大屏
 ![](./screenshot/bigScreen.png)
 
-## 技术选型
+## 使用
+目前配置文件`BetaVideoMonitorClient.ini`可配置两路地址：leftUrl和rightUrl，24人共用这两个地址。  
+leftUrl=rtsp://user:password@192.168.1.20:554/Streaming/Channels/101
+rightUrl=rtsp://user:password@192.168.1.20:554/Streaming/Channels/101
+
+如果你没有网络摄像头，可以用在线HTTP地址试用，例如：
+https://sf1-hscdn-tos.pstatp.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4
+
+## 技术实现
 * 界面实现用Qt  
 * 拉流解码播放用FFmpeg  
-* 大屏播放和视频存储用IPC主码流，小屏播放用IPC子码流
+* 大屏播放和视频存储用IPC主码流，小屏播放用IPC子码流  
+* 目前已支持d3d9渲染yuv，但是测试多路渲染发现效果不好
 
 ## 环境依赖
 ### windows
