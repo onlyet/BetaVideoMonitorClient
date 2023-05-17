@@ -126,68 +126,60 @@ void CSmallScreen::mouseDoubleClickEvent(QMouseEvent *event)
     startPlay();
 }
 
-void CSmallScreen::setLeftUrl(const QString &url)
-{
-    if (1)
-    {
-        if (url.isEmpty())
-        {
-            m_leftPlayUrl = "";
-            m_leftSaveUrl = "";
-            return;
-        }
-        QString subUrl = url;
+void CSmallScreen::setLeftUrl(const QString& url) {
+    if (url.isEmpty()) {
+        m_leftPlayUrl = "";
+        m_leftSaveUrl = "";
+        return;
+    }
+    QString subUrl = url;
+
+    if (url.startsWith("rtsp")) {
         int index = url.size() - 1;
         // 海康
         // 最后一位：1主码流，2子码流
-        if (url.contains("Streaming/Channels"))
-        {
+        if (url.contains("Streaming/Channels")) {
             subUrl.replace(index, 1, '2');
         }
         // 大华
         // subtype: 0主码流，1子码流
-        else
-        {
+        else {
             subUrl.replace(index, 1, '1');
         }
-        ui->camera_left->setPlayRtspUrl(subUrl);
-        ui->camera_left->setSaveRtspUrl(url);
-
-        m_leftPlayUrl = subUrl;
-        m_leftSaveUrl = url;
     }
+    ui->camera_left->setPlayRtspUrl(subUrl);
+    ui->camera_left->setSaveRtspUrl(url);
+
+    m_leftPlayUrl = subUrl;
+    m_leftSaveUrl = url;
 }
 
-void CSmallScreen::setRightUrl(const QString &url)
-{
-    if (1)
-    {
-        if (url.isEmpty())
-        {
-            m_rightPlayUrl = "";
-            m_rightSaveUrl = "";
-            return;
-        }
-        QString subUrl = url;
+void CSmallScreen::setRightUrl(const QString& url) {
+    if (url.isEmpty()) {
+        m_rightPlayUrl = "";
+        m_rightSaveUrl = "";
+        return;
+    }
+    QString subUrl = url;
+
+    if (url.startsWith("rtsp")) {
         int index = url.size() - 1;
-        // 海康 
+        // 海康
         // 最后一位：1主码流，2子码流
-        if (url.contains("Streaming/Channels"))
-        {
+        if (url.contains("Streaming/Channels")) {
             subUrl.replace(index, 1, '2');
         }
-        // 大华 
+        // 大华
         // subtype: 0主码流，1子码流
-        else
-        {
+        else {
             subUrl.replace(index, 1, '1');
         }
-        ui->camera_right->setPlayRtspUrl(subUrl);
-        ui->camera_right->setSaveRtspUrl(url);
-
-        m_rightPlayUrl = subUrl;
-        m_rightSaveUrl = url;
     }
+    ui->camera_right->setPlayRtspUrl(subUrl);
+    ui->camera_right->setSaveRtspUrl(url);
+
+    m_rightPlayUrl = subUrl;
+    m_rightSaveUrl = url;
 }
 
 const QString &CSmallScreen::leftUrl() const
