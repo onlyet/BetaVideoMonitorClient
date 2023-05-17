@@ -1,4 +1,4 @@
-#include "CInfoBox.h"
+﻿#include "CInfoBox.h"
 #include "ui_CInfoBox.h"
 
 #include <GlobalConfig.h>

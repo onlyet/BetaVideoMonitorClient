@@ -1,4 +1,4 @@
-#include "BetaPlayer.h"
+ï»¿#include "BetaPlayer.h"
 #include "CPlayerCore.h"
 #include <GlobalConfig.h>
 #include <util.h>
@@ -73,7 +73,7 @@ void BetaPlayer::play() {
         connect(m_CPlayerCore, &IPlayerCore::IpcParamsError, this, &BetaPlayer::setPlayErrorTips);
         connect(this, &BetaPlayer::openSubStream, m_CPlayerCore, &CPlayerCore::dopen);
 
-        // Ğ¡ÆÁ²¥·ÅĞèÒª½âÂë
+        // å°å±æ’­æ”¾éœ€è¦è§£ç 
         m_CPlayerCore->enableDecode(true);
         m_CPlayerCore->setWindowHandle((HWND)this->winId());
     }
@@ -130,16 +130,16 @@ void BetaPlayer::addOutput(const QString& mp4Path) {
     }
     m_isRecord = true;
 
-    // ´ò¿ªÖ÷ÂëÁ÷rtspµØÖ·
+    // æ‰“å¼€ä¸»ç æµrtspåœ°å€
     if (!m_savePlayerCore)
     {
-        // µ¥ÂëÁ÷
+        // å•ç æµ
         if (m_saveRtspUrl == m_playRtspUrl)
         {
             m_savePlayerCore = m_CPlayerCore;
             m_savePlayerCore->use();
         }
-        // Ë«ÂëÁ÷
+        // åŒç æµ
         else
         {
             m_savePlayerCore = CPlayerCore::instance(m_saveRtspUrl);
@@ -151,7 +151,7 @@ void BetaPlayer::addOutput(const QString& mp4Path) {
             connect(this, &BetaPlayer::startRecordSig, m_savePlayerCore, &CPlayerCore::openOutput);
             connect(this, &BetaPlayer::stopRecordSig, m_savePlayerCore, &CPlayerCore::closeOutput);
             
-            // Ö÷ÂëÁ÷²»½âÂë
+            // ä¸»ç æµä¸è§£ç 
             m_savePlayerCore->enableDecode(false);
 
             emit openMainStream();
@@ -188,7 +188,7 @@ void BetaPlayer::pause(bool isPause)
     m_isPause = isPause;
     if (m_CPlayerCore)
     {
-        // ÔİÍ£Ôò²»½âÂë
+        // æš‚åœåˆ™ä¸è§£ç 
         m_CPlayerCore->enableDecode(!m_isPause);
     }
 
@@ -268,7 +268,7 @@ void BetaPlayer::reset()
     }
 }
 
-// ÏÔÊ¾´íÎóÌáÊ¾
+// æ˜¾ç¤ºé”™è¯¯æç¤º
 bool BetaPlayer::event(QEvent * event)
 {
     if (event->type() == QEvent::ToolTip) {
@@ -349,7 +349,7 @@ void BetaPlayer::draw(QImage img, const QString &url)
     if (url != m_playRtspUrl) return;
     if (m_isWait) return;
 
-    // FIXME: ÕâÀïÎªÊ²Ã´»á±ÀÀ££¿
+    // FIXME: è¿™é‡Œä¸ºä»€ä¹ˆä¼šå´©æºƒï¼Ÿ
     QPixmap pix = QPixmap::fromImage(img);
 
     if (!m_errorTips.isEmpty())
@@ -392,7 +392,7 @@ void BetaPlayer::setPlayErrorTips(const QString &tips)
 
 void BetaPlayer::setSaveErrorTips(const QString & tips)
 {
-    // µ¥ÂëÁ÷
+    // å•ç æµ
     if (m_saveRtspUrl == m_playRtspUrl)
     {
         return;

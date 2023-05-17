@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 * This file is part of FFmpeg.
 *
 * FFmpeg is free software; you can redistribute it and/or
@@ -195,7 +195,7 @@ static void dxva2_release_buffer(void *opaque, uint8_t *data)
     if (w->iPlayerCore->m_dxvaCbEnabled)
     {
 
-    // FIXME: ÕâÕâĞĞ±ÀÀ£¹ı£¬Å¼ÏÖ
+    // FIXME: è¿™è¿™è¡Œå´©æºƒè¿‡ï¼Œå¶ç°
         for (i = 0; i < ctx->num_surfaces; i++)
         {
             if (ctx->surfaces[i] == w->surface)
@@ -314,7 +314,7 @@ static int dxva2_retrieve_data(AVCodecContext *s, AVFrame *frame)
 	ctx->d3d9device->EndScene();
 	ctx->d3d9device->Present(NULL, NULL, NULL, NULL);
 
-    // äÖÈ¾ºóÊÍ·ÅÄÚ´æ
+    // æ¸²æŸ“åé‡Šæ”¾å†…å­˜
     if (pBackBuffer)
     {
         pBackBuffer->Release();
@@ -575,7 +575,7 @@ static int dxva2_create_decoder(AVCodecContext *s)
     int surface_alignment;
     int ret;
 
-    // ±Ê¼Ç±¾½ûÓÃºËÏÔºó£¬ÕâÀï»á±¨´í
+    // ç¬”è®°æœ¬ç¦ç”¨æ ¸æ˜¾åï¼Œè¿™é‡Œä¼šæŠ¥é”™
     hr = ctx->decoder_service->GetDecoderDeviceGuids(&guid_count, &guid_list);
     if (FAILED(hr)) {
         QString err = errStr(hr);
@@ -811,7 +811,7 @@ void dxva2_uninit(AVCodecContext *s)
     }
 #endif
 
-    // FIXME: ÎªÊ²Ã´»á³öÏÖctxÎªnullptr,È»ºó±ÀÀ£
+    // FIXME: ä¸ºä»€ä¹ˆä¼šå‡ºç°ctxä¸ºnullptr,ç„¶åå´©æºƒ
     if (ctx->decoder)
         dxva2_destroy_decoder(s);
 

@@ -1,4 +1,4 @@
-#include <QObject>
+ï»¿#include <QObject>
 #include <QMutex>
 #include <QSize>
 #include <QThread>
@@ -56,10 +56,10 @@ public:
 
 	QString codecName() const;
 
-    // ÉèÖÃ²¥·ÅÆ÷µÄäÖÈ¾¿Ø¼ş£¨QLabelµÄ¾ä±ú£©
+    // è®¾ç½®æ’­æ”¾å™¨çš„æ¸²æŸ“æ§ä»¶ï¼ˆQLabelçš„å¥æŸ„ï¼‰
     void setWindowHandle(HWND hwnd);
 
-    // Ê¹ÓÃDXVAÓ²½â
+    // ä½¿ç”¨DXVAç¡¬è§£
     void enableHwDecode();
 
 public slots:
@@ -75,15 +75,15 @@ protected:
     int decode(const AVPacket *pkt);
     QString parseError(int errNum);
 
-    // ĞŞ¸ÄºÏ²¢ÊÓÆµĞèÒªÓÃµ½µÄtxt
+    // ä¿®æ”¹åˆå¹¶è§†é¢‘éœ€è¦ç”¨åˆ°çš„txt
     void appendConcatFile(const QString &videoPath);
     void concatVideo(const QString& videoPath);
 
 signals:
     void draw(QImage img, const QString &url);
-    void begin(void *ptr);              // Í¨Öª´°¿ÚÒÑ¿ªÊ¼
+    void begin(void *ptr);              // é€šçŸ¥çª—å£å·²å¼€å§‹
 
-	// ÒÑ´ò¿ªÊäÈë
+	// å·²æ‰“å¼€è¾“å…¥
 	void inputOpened();
 
     void IpcParamsError(const QString &msg);
@@ -95,25 +95,25 @@ signals:
     void concatDone();
 
 private:
-    QString             m_path;                         // ÊäÈëURL
-    DecodeThread       *m_decoder = nullptr;            // ¶ÁÈ¡½âÂëÏß³Ì
-    RenderThread        *m_render = nullptr;            // äÖÈ¾Ïß³Ì
-    AVFormatContext     *m_pAVFormatCtx = nullptr;      // ½â·â×°Æ÷
-    AVCodecContext      *m_vDecodeCtx = nullptr;        // ÊÓÆµ½âÂëÆ÷ÉÏÏÂÎÄ
+    QString             m_path;                         // è¾“å…¥URL
+    DecodeThread       *m_decoder = nullptr;            // è¯»å–è§£ç çº¿ç¨‹
+    RenderThread        *m_render = nullptr;            // æ¸²æŸ“çº¿ç¨‹
+    AVFormatContext     *m_pAVFormatCtx = nullptr;      // è§£å°è£…å™¨
+    AVCodecContext      *m_vDecodeCtx = nullptr;        // è§†é¢‘è§£ç å™¨ä¸Šä¸‹æ–‡
     SwsContext          *m_swsCtx = nullptr;
-    AVFrame             *m_pYuv = nullptr;              // ½âÂëºóµÄÊÓÆµÖ¡Êı¾İ
-    QMutex              m_mutex;                        // »¥³â±äÁ¿£¬¶àÏß³ÌÊ±±ÜÃâÍ¬Ê±¼äµÄ¶ÁĞ´AVFormatContextºÍAVCodecContext
-    QMutex              m_mutex_output;                 // Êä³öÁĞ±íÊı¾İËø
-    QMap<QString, Outputer*> m_outputs;                 // Êä³öÁĞ±í
-    QString             m_err;                          // ´íÎóĞÅÏ¢
-    bool                m_isEof;                        // ÊÇ·ñ¶ÁÍê;
-    double              m_fps;                          // ÊÓÆµÁ÷Ö¡ÂÊ
-    bool                m_isOpened;                     // ÊÇ·ñÒÑ´ò¿ªÃ½Ìå
-    int                 m_videoStream;                  // ÊÓÆµÁ÷ÀàĞÍ
-    QSize               m_size;                         // µ±Ç°ÊÓÆµ³ß´ç
-    AVPixelFormat       m_pixFmt;                       // µ±Ç°ÊÓÆµ¸ñÊ½
-    bool                m_enableDecode = true;          // ÊÇ·ñ½âÂë£¬Ö÷ÂëÁ÷²»½âÂë£¬´ò¿ª´óÆÁÔòĞ¡ÆÁ²»½âÂë
-	QString			    m_codecName;			        // ±àÂëÆ÷Ãû×Ö
+    AVFrame             *m_pYuv = nullptr;              // è§£ç åçš„è§†é¢‘å¸§æ•°æ®
+    QMutex              m_mutex;                        // äº’æ–¥å˜é‡ï¼Œå¤šçº¿ç¨‹æ—¶é¿å…åŒæ—¶é—´çš„è¯»å†™AVFormatContextå’ŒAVCodecContext
+    QMutex              m_mutex_output;                 // è¾“å‡ºåˆ—è¡¨æ•°æ®é”
+    QMap<QString, Outputer*> m_outputs;                 // è¾“å‡ºåˆ—è¡¨
+    QString             m_err;                          // é”™è¯¯ä¿¡æ¯
+    bool                m_isEof;                        // æ˜¯å¦è¯»å®Œ;
+    double              m_fps;                          // è§†é¢‘æµå¸§ç‡
+    bool                m_isOpened;                     // æ˜¯å¦å·²æ‰“å¼€åª’ä½“
+    int                 m_videoStream;                  // è§†é¢‘æµç±»å‹
+    QSize               m_size;                         // å½“å‰è§†é¢‘å°ºå¯¸
+    AVPixelFormat       m_pixFmt;                       // å½“å‰è§†é¢‘æ ¼å¼
+    bool                m_enableDecode = true;          // æ˜¯å¦è§£ç ï¼Œä¸»ç æµä¸è§£ç ï¼Œæ‰“å¼€å¤§å±åˆ™å°å±ä¸è§£ç 
+	QString			    m_codecName;			        // ç¼–ç å™¨åå­—
 
     int                 m_codecCtxWidth = 0;
     int                 m_codecCtxHeight = 0;
@@ -126,14 +126,14 @@ private:
     BYTE                *m_frameBuf = nullptr;
 #endif
 
-    // dxvaäÖÈ¾Ìí¼Ó
+    // dxvaæ¸²æŸ“æ·»åŠ 
 public:
     HWND                    m_windowHandle;
     D3DPRESENT_PARAMETERS   m_d3dpp = { 0 };
     IDirect3DSurface9       *m_pBackBuffer = NULL;
     InputStream             *m_inputStream = nullptr;
-    bool                    m_hwDecode = false;         // ÊÇ·ñÊ¹ÓÃGPU½âÂëºÍäÖÈ¾
-    std::atomic<bool>       m_dxvaCbEnabled = true;     // ÀûÓÃ¸Ã±êÖ¾Î»±ÜÃâdxva2_release_buffer±ÀÀ£
+    bool                    m_hwDecode = false;         // æ˜¯å¦ä½¿ç”¨GPUè§£ç å’Œæ¸²æŸ“
+    std::atomic<bool>       m_dxvaCbEnabled = true;     // åˆ©ç”¨è¯¥æ ‡å¿—ä½é¿å…dxva2_release_bufferå´©æºƒ
 };
 
 class DecodeThread : public QThread
@@ -148,7 +148,7 @@ protected:
     void run() Q_DECL_OVERRIDE;
 
 private:
-    std::atomic<bool> m_isContinue = true;  // ÊÇ·ñ¼ÌĞø½âÂë
+    std::atomic<bool> m_isContinue = true;  // æ˜¯å¦ç»§ç»­è§£ç 
     IPlayerCore*      m_playerCore   = nullptr;
 };
 
@@ -176,13 +176,13 @@ signals:
     void draw(QImage image, const QString &url);
 
 private:
-    std::atomic_bool m_isContinue = false;  // ÊÇ·ñ¼ÌĞøäÖÈ¾
-    IPlayerCore*     m_playerCore;          // ²¥·ÅÒıÇæ
-    QWidget*         m_wid;                 // Ä¿±ê´°¿Ú
-    int              m_duration;            // äÖÈ¾¼ä¸ô
-    std::atomic_bool m_isPause   = false;   // ÊÇ·ñÔİÍ£äÖÈ¾
-    int              m_winHandle = 0;       // Ä¿±ê´°¿Ú¾ä±ú
-    QMutex           m_iPlayerCoreMtx;  // ±ÜÃâ¶àÏßÍ¬Ê±¶ÁĞ´£¨Ö÷Ïß³ÌºÍäÖÈ¾Ïß³Ì£©
+    std::atomic_bool m_isContinue = false;  // æ˜¯å¦ç»§ç»­æ¸²æŸ“
+    IPlayerCore*     m_playerCore;          // æ’­æ”¾å¼•æ“
+    QWidget*         m_wid;                 // ç›®æ ‡çª—å£
+    int              m_duration;            // æ¸²æŸ“é—´éš”
+    std::atomic_bool m_isPause   = false;   // æ˜¯å¦æš‚åœæ¸²æŸ“
+    int              m_winHandle = 0;       // ç›®æ ‡çª—å£å¥æŸ„
+    QMutex           m_iPlayerCoreMtx;  // é¿å…å¤šçº¿åŒæ—¶è¯»å†™ï¼ˆä¸»çº¿ç¨‹å’Œæ¸²æŸ“çº¿ç¨‹ï¼‰
 
     CD3DVidRender m_d3d;
 };
@@ -205,13 +205,13 @@ public:
     void write(const AVPacket *pkt);
 
 private:
-    QString          m_url;          // Êä³öurl
-    AVFormatContext* m_pFmtCtx;      // Êä³ö·â×°Æ÷
-    AVStream*        m_vs;           // ÊÓÆµÊä³öÁ÷
-    AVRational       m_inTimebase;   // ÊäÈëÊ±»ù
-    AVRational       m_outTimebase;  // Êä³öÊ±»ù
-    qint64           m_vfc;          // ÊÓÆµÖ¡ÊıÁ¿(Video Frame Count)
-    bool m_headerWritten = false;  // avformat_write_headerµ÷ÓÃ³É¹¦²ÅÄÜµ÷ÓÃav_write_trailer
+    QString          m_url;          // è¾“å‡ºurl
+    AVFormatContext* m_pFmtCtx;      // è¾“å‡ºå°è£…å™¨
+    AVStream*        m_vs;           // è§†é¢‘è¾“å‡ºæµ
+    AVRational       m_inTimebase;   // è¾“å…¥æ—¶åŸº
+    AVRational       m_outTimebase;  // è¾“å‡ºæ—¶åŸº
+    qint64           m_vfc;          // è§†é¢‘å¸§æ•°é‡(Video Frame Count)
+    bool m_headerWritten = false;  // avformat_write_headerè°ƒç”¨æˆåŠŸæ‰èƒ½è°ƒç”¨av_write_trailer
     IPlayerCore* m_iPlayerCore = nullptr;
     QString      m_codecName;
 };

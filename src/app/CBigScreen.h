@@ -1,4 +1,4 @@
-#include <QFrame>
+ï»¿#include <QFrame>
 
 namespace Ui {
 class CBigScreen;
@@ -32,7 +32,7 @@ signals:
 private:
     Ui::CBigScreen *ui;
 
-    int         m_seat;         // ×ùÎ»ºÅ
-    QString     m_name;         // Ãû×Ö
+    int         m_seat;         // åº§ä½å·
+    QString     m_name;         // åå­—
 };
 

@@ -1,4 +1,4 @@
-#ifndef TOAST_H
+ï»¿#ifndef TOAST_H
 #define TOAST_H
 
 #include <QWidget>
@@ -10,7 +10,7 @@ namespace Ui
 class QLabel;
 class QPropertyAnimation;
 
-// ¶¨Ê±×Ô¶¯ÏûÊ§µÄÌáÊ¾¿ò
+// å®šæ—¶è‡ªåŠ¨æ¶ˆå¤±çš„æç¤ºæ¡†
 class Toast : public QWidget
 {
 	Q_OBJECT

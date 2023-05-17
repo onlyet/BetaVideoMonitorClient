@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QLabel>
 #include <QFont>
@@ -20,6 +20,6 @@ protected:
 
 
 private:
-    QString     m_text; // »æÖÆÎÄ±¾
+    QString     m_text; // ç»˜åˆ¶æ–‡æœ¬
     QColor      m_color{ Qt::white };
 };

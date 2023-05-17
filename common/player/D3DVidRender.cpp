@@ -1,4 +1,4 @@
-#include "D3DVidRender.h"
+ï»¿#include "D3DVidRender.h"
 #include <QDebug>
 
 #pragma comment(lib, "d3d9.lib")
@@ -197,14 +197,14 @@ BOOL CD3DVidRender::InitD3D_NV12(HWND hwnd, int img_width, int img_height)
     }
 
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
-    d3dpp.Windowed = TRUE;                                          // ÉèÎªtrueÔòÎª´°¿ÚÄ£Ê½£¬falseÔòÎªÈ«ÆÁÄ£Ê½
-    d3dpp.hDeviceWindow = hwnd;                                     // äÖÈ¾µÄ´°¿Ú¾ä±ú
-    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;                       // ºóÌ¨»º³å±íÃæÇøµÄ¶«Î÷±»¸´ÖÆµ½ÆÁÄ»ÉÏºó,ºóÌ¨»º³å±íÃæÇøµÄ¶«Î÷¾ÍÃ»ÓĞÊ²Ã´ÓÃÁË,¿ÉÒÔ¶ªÆúÁË
-    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;                        // ºóÌ¨»º³å±íÃæµÄÏñËØ¸ñÊ½
-    d3dpp.EnableAutoDepthStencil = FALSE;                           // ÉèÎªtrue£¬D3D½«×Ô¶¯´´½¨Éî¶È/Ä£°æ»º³å
+    d3dpp.Windowed = TRUE;                                          // è®¾ä¸ºtrueåˆ™ä¸ºçª—å£æ¨¡å¼ï¼Œfalseåˆ™ä¸ºå…¨å±æ¨¡å¼
+    d3dpp.hDeviceWindow = hwnd;                                     // æ¸²æŸ“çš„çª—å£å¥æŸ„
+    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;                       // åå°ç¼“å†²è¡¨é¢åŒºçš„ä¸œè¥¿è¢«å¤åˆ¶åˆ°å±å¹•ä¸Šå,åå°ç¼“å†²è¡¨é¢åŒºçš„ä¸œè¥¿å°±æ²¡æœ‰ä»€ä¹ˆç”¨äº†,å¯ä»¥ä¸¢å¼ƒäº†
+    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;                        // åå°ç¼“å†²è¡¨é¢çš„åƒç´ æ ¼å¼
+    d3dpp.EnableAutoDepthStencil = FALSE;                           // è®¾ä¸ºtrueï¼ŒD3Då°†è‡ªåŠ¨åˆ›å»ºæ·±åº¦/æ¨¡ç‰ˆç¼“å†²
     d3dpp.Flags = D3DPRESENTFLAG_VIDEO;
-    d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;     // Ë¢ĞÂÂÊ£¬Éè¶¨D3DPRESENT_RATE_DEFAULTÊ¹ÓÃÄ¬ÈÏË¢ĞÂÂÊ
-    d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;     // ±íÊ¾¿ÉÒÔÒÔÊµÊ±µÄ·½Ê½À´ÏÔÊ¾äÖÈ¾»­Ãæ
+    d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;     // åˆ·æ–°ç‡ï¼Œè®¾å®šD3DPRESENT_RATE_DEFAULTä½¿ç”¨é»˜è®¤åˆ·æ–°ç‡
+    d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;     // è¡¨ç¤ºå¯ä»¥ä»¥å®æ—¶çš„æ–¹å¼æ¥æ˜¾ç¤ºæ¸²æŸ“ç”»é¢
 
 
     D3DCAPS9 caps;
@@ -212,7 +212,7 @@ BOOL CD3DVidRender::InitD3D_NV12(HWND hwnd, int img_width, int img_height)
     HRESULT hr = m_pDirect3D9->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps);
     if ( SUCCEEDED(hr) )
     {
-        // Ö§³ÖÓ²¼ş¶¥µã´¦Àí
+        // æ”¯æŒç¡¬ä»¶é¡¶ç‚¹å¤„ç†
         if ( caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT )
         {
             BehaviorFlags = D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED | D3DCREATE_FPU_PRESERVE;
@@ -336,10 +336,10 @@ BOOL CD3DVidRender::Render_RGB32(unsigned char * pdata, int img_width, int img_h
 
 void CD3DVidRender::calculate_display_rect(RECT *rect,int img_width, int img_height, int scr_width, int scr_height)
 {
-    double video_W	= img_width ;		// ÊÓÆµ¿í¶È
-    double video_H	= img_height ;		// ÊÓÆµ¸ß¶È
-    double show_H	= scr_height ;		//²¥·ÅÇøÓò¸ß¶È
-    double show_W	= scr_width ;		//²¥·ÅÇøÓò¿í¶È
+    double video_W	= img_width ;		// è§†é¢‘å®½åº¦
+    double video_H	= img_height ;		// è§†é¢‘é«˜åº¦
+    double show_H	= scr_height ;		//æ’­æ”¾åŒºåŸŸé«˜åº¦
+    double show_W	= scr_width ;		//æ’­æ”¾åŒºåŸŸå®½åº¦
 
     if((video_W / video_H) <= show_W / show_H)
     {
@@ -365,10 +365,10 @@ BOOL CD3DVidRender::Render_YUV(unsigned char *pdata, int img_width, int img_heig
 {
     HRESULT lRet = -1;
 
-    // 1. ½«YUVÊı¾İpdata¿½±´µ½ÀëÆÁ±íÃæm_pDirect3DSurfaceRender
+    // 1. å°†YUVæ•°æ®pdataæ‹·è´åˆ°ç¦»å±è¡¨é¢m_pDirect3DSurfaceRender
 
     D3DLOCKED_RECT d3d_rect;
-    // Ëø¶¨ÀëÆÁ±íÃæ
+    // é”å®šç¦»å±è¡¨é¢
     lRet = m_pDirect3DSurfaceRender->LockRect(&d3d_rect, NULL, D3DLOCK_DONOTWAIT);
     if(FAILED(lRet))
     {
@@ -392,32 +392,32 @@ BOOL CD3DVidRender::Render_YUV(unsigned char *pdata, int img_width, int img_heig
     {
         memmove(pDest + stride * img_height + stride * img_height / 4 + i * stride / 2,pSrc + img_width * img_height + i * img_width / 2, img_width / 2);
     }
-    // Àë¿ªÀëÆÁ±íÃæ
+    // ç¦»å¼€ç¦»å±è¡¨é¢
     lRet = m_pDirect3DSurfaceRender->UnlockRect();
     if(FAILED(lRet))
     {
         return FALSE;
     }
 
-    // 2. ½«ÀëÆÁ±íÃæm_pDirect3DSurfaceRenderµÄÊı¾İ¿½±´µ½ºóÌ¨»º³å±íÃæm_pBackBuffer£¬²¢ÏÔÊ¾
+    // 2. å°†ç¦»å±è¡¨é¢m_pDirect3DSurfaceRenderçš„æ•°æ®æ‹·è´åˆ°åå°ç¼“å†²è¡¨é¢m_pBackBufferï¼Œå¹¶æ˜¾ç¤º
 
-    // ÇåÀí
+    // æ¸…ç†
     m_pDirect3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-    // ¿ªÊ¼»æÖÆ
+    // å¼€å§‹ç»˜åˆ¶
     m_pDirect3DDevice->BeginScene();
     if (m_pBackBuffer)
     {
         m_pBackBuffer->Release();
         m_pBackBuffer = NULL;
     }
-    // »ñÈ¡ºóÌ¨»º³åbuffer
+    // è·å–åå°ç¼“å†²buffer
     m_pDirect3DDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &m_pBackBuffer);
     GetClientRect(d3dpp.hDeviceWindow, &m_rtViewport);
-    // ¿½±´surfaceÊı¾İµ½ºóÌ¨»º³å
+    // æ‹·è´surfaceæ•°æ®åˆ°åå°ç¼“å†²
     m_pDirect3DDevice->StretchRect(m_pDirect3DSurfaceRender, NULL, m_pBackBuffer, &m_rtViewport, D3DTEXF_LINEAR);
-    // ½áÊø»æÖÆ
+    // ç»“æŸç»˜åˆ¶
     m_pDirect3DDevice->EndScene();
-    // ÏÔÊ¾ºóÌ¨»º³å±íÃæ
+    // æ˜¾ç¤ºåå°ç¼“å†²è¡¨é¢
     m_pDirect3DDevice->Present( NULL, NULL, NULL, NULL );
 
     RECT rcCurrentClient;

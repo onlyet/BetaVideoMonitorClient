@@ -1,4 +1,4 @@
-#include "GlobalSignalSlot.h"
+﻿#include "GlobalSignalSlot.h"
 
 GlobalSignalSlot::GlobalSignalSlot(QObject *parent)
     : QObject(parent)

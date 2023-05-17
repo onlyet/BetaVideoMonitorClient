@@ -1,4 +1,4 @@
-#include "IMessageBox.h"
+﻿#include "IMessageBox.h"
 
 #include <QMouseEvent>
 

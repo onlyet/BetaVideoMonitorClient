@@ -1,4 +1,4 @@
-#include "CConfirmBox.h"
+﻿#include "CConfirmBox.h"
 #include "ui_CConfirmBox.h"
 
 #include <GlobalConfig.h>

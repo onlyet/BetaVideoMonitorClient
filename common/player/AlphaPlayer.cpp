@@ -1,4 +1,4 @@
-#include "AlphaPlayer.h"
+ï»¿#include "AlphaPlayer.h"
 #include "IPlayerCore.h"
 #include <GlobalConfig.h>
 #include <util.h>
@@ -22,11 +22,11 @@ AlphaPlayer::AlphaPlayer(QWidget *parent)
     , m_isRecord(false)
     , m_isWait(true)
 {
-    // ÓÐÓ¢Î°´ïÏÔ¿¨µÄÊ±ºòÔò´óÆÁÊ¹ÓÃDXVA½âÂëäÖÈ¾
+    // æœ‰è‹±ä¼Ÿè¾¾æ˜¾å¡çš„æ—¶å€™åˆ™å¤§å±ä½¿ç”¨DXVAè§£ç æ¸²æŸ“
     if (0 && util::haveNvidiaGpu())
     {
         m_hwDecode = true;
-        // ´óÆÁÓÃDxvaäÖÈ¾£¬ËùÒÔ²»´«this
+        // å¤§å±ç”¨Dxvaæ¸²æŸ“ï¼Œæ‰€ä»¥ä¸ä¼ this
         m_playerCore = new IPlayerCore(/*this*/);
         m_playerCore->enableHwDecode();
         m_playerCore->setWindowHandle((HWND)this->winId());

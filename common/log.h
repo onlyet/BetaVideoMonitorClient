@@ -1,4 +1,4 @@
-#ifndef LOG_H
+ï»¿#ifndef LOG_H
 #define LOG_H
 
 #include <QDebug>
@@ -12,9 +12,9 @@
 
 #include <sstream>
 
-#define LogFileMaxCount 10      // ÀúÊ·ÈÕÖ¾ÎÄ¼ş×î´ó¸öÊı
-#define LogMaxBytes (10<<20)    // µ¥¸öÀúÊ·ÈÕÖ¾ÎÄ¼ş×î´ó×Ö½ÚÊı
-#define LogDirName "log"        // ÈÕÖ¾ÎÄ¼ş´æ·ÅÄ¿Â¼
+#define LogFileMaxCount 10      // å†å²æ—¥å¿—æ–‡ä»¶æœ€å¤§ä¸ªæ•°
+#define LogMaxBytes (10<<20)    // å•ä¸ªå†å²æ—¥å¿—æ–‡ä»¶æœ€å¤§å­—èŠ‚æ•°
+#define LogDirName "log"        // æ—¥å¿—æ–‡ä»¶å­˜æ”¾ç›®å½•
 
 #if defined (M_OS_64) || defined (Q_OS_WIN64)
 typedef quint64 mhandle;
@@ -39,7 +39,7 @@ static void writeLog(const QString& msg, const QString& fileName = s_LogName)
 {
     QFile sLogFile(getLogFileName(fileName));
 
-    // ÈÕÖ¾ÎÄ¼şÉÏÏŞÎª10M£¬×î¶à10¸öÀúÊ·ÈÕÖ¾£¬1ÊÇ×îĞÂµÄÀúÊ·ÈÕÖ¾£¬10ÊÇ×î¾ÉµÄ
+    // æ—¥å¿—æ–‡ä»¶ä¸Šé™ä¸º10Mï¼Œæœ€å¤š10ä¸ªå†å²æ—¥å¿—ï¼Œ1æ˜¯æœ€æ–°çš„å†å²æ—¥å¿—ï¼Œ10æ˜¯æœ€æ—§çš„
     static const qint64 maxSize = LogMaxBytes;
     if (sLogFile.size() > maxSize)
     {
@@ -95,7 +95,7 @@ static void outputMessage(QtMsgType type, const QMessageLogContext& context, con
         text = QString("[Crtcl]");
         break;
 
-        // ³öÏÖ¶ÏÑÔÊ±£¬¿ÉÒÔ°Ñ¶Ïµã¶¨ÔÚÕâÀï
+        // å‡ºç°æ–­è¨€æ—¶ï¼Œå¯ä»¥æŠŠæ–­ç‚¹å®šåœ¨è¿™é‡Œ
     case QtFatalMsg:
         text = QString("[Fatal]");
         break;

@@ -1,4 +1,4 @@
-#include "ui_Toast.h"
+ï»¿#include "ui_Toast.h"
 #include "Toast.h"
 #include <QLabel>
 #include <QPainter>
@@ -35,7 +35,7 @@ Toast::Toast(const QString &msg, QWidget *parent, int duration)
 	m_animation->setStartValue(1);
 	m_animation->setEndValue(0.6);
 	m_animation->setEasingCurve(QEasingCurve::OutInExpo);
-    // FIXME: ÓÐbug£¬ÔÝÊ±²»²¥·Å¶¯»­
+    // FIXME: æœ‰bugï¼Œæš‚æ—¶ä¸æ’­æ”¾åŠ¨ç”»
 	m_animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 

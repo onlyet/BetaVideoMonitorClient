@@ -1,4 +1,4 @@
-#include <QLabel>
+ï»¿#include <QLabel>
 #include <QPixmap>
 
 class CPlayerCore;
@@ -15,19 +15,19 @@ public:
     bool isPause() const {return m_isPause;}
     bool isRecording() const {return m_isRecord;}
     const QString &path() const { return m_playRtspUrl; }
-    // ÉèÖÃ×ÓÂëÁ÷rtspµØÖ·
+    // è®¾ç½®å­ç æµrtspåœ°å€
     void setPlayRtspUrl(const QString &subRtspUrl);
 
-    // ÉèÖÃÂ¼ÖÆÓÃrtspµØÖ·£¬Ö÷ÂëÁ÷
+    // è®¾ç½®å½•åˆ¶ç”¨rtspåœ°å€ï¼Œä¸»ç æµ
     void setSaveRtspUrl(const QString &url);
 
     void setWaitStr(const QString &str);
     void setWaitPic(const QPixmap& pix);
 
     enum ResizeType {
-        Default = 0,    ///< ²»±£³Ö±ÈÀı
-        ByWidth,        ///< ¸ù¾İ¿í¶È¼ÆËã¸ß¶È
-        ByHeight        ///< ¸ù¾İ¸ß¶È¼ÆËã¿í¶È
+        Default = 0,    ///< ä¸ä¿æŒæ¯”ä¾‹
+        ByWidth,        ///< æ ¹æ®å®½åº¦è®¡ç®—é«˜åº¦
+        ByHeight        ///< æ ¹æ®é«˜åº¦è®¡ç®—å®½åº¦
     };
 
     void setResizeType(ResizeType resizeType, qreal aspectRatio = 0);
@@ -60,29 +60,29 @@ protected slots:
     void onXBegin(void *ptr);
 
 signals:
-    // ´ò¿ª×ÓÂëÁ÷
+    // æ‰“å¼€å­ç æµ
     void openSubStream();
-    // ´ò¿ªÖ÷ÂëÁ÷
+    // æ‰“å¼€ä¸»ç æµ
     void openMainStream();
 
     void startRecordSig(const QString& mp4RecordPath);
     void stopRecordSig(const QString& mp4RecordPath);
 
 private:
-    QString       m_playRtspUrl;               // ²¥·ÅÂ·¾¶£¬×ÓÂëÁ÷rtspµØÖ·
-    QString       m_saveRtspUrl;               // Â¼ÖÆÓÃÖ÷ÂëÁ÷rtspµØÖ·
-    QString       m_savePath;                  // Â¼ÏñÎÄ¼şÂ·¾¶
-    CPlayerCore*  m_CPlayerCore    = nullptr;  // ²¥·Å×ÓÂëÁ÷ÊÓÆµÓÃ
-    CPlayerCore*  m_savePlayerCore = nullptr;  // Â¼ÖÆÖ÷ÂëÁ÷ÊÓÆµÓÃ
-    RenderThread* m_render         = nullptr;  // äÖÈ¾Ïß³Ì£¨×ÓÂëÁ÷£©
-    bool          m_isPause        = false;    // ÊÇ·ñÔİÍ£
-    bool          m_isRecord       = false;    // ÊÇ·ñÕıÔÚÂ¼Ïñ
-    bool          m_isWait         = true;     // ÊÇ·ñ´¦ÓÚµÈ´ı×´Ì¬
-    bool          m_hwDecode       = false;    // ÊÇ·ñÊ¹ÓÃDxva½âÂëäÖÈ¾
-    QString       m_waitStr;                   // µÈ´ıµÄÏÔÊ¾×Ö·û´®
+    QString       m_playRtspUrl;               // æ’­æ”¾è·¯å¾„ï¼Œå­ç æµrtspåœ°å€
+    QString       m_saveRtspUrl;               // å½•åˆ¶ç”¨ä¸»ç æµrtspåœ°å€
+    QString       m_savePath;                  // å½•åƒæ–‡ä»¶è·¯å¾„
+    CPlayerCore*  m_CPlayerCore    = nullptr;  // æ’­æ”¾å­ç æµè§†é¢‘ç”¨
+    CPlayerCore*  m_savePlayerCore = nullptr;  // å½•åˆ¶ä¸»ç æµè§†é¢‘ç”¨
+    RenderThread* m_render         = nullptr;  // æ¸²æŸ“çº¿ç¨‹ï¼ˆå­ç æµï¼‰
+    bool          m_isPause        = false;    // æ˜¯å¦æš‚åœ
+    bool          m_isRecord       = false;    // æ˜¯å¦æ­£åœ¨å½•åƒ
+    bool          m_isWait         = true;     // æ˜¯å¦å¤„äºç­‰å¾…çŠ¶æ€
+    bool          m_hwDecode       = false;    // æ˜¯å¦ä½¿ç”¨Dxvaè§£ç æ¸²æŸ“
+    QString       m_waitStr;                   // ç­‰å¾…çš„æ˜¾ç¤ºå­—ç¬¦ä¸²
     QPixmap       m_waitPic;
-    ResizeType    m_resizeType;   // ´°¿Ú´óĞ¡±ä»¯ÀàĞÍ
-    qreal         m_aspectRatio;  // ´°¿Ú±ÈÀı
+    ResizeType    m_resizeType;   // çª—å£å¤§å°å˜åŒ–ç±»å‹
+    qreal         m_aspectRatio;  // çª—å£æ¯”ä¾‹
     QString       m_playErrorTips;
     QString       m_saveErrorTips;
     QString       m_errorTips;

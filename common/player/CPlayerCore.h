@@ -1,4 +1,4 @@
-#include "IPlayerCore.h"
+ï»¿#include "IPlayerCore.h"
 
 #include <QMap>
 #include <QMutex>
@@ -39,10 +39,10 @@ signals:
 private:
     explicit CPlayerCore(const QString &url);
 
-    QString                 m_url;          // ²¥·ÅÂ·¾¶
-    int                     m_counter;      // Ïú»Ù¼ÆÊı
-    std::atomic_int         m_use;          // ÒıÓÃ¼ÆÊı
-	QString                 m_outputUrl;    // Êä³öurl
+    QString                 m_url;          // æ’­æ”¾è·¯å¾„
+    int                     m_counter;      // é”€æ¯è®¡æ•°
+    std::atomic_int         m_use;          // å¼•ç”¨è®¡æ•°
+	QString                 m_outputUrl;    // è¾“å‡ºurl
 
     QTimer                  *m_timer = nullptr;
 };
@@ -61,9 +61,9 @@ public slots:
 private:
     explicit CPlayerCoreManager(QObject *parent = Q_NULLPTR);
     static      CPlayerCoreManager *s_instance;                
-    static      QMutex s_mutex;                         // µ¥ÀıËø
+    static      QMutex s_mutex;                         // å•ä¾‹é”
     typedef     QMap<QString, CPlayerCore*> DMap;
     DMap        m_map;                                  
-    QMutex      m_mutex;                                // Êı¾İËø
+    QMutex      m_mutex;                                // æ•°æ®é”
 };
 

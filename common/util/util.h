@@ -1,4 +1,4 @@
-#ifndef UTIL_H
+ï»¿#ifndef UTIL_H
 #define UTIL_H
 
 #include <QString>
@@ -9,10 +9,10 @@
 
 #define APPNAME "BetaVideoMonitorClient"
 
-#define qstr QStringLiteral
+//#define qstr QStringLiteral
 #define DATETIME_FORMAT_DEFAULT         "yyyy-MM-dd hh:mm:ss"
 
-#define RecordPath                      "Volatile/RecordPath"            // Â¼Ïñ±£´æÂ·¾¶
+#define RecordPath                      "Volatile/RecordPath"            // å½•åƒä¿å­˜è·¯å¾„
 
 #define EnableServer                    "Server/EnableServer"
 
@@ -33,21 +33,21 @@ class QLabel;
 class QWidget;
 
 namespace util {
-    /*! @brief ´ÓÅäÖÃÎÄ¼şÖĞ¶ÁÈ¡Ö¸¶¨ÅäÖÃ */
+    /*! @brief ä»é…ç½®æ–‡ä»¶ä¸­è¯»å–æŒ‡å®šé…ç½® */
     QVariant getSetting(const QString& key, const QVariant& defaultValue = QVariant(), const QString& filename = "");
-    /*! @brief ĞŞ¸ÄÅäÖÃ */
+    /*! @brief ä¿®æ”¹é…ç½® */
     void setSetting(const QString& key, const QVariant& value, const QString& filename = "");
 
-    /*! @brief µ±Ç°Ïß³Ì¿ªÆôÊÂ¼şÑ­»·µÈ´ımsecsºÁÃë, ·µ»ØQEventLoopÖ´ĞĞ½á¹û */
+    /*! @brief å½“å‰çº¿ç¨‹å¼€å¯äº‹ä»¶å¾ªç¯ç­‰å¾…msecsæ¯«ç§’, è¿”å›QEventLoopæ‰§è¡Œç»“æœ */
     int esleep(QEventLoop* loop, int msecs);
 
-    /*! @brief Ê¹³ÌĞòÎ¨Ò»´æÔÚ£¬Èç¹ûÒÑ´æÔÚ·µ»Øfalse */
+    /*! @brief ä½¿ç¨‹åºå”¯ä¸€å­˜åœ¨ï¼Œå¦‚æœå·²å­˜åœ¨è¿”å›false */
     bool setProgramUnique(const QString& name);
 
-    /*! @brief ¼ì²éÍêÕûÎÄ¼şÂ·¾¶£¬·µ»ØºÏÀíµÄÍêÕûÎÄ¼şÂ·¾¶¡£Èç¹ûËùÊôÂ·¾¶²»´æÔÚÔò´´½¨¡£isCover±íÊ¾ÊÇ·ñÉ¾³ıÒÑÓĞ */
+    /*! @brief æ£€æŸ¥å®Œæ•´æ–‡ä»¶è·¯å¾„ï¼Œè¿”å›åˆç†çš„å®Œæ•´æ–‡ä»¶è·¯å¾„ã€‚å¦‚æœæ‰€å±è·¯å¾„ä¸å­˜åœ¨åˆ™åˆ›å»ºã€‚isCoverè¡¨ç¤ºæ˜¯å¦åˆ é™¤å·²æœ‰ */
     QString checkFile(const QString& filepath, bool isCover = false);
 
-    /*! @brief Ñ­»·É¾³ıÄ¿Â¼. ÎŞ·¨É¾³ıÕıÔÚÊ¹ÓÃµÄÎÄ¼şºÍÄ¿Â¼ */
+    /*! @brief å¾ªç¯åˆ é™¤ç›®å½•. æ— æ³•åˆ é™¤æ­£åœ¨ä½¿ç”¨çš„æ–‡ä»¶å’Œç›®å½• */
     bool rmDir(const QString& path);
 
     qint64 mSecsSinceEpoch();
@@ -58,7 +58,7 @@ namespace util {
 
     bool ensureDirExist(const QString& dirPath);
 
-    // app°æ±¾ºÅ
+    // appç‰ˆæœ¬å·
     QString appVersion();
 
     int screenWidth();
@@ -69,12 +69,12 @@ namespace util {
 
     void resetMaxWidth(QLabel* label, int maxWidth);
 
-    // QLabelÏÔÊ¾ÎÄ±¾£¬³¬¹ı×î´ó¿í¶ÈÔòÏÔÊ¾Ê¡ÂÔºÅ
+    // QLabelæ˜¾ç¤ºæ–‡æœ¬ï¼Œè¶…è¿‡æœ€å¤§å®½åº¦åˆ™æ˜¾ç¤ºçœç•¥å·
     void setTextWithEllipsis(QLabel* label, const QString& text);
 
     QString logDir();
 
-    // ÊÇ·ñÓĞÓ¢Î°´ïÏÔ¿¨
+    // æ˜¯å¦æœ‰è‹±ä¼Ÿè¾¾æ˜¾å¡
     bool haveNvidiaGpu();
 
     QString formatTime(int secs, const QString& format);

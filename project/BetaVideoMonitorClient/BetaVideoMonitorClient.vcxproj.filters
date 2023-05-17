@@ -26,9 +26,6 @@
     <Filter Include="src\common\ListWidget">
       <UniqueIdentifier>{9dc0570b-c9ad-4221-9a3f-aa168155e413}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\common\Frameless">
-      <UniqueIdentifier>{567036dc-6cc0-4892-a3b3-e2af6b6fb4dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\common\Toast">
       <UniqueIdentifier>{be5d1019-5532-48c5-98af-1635f2e3731e}</UniqueIdentifier>
     </Filter>

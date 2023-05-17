@@ -1,4 +1,4 @@
-#ifndef CSEAT_H
+ï»¿#ifndef CSEAT_H
 #define CSEAT_H
 
 #include <QFrame>
@@ -71,16 +71,16 @@ signals:
 
 private:
     Ui::CSmallScreen*             ui;
-    int                    m_seat;           // ×ùÎ»ºÅ£¬¿ÉÈÎÒâµ÷Õû(1-28)
-    int                    m_serialNum;      // ĞòºÅ£¬Êµ¼ÊÎïÀíÎ»ÖÃ (1-28)
+    int                    m_seat;           // åº§ä½å·ï¼Œå¯ä»»æ„è°ƒæ•´(1-28)
+    int                    m_serialNum;      // åºå·ï¼Œå®é™…ç‰©ç†ä½ç½® (1-28)
     QString                m_name;           
     QString                m_title;          
-    QString                m_leftPlayUrl;    // ×óÉãÏñÍ·×ÓÂëÁ÷
-    QString                m_leftSaveUrl;    // ×óÉãÏñÍ·Ö÷ÂëÁ÷
-    QString                m_rightPlayUrl;   // ÓÒÉãÏñÍ·×ÓÂëÁ÷
-    QString                m_rightSaveUrl;   // ÓÒÉãÏñÍ·Ö÷ÂëÁ÷
-    QString                m_leftSavePath;   // ×ó²àÊÓÆµ±£´æÂ·¾¶
-    QString                m_rightSavePath;  // ÓÒ²àÊÓÆµ±£´æÂ·¾¶
+    QString                m_leftPlayUrl;    // å·¦æ‘„åƒå¤´å­ç æµ
+    QString                m_leftSaveUrl;    // å·¦æ‘„åƒå¤´ä¸»ç æµ
+    QString                m_rightPlayUrl;   // å³æ‘„åƒå¤´å­ç æµ
+    QString                m_rightSaveUrl;   // å³æ‘„åƒå¤´ä¸»ç æµ
+    QString                m_leftSavePath;   // å·¦ä¾§è§†é¢‘ä¿å­˜è·¯å¾„
+    QString                m_rightSavePath;  // å³ä¾§è§†é¢‘ä¿å­˜è·¯å¾„
     bool                   m_recordStarted            = false;
     CTransparentLabel*     m_serialNumLabel           = nullptr;
 };

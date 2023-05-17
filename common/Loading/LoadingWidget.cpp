@@ -1,4 +1,4 @@
-#include <ui_LoadingWidget.h>
+ï»¿#include <ui_LoadingWidget.h>
 #include "LoadingWidget.h"
 #include <QPainter>
 #include <QGuiApplication>
@@ -42,7 +42,7 @@ void LoadingWidget::showLoadingShade()
 void LoadingWidget::hideLoadingShade()
 {
     hide();
-    // ÑÓ³Ùstop£¬±ÜÃâÒþ²ØµÄÊ±ºòÓÐ¾ØÐÎ±³¾°
+    // å»¶è¿Ÿstopï¼Œé¿å…éšè—çš„æ—¶å€™æœ‰çŸ©å½¢èƒŒæ™¯
     //QTimer::singleShot(500, [this]() {
     //    m_movie->stop();
     //}); 
@@ -50,7 +50,7 @@ void LoadingWidget::hideLoadingShade()
 
 void LoadingWidget::paintEvent(QPaintEvent *ev)
 {
-    //Îª´°¿ÚÌí¼ÓÒ»¸ö°ëÍ¸Ã÷µÄ¾ØÐÎÕÚÕÖ
+    //ä¸ºçª—å£æ·»åŠ ä¸€ä¸ªåŠé€æ˜Žçš„çŸ©å½¢é®ç½©
     //QPainter painter(this);
     //painter.fillRect(this->rect(), QColor(0, 0, 0, 100));
     QWidget::paintEvent(ev);

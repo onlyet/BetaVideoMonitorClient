@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
-#define ErrorCode_IPCOk                     0           // Õý³£
-#define ErrorCode_IPCOpenFailed             1 << 0      // ´ò²»¿ª
-#define ErrorCode_IPCWidthOrHeightIs0       1 << 1      // ¿í»ò¸ßÎª0
-#define ErrorCode_IPCResolutionError        1 << 5      // ·Ö±æÂÊ´íÎó
-#define ErrorCode_IPCCodecTypeError         1 << 6      // ±àÂëÀàÐÍ´íÎó
+#define ErrorCode_IPCOk                     0           // æ­£å¸¸
+#define ErrorCode_IPCOpenFailed             1 << 0      // æ‰“ä¸å¼€
+#define ErrorCode_IPCWidthOrHeightIs0       1 << 1      // å®½æˆ–é«˜ä¸º0
+#define ErrorCode_IPCResolutionError        1 << 5      // åˆ†è¾¨çŽ‡é”™è¯¯
+#define ErrorCode_IPCCodecTypeError         1 << 6      // ç¼–ç ç±»åž‹é”™è¯¯

@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "d3d9.h"
 
 class CD3DVidRender
@@ -39,10 +39,10 @@ public:
     int                   m_nColor;
     RECT                  m_rtViewport;
     IDirect3D9*           m_pDirect3D9;
-    D3DPRESENT_PARAMETERS d3dpp;  // œ‘ æ≤Œ ˝
+    D3DPRESENT_PARAMETERS d3dpp;  // ÊòæÁ§∫ÂèÇÊï∞
     IDirect3DDevice9*     m_pDirect3DDevice;
-    IDirect3DSurface9*    m_pDirect3DSurfaceRender;  // ¿Î∆¡±Ì√Ê
-    IDirect3DSurface9*    m_pBackBuffer;             // ∫ÛÃ®ª∫≥Â±Ì√Ê
+    IDirect3DSurface9*    m_pDirect3DSurfaceRender;  // Á¶ªÂ±èË°®Èù¢
+    IDirect3DSurface9*    m_pBackBuffer;             // ÂêéÂè∞ÁºìÂÜ≤Ë°®Èù¢
 
 	RECT m_rtFont;
 };

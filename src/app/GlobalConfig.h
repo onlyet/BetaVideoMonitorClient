@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QObject>
 #include <QVariant>
@@ -24,7 +24,7 @@ public:
     bool audioStreamEnabled();
     bool enableServer();
 
-    // ÊÓÆµÂ¼ÖÆÂ·¾¶
+    // è§†é¢‘å½•åˆ¶è·¯å¾„
     QString recordPath();
     void setRecordPath(const QString &path);
     void enableRecordVideo(bool enabled);
@@ -50,7 +50,7 @@ public:
     void setLogoPixmap(const QPixmap& pix);
     QPixmap logoPixmap();
 
-    // ±³¾°ÑÕÉ«
+    // èƒŒæ™¯é¢œè‰²
     QString themeColorValue();
     QString themeBgColor();
     QString themeFontColor();
@@ -64,7 +64,7 @@ private:
 
     bool isRecordDirExist(QSettings &setting);
 
-    // ¼ì²é´ÅÅÌ¿Õ¼ä
+    // æ£€æŸ¥ç£ç›˜ç©ºé—´
     bool isDiskSpaceEnough();
 
     void setLogo();
@@ -72,16 +72,16 @@ private:
 private:
     bool                  m_reduceAnalyzeTime;
     bool                  m_enableAudioStream;
-    bool                  m_enableServer;          // ÊÇ·ñÓĞ·şÎñÆ÷
-    QString               m_recordPath;            // Â¼ÖÆÊÓÆµ±£´æÂ·¾¶
-    bool                  m_recordEnabled = true;  // ÊÇ·ñÔÊĞíÂ¼ÖÆÊÓÆµ
-    int                   m_gpuSeatCnt;            // Ç°m_gpuSeatCnt¸ö×ùÎ»Ê¹ÓÃGPU½âÂëäÖÈ¾
+    bool                  m_enableServer;          // æ˜¯å¦æœ‰æœåŠ¡å™¨
+    QString               m_recordPath;            // å½•åˆ¶è§†é¢‘ä¿å­˜è·¯å¾„
+    bool                  m_recordEnabled = true;  // æ˜¯å¦å…è®¸å½•åˆ¶è§†é¢‘
+    int                   m_gpuSeatCnt;            // å‰m_gpuSeatCntä¸ªåº§ä½ä½¿ç”¨GPUè§£ç æ¸²æŸ“
     QString               m_logoType;
     QString               m_loginLogo;
     QString               m_seatLogo;
     bool                  m_rtspOverTcp;
-    int                   m_disableStartBtnTime = 0;  // °´Å¥½ûÓÃÊ±¼ä£¨ms£©
-    int                   m_aPageSeatCnt;             // Ä¬ÈÏÒ»Ò³ÏÔÊ¾×ùÎ»Êı
+    int                   m_disableStartBtnTime = 0;  // æŒ‰é’®ç¦ç”¨æ—¶é—´ï¼ˆmsï¼‰
+    int                   m_aPageSeatCnt;             // é»˜è®¤ä¸€é¡µæ˜¾ç¤ºåº§ä½æ•°
     QMap<qint32, QString> m_screenMap;
     QStringList           m_screenList;
     bool                  m_isDefaultTheme = false;

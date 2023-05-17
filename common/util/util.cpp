@@ -415,17 +415,17 @@ QString util::logRtspError(const QString& url)
     QString op;
     if (url.endsWith('1'))
     {
-        op = qstr("存储");
+        op = "存储";
     }
     else if (url.endsWith('2'))
     {
-        op = qstr("播放");
+        op = "播放";
     }
     else
     {
-        op = qstr("打开");
+        op = "打开";
     }
-    return qstr("摄像头%1%2失败").arg(util::logRtspUrl(url)).arg(op);
+    return QString("摄像头%1%2失败").arg(util::logRtspUrl(url)).arg(op);
 }
 
 bool util::isDriveExist(const QString& drive)

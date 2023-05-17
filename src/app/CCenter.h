@@ -1,4 +1,4 @@
-#include "IFlowWidget.h"
+ï»¿#include "IFlowWidget.h"
 #include <QVariant>
 
 class QTcpSocket;
@@ -14,30 +14,30 @@ public:
     explicit CCenter(QWidget *parent = nullptr);
     ~CCenter() Q_DECL_OVERRIDE;
 
-    // ´´½¨×ùÎ»
+    // åˆ›å»ºåº§ä½
     void createSeat();
-    // ³õÊ¼»¯Ò»Ò³µÄ×ùÎ»
+    // åˆå§‹åŒ–ä¸€é¡µçš„åº§ä½
     void init1PageSeat();
     void init1PageSeat(int min, int max);
 
-    // ui³õÊ¼»¯, ´°¿ÚÊÊÅä
+    // uiåˆå§‹åŒ–, çª—å£é€‚é…
     void init();
 
     void loadData();
 
-    // ÔİÍ£/¼ÌĞøËùÓĞ²¥·Å´°¿Ú
+    // æš‚åœ/ç»§ç»­æ‰€æœ‰æ’­æ”¾çª—å£
     void pause(bool isPause);
 
-    // ´ò¿ªËùÓĞ²¥·ÅÆ÷
+    // æ‰“å¼€æ‰€æœ‰æ’­æ”¾å™¨
     void openAll();
 
-    // ¹Ø±ÕËùÓĞ²¥·ÅÆ÷
+    // å…³é—­æ‰€æœ‰æ’­æ”¾å™¨
     void closeAll();
 
-    // ´ò¿ªËùÓĞ²¥·ÅÆ÷²¢¿ªÊ¼Â¼ÖÆ
+    // æ‰“å¼€æ‰€æœ‰æ’­æ”¾å™¨å¹¶å¼€å§‹å½•åˆ¶
     void allPeopleStart();
 
-    // ¹Ø±ÕËùÓĞ²¥·ÅÆ÷²¢Í£Ö¹Â¼ÖÆ
+    // å…³é—­æ‰€æœ‰æ’­æ”¾å™¨å¹¶åœæ­¢å½•åˆ¶
     void allPeopleStop();
 
     void setTransparentLabelVisable(bool visable, int delayMs = 0);
@@ -51,20 +51,20 @@ public slots:
     void currentPageChanged(int page);
 
 protected slots:
-    // ´óÆÁ²é¿´
+    // å¤§å±æŸ¥çœ‹
     void onFocus(QVariantMap data);
 
 signals:
-    // ´ò¿ª´óÆÁ
+    // æ‰“å¼€å¤§å±
     void focus(QVariantMap data);
 
 private:
-    int                  m_scrollStep;  // ´¹Ö±¹ö¶¯²½½ø
+    int                  m_scrollStep;  // å‚ç›´æ»šåŠ¨æ­¥è¿›
     SmallSeat*           m_smallSeat = nullptr;
-    int                  m_maxSeatNum;      // ×ùÎ»×ÜÊı
-    int                  m_1PageSeatNum;    // Ò»Ò³Õ¹Ê¾µÄ×ùÎ»Êı
-    int                  m_row;             // Ò»Ò³µÄĞĞÊı
-    int                  m_column{4};       // Ò»Ò³µÄÁĞÊı
-    QList<CSmallScreen*> m_seatWidgetList;  // 28¸öCSeat
+    int                  m_maxSeatNum;      // åº§ä½æ€»æ•°
+    int                  m_1PageSeatNum;    // ä¸€é¡µå±•ç¤ºçš„åº§ä½æ•°
+    int                  m_row;             // ä¸€é¡µçš„è¡Œæ•°
+    int                  m_column{4};       // ä¸€é¡µçš„åˆ—æ•°
+    QList<CSmallScreen*> m_seatWidgetList;  // 28ä¸ªCSeat
 };
 

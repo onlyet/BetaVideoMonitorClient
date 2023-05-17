@@ -1,4 +1,4 @@
-#include "CMessageBox.h"
+﻿#include "CMessageBox.h"
 
 #include "CConfirmBox.h"
 #include "CInfoBox.h"

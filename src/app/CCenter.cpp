@@ -1,4 +1,4 @@
-#include "CCenter.h"
+ï»¿#include "CCenter.h"
 #include "CSmallScreen.h"
 #include <util.h>
 #include <GlobalConfig.h>
@@ -131,7 +131,7 @@ void CCenter::init()
     spaceInfo.insert("vMargin", vMargin);
     spaceInfo.insert("aPageSeatNum", m_1PageSeatNum);
 
-    // ÏÔÊ¾Ò»Ò³µÄÊıÁ¿
+    // æ˜¾ç¤ºä¸€é¡µçš„æ•°é‡
     int itemCnt = count();
     for(int i = 0; i < itemCnt; ++i)
     {
@@ -162,7 +162,7 @@ void CCenter::loadData()
             QString rightUrl = "";
             seat->setLeftUrl(leftUrl);
             seat->setRightUrl(rightUrl);
-            qDebug() << qstr("seat: %1, name: %2, %3, %4")
+            qDebug() << QString("seat: %1, name: %2, %3, %4")
                 .arg(seat->seat()).arg(seat->name()).arg(util::logRtspUrl(leftUrl)).arg(util::logRtspUrl(rightUrl));
         }
     }
@@ -206,7 +206,7 @@ void CCenter::closeAll()
 }
 
 void CCenter::allPeopleStart() {
-    qInfo() << qstr("ËùÓĞ×ùÎ»¿ªÊ¼²¥·ÅºÍÂ¼ÖÆ");
+    qInfo() << "æ‰€æœ‰åº§ä½å¼€å§‹æ’­æ”¾å’Œå½•åˆ¶";
     QTime t = QTime::currentTime();
     int   n = m_maxSeatNum;
     for (int i = 0; i < n; ++i) {
@@ -219,7 +219,7 @@ void CCenter::allPeopleStart() {
 }
 
 void CCenter::allPeopleStop() {
-    qInfo() << qstr("ËùÓĞ×ùÎ»½áÊø²¥·ÅºÍÂ¼ÖÆ");
+    qInfo() << "æ‰€æœ‰åº§ä½ç»“æŸæ’­æ”¾å’Œå½•åˆ¶";
     int n = m_maxSeatNum;
     for (int i = 0; i < n; ++i) {
         CSmallScreen* tmpSeat = m_seatWidgetList[i];
