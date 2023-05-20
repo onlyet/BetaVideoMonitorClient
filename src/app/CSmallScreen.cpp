@@ -30,7 +30,7 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
 
     initUi();
 
-#if 0
+#if 1
     ui->camera_left->setWaitPic(CONFIG.logoPixmap());
     ui->camera_right->setWaitPic(CONFIG.logoPixmap());
 #endif
