@@ -222,7 +222,7 @@ static void dxva2_release_buffer(void* opaque, uint8_t* data) {
     }
     IDirect3DSurface9_Release(w->surface);
     // IDirectXVideoDecoder_Release(w->decoder);
-    w->decoder->Release();
+    //w->decoder->Release();
     av_free(w);
 }
 
@@ -263,7 +263,7 @@ static int dxva2_get_buffer(AVCodecContext* s, AVFrame* frame, int flags) {
     IDirect3DSurface9_AddRef(w->surface);
     w->decoder = ctx->decoder;
     // IDirectXVideoDecoder_AddRef(w->decoder);
-    w->decoder->AddRef();
+    //w->decoder->AddRef();
 
     ctx->surface_infos[i].used = 1;
     ctx->surface_infos[i].age  = ctx->surface_age++;
@@ -317,7 +317,7 @@ static int dxva2_alloc(AVCodecContext* s, HWND hwnd) {
     ctx->deviceHandle = INVALID_HANDLE_VALUE;
 
     ist->hwaccel_ctx           = ctx;
-    //ist->hwaccel_uninit        = dxva2_uninit;
+    ist->hwaccel_uninit        = dxva2_uninit;
     ist->hwaccel_get_buffer    = dxva2_get_buffer;
     //ist->hwaccel_retrieve_data = dxva2_retrieve_data;
 

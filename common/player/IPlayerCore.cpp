@@ -97,6 +97,9 @@ void IPlayerCore::init()
     if (m_vDecodeCtx)
     {
         m_vDecodeCtx->opaque = nullptr;
+        m_vDecodeCtx->get_buffer2 = nullptr;
+        m_vDecodeCtx->thread_safe_callbacks = 0;
+        m_vDecodeCtx->get_format            = nullptr;
         avcodec_free_context(&m_vDecodeCtx);
         m_vDecodeCtx = nullptr;
     }
@@ -432,8 +435,13 @@ void IPlayerCore::doClose()
         //{
         //    dxva2_uninit(m_vDecodeCtx);
         //}
-        if (m_inputStream)
-        {
+
+        if (m_inputStream) {
+            if (m_inputStream->hwaccel_uninit && m_vDecodeCtx) {
+                m_inputStream->hwaccel_uninit(m_vDecodeCtx);
+            }
+
+            m_inputStream->hwaccel_get_buffer = nullptr;
             delete m_inputStream;
             m_inputStream = nullptr;
         }

@@ -36,7 +36,8 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
     static int s_num = 0;
     QString tmpLeftUrl = util::getSetting("Url/leftUrl", "").toString();
     QString tmpRightUrl = util::getSetting("Url/rightUrl", "").toString();
-    if (0 == s_num) {
+    if (0 == s_num) 
+    {
         if (!tmpLeftUrl.isEmpty()) {
             setLeftUrl(tmpLeftUrl);
         }
