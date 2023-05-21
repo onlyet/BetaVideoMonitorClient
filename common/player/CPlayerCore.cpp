@@ -1,10 +1,10 @@
-#include "CPlayerCore.h"
+ï»¿#include "CPlayerCore.h"
 #include <QCoreApplication>
 #include <QTimer>
 #include <QDebug>
 #include <util.h>
 
-/*! @def ÑÓÊ±»ØÊÕ¼ÆÊı */
+/*! @def å»¶æ—¶å›æ”¶è®¡æ•° */
 #define DESTROY_COUNTER 0
 
 CPlayerCore::CPlayerCore(const QString &url)
@@ -16,7 +16,7 @@ CPlayerCore::CPlayerCore(const QString &url)
     connect(this, &IPlayerCore::resolutionChanged, this, &CPlayerCore::playResolutionChanged);
 }
 
-// ÔÚÖ÷Ïß³ÌÎö¹¹
+// åœ¨ä¸»çº¿ç¨‹ææ„
 CPlayerCore::~CPlayerCore()
 {
     //qDebug() << "~CPlayerCore 1" << m_url << m_outputUrl;
@@ -39,13 +39,13 @@ void CPlayerCore::unuse()
 
 CPlayerCore *CPlayerCore::instance(const QString &url)
 {
-    // ÔÚÖ÷Ïß³Ì´´½¨
+    // åœ¨ä¸»çº¿ç¨‹åˆ›å»º
     return CPlayerCoreManager::instance()->getCPlayerCore(url);
 }
 
 void CPlayerCore::reopen()
 {
-    qInfo() << qstr("ÖØĞÂ´ò¿ª%1").arg(util::logRtspUrl(m_url));
+    qInfo() << QString("é‡æ–°æ‰“å¼€%1").arg(util::logRtspUrl(m_url));
     open(m_url);
 }
 
@@ -117,7 +117,7 @@ void CPlayerCore::onTimerCounter()
     ++m_counter;
     if (m_counter >= DESTROY_COUNTER)
     {
-        // ±ÜÃâÔÙ´Î´¥·¢±¾º¯Êı
+        // é¿å…å†æ¬¡è§¦å‘æœ¬å‡½æ•°
         m_timer->stop();
         doClose();
         m_counter = 0;

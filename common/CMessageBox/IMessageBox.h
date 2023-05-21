@@ -1,9 +1,9 @@
-#ifndef IMESSAGEBOX_H
+ï»¿#ifndef IMESSAGEBOX_H
 #define IMESSAGEBOX_H
 
 #include <QDialog>
 
-/*! @brief ÏûÏ¢µ¯´° */
+/*! @brief æ¶ˆæ¯å¼¹çª— */
 class IMessageBox : public QDialog
 {
 public:
@@ -11,16 +11,16 @@ public:
     ~IMessageBox() Q_DECL_OVERRIDE;
 
 protected:
-    /*! @brief Êó±êÊÂ¼ş, ÓÃÀ´ÒÆ¶¯´°¿Ú */
+    /*! @brief é¼ æ ‡äº‹ä»¶, ç”¨æ¥ç§»åŠ¨çª—å£ */
     void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-    /*! @brief Êó±êÊÂ¼ş, ÓÃÀ´¿ªÊ¼ÒÆ¶¯´°¿Ú */
+    /*! @brief é¼ æ ‡äº‹ä»¶, ç”¨æ¥å¼€å§‹ç§»åŠ¨çª—å£ */
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-    /*! @brief Êó±êÊÂ¼ş, ÓÃÀ´½áÊøÒÆ¶¯´°¿Ú */
+    /*! @brief é¼ æ ‡äº‹ä»¶, ç”¨æ¥ç»“æŸç§»åŠ¨çª—å£ */
     void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:
-    bool m_isMousePressed;   ///< ÊÇ·ñ°´ÏÂÊó±ê, ÓÃÀ´ÒÆ¶¯´°¿Ú
-    QPoint m_mousePoint;    ///< ¼ÇÂ¼Êó±êÎ»ÖÃ, ÓÃÀ´ÒÆ¶¯´°¿Ú
+    bool m_isMousePressed;   ///< æ˜¯å¦æŒ‰ä¸‹é¼ æ ‡, ç”¨æ¥ç§»åŠ¨çª—å£
+    QPoint m_mousePoint;    ///< è®°å½•é¼ æ ‡ä½ç½®, ç”¨æ¥ç§»åŠ¨çª—å£
 };
 
 #endif // IMESSAGEBOX_H

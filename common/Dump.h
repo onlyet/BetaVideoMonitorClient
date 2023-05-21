@@ -1,4 +1,4 @@
-#ifndef DUMP_H
+ï»¿#ifndef DUMP_H
 #define DUMP_H
 
 #include <log.h>
@@ -18,9 +18,9 @@
 int GenerateMiniDump(PEXCEPTION_POINTERS pExceptionPointers)
 {
     GSignalSlot.notifyCrash();
-    qInfo().noquote() << QStringLiteral("¿Í»§¶Ë±ÀÀ£ÁË");
+    qInfo().noquote() << QStringLiteral("å®¢æˆ·ç«¯å´©æºƒäº†");
 
-    // ¶¨Òåº¯ÊıÖ¸Õë
+    // å®šä¹‰å‡½æ•°æŒ‡é’ˆ
     typedef BOOL(WINAPI* MiniDumpWriteDumpT)(
         HANDLE,
         DWORD,
@@ -30,7 +30,7 @@ int GenerateMiniDump(PEXCEPTION_POINTERS pExceptionPointers)
         PMINIDUMP_USER_STREAM_INFORMATION,
         PMINIDUMP_CALLBACK_INFORMATION
         );
-    // ´Ó "DbgHelp.dll" ¿âÖĞ»ñÈ¡ "MiniDumpWriteDump" º¯Êı
+    // ä» "DbgHelp.dll" åº“ä¸­è·å– "MiniDumpWriteDump" å‡½æ•°
     MiniDumpWriteDumpT pfnMiniDumpWriteDump = NULL;
     HMODULE hDbgHelp = LoadLibrary(_T("DbgHelp.dll"));
     if (NULL == hDbgHelp)
@@ -44,7 +44,7 @@ int GenerateMiniDump(PEXCEPTION_POINTERS pExceptionPointers)
         FreeLibrary(hDbgHelp);
         return EXCEPTION_CONTINUE_EXECUTION;
     }
-    // ´´½¨ dmp ÎÄ¼ş¼ş
+    // åˆ›å»º dmp æ–‡ä»¶ä»¶
     TCHAR szFileName[MAX_PATH] = { 0 };
     LPWSTR szVersion = const_cast<LPWSTR>(L"DumpFile");
     SYSTEMTIME stLocalTime;
@@ -59,28 +59,28 @@ int GenerateMiniDump(PEXCEPTION_POINTERS pExceptionPointers)
         FreeLibrary(hDbgHelp);
         return EXCEPTION_CONTINUE_EXECUTION;
     }
-    // Ğ´Èë dmp ÎÄ¼ş
+    // å†™å…¥ dmp æ–‡ä»¶
     MINIDUMP_EXCEPTION_INFORMATION expParam;
     expParam.ThreadId = GetCurrentThreadId();
     expParam.ExceptionPointers = pExceptionPointers;
     expParam.ClientPointers = FALSE;
     pfnMiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
         hDumpFile, MiniDumpWithDataSegs, (pExceptionPointers ? &expParam : NULL), NULL, NULL);
-    // ÊÍ·ÅÎÄ¼ş
+    // é‡Šæ”¾æ–‡ä»¶
     CloseHandle(hDumpFile);
     FreeLibrary(hDbgHelp);
 
 #ifdef _WIN32
-    //MessageBox(NULL, TEXT("¿Í»§¶Ë±ÀÀ£ÁË£¬ÇëÁªÏµ¼¼ÊõÖ§³ÖÈËÔ±"), TEXT("±ÀÀ£ÌáÊ¾"), 0);
+    //MessageBox(NULL, TEXT("å®¢æˆ·ç«¯å´©æºƒäº†ï¼Œè¯·è”ç³»æŠ€æœ¯æ”¯æŒäººå‘˜"), TEXT("å´©æºƒæç¤º"), 0);
 #endif // _WIN32
-    Toast::showMessage(qstr("¿Í»§¶Ë±ÀÀ£ÁË£¬ÇëÁªÏµ¼¼ÊõÖ§³ÖÈËÔ±"));
+    Toast::showMessage("å®¢æˆ·ç«¯å´©æºƒäº†ï¼Œè¯·è”ç³»æŠ€æœ¯æ”¯æŒäººå‘˜");
 
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
 LONG WINAPI ExceptionFilter(LPEXCEPTION_POINTERS lpExceptionInfo)
 {
-    // ÕâÀï×öÒ»Ğ©Òì³£µÄ¹ıÂË»òÌáÊ¾
+    // è¿™é‡Œåšä¸€äº›å¼‚å¸¸çš„è¿‡æ»¤æˆ–æç¤º
     if (IsDebuggerPresent())
     {
         return EXCEPTION_CONTINUE_SEARCH;
@@ -88,7 +88,7 @@ LONG WINAPI ExceptionFilter(LPEXCEPTION_POINTERS lpExceptionInfo)
     return GenerateMiniDump(lpExceptionInfo);
 }
 
-// ´Ëº¯ÊıÒ»µ©³É¹¦µ÷ÓÃ£¬Ö®ºó¶Ô SetUnhandledExceptionFilter µÄµ÷ÓÃ½«ÎŞĞ§
+// æ­¤å‡½æ•°ä¸€æ—¦æˆåŠŸè°ƒç”¨ï¼Œä¹‹åå¯¹ SetUnhandledExceptionFilter çš„è°ƒç”¨å°†æ— æ•ˆ
 void DisableSetUnhandledExceptionFilter()
 {
     void* addr = (void*)GetProcAddress(LoadLibrary(L"kernel32.dll"),

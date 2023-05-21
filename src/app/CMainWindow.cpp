@@ -1,4 +1,4 @@
-#include "CMainWindow.h"
+ï»¿#include "CMainWindow.h"
 #include "ui_CMainWindow.h"
 #include "CMessageBox.h"
 #include "util.h"
@@ -48,7 +48,7 @@ CMainWindow::CMainWindow(QWidget *parent)
     
     initUi();
 
-    //¸üĞÂÊ±¼ä¶¨Ê±Æ÷
+    //æ›´æ–°æ—¶é—´å®šæ—¶å™¨
     m_updateTimeTimer = new QTimer(this);
     connect(m_updateTimeTimer, &QTimer::timeout, this, &CMainWindow::onTimerUpdateServerTime);
     if (!CONFIG.enableServer())
@@ -59,7 +59,7 @@ CMainWindow::CMainWindow(QWidget *parent)
     QTimer::singleShot(300, [this]() { 
         if (!CONFIG.recordVideoEnabled())
         {
-            CMessageBox::info(qstr("Â¼ÖÆÊÓÆµÄ¿Â¼ËùÔÚ´ÅÅÌÕ¼ÓÃ¿Õ¼ä³¬¹ıÁË80%\n²»ÔÊĞíÂ¼ÖÆÊÓÆµ£¡"));
+            CMessageBox::info("å½•åˆ¶è§†é¢‘ç›®å½•æ‰€åœ¨ç£ç›˜å ç”¨ç©ºé—´è¶…è¿‡äº†80%\nä¸å…è®¸å½•åˆ¶è§†é¢‘ï¼");
         }
     });
 
@@ -80,7 +80,7 @@ CMainWindow::~CMainWindow()
 void CMainWindow::initQAction()
 {
     m_recordDirAct = new QAction(this);
-    m_recordDirAct->setText(qstr("Â¼ÖÆÊÓÆµ"));
+    m_recordDirAct->setText("å½•åˆ¶è§†é¢‘");
     connect(m_recordDirAct, &QAction::triggered, []() {
         QString path = CONFIG.recordPath();
         QDir dir(path);
@@ -88,7 +88,7 @@ void CMainWindow::initQAction()
         {
             if (!dir.mkpath(path))
             {
-                QString msg = qstr("´´½¨Ä¿Â¼%1Ê§°Ü").arg(path);
+                QString msg = QString("åˆ›å»ºç›®å½•%1å¤±è´¥").arg(path);
                 qInfo() << msg;
                 CMessageBox::info(msg);
                 return;
@@ -97,7 +97,7 @@ void CMainWindow::initQAction()
         QDesktopServices::openUrl(QUrl::fromLocalFile(path));
     });
     m_logAct = new QAction(this);
-    m_logAct->setText(qstr("ÈÕÖ¾"));
+    m_logAct->setText("æ—¥å¿—");
     connect(m_logAct, &QAction::triggered, []() {
         QDesktopServices::openUrl(QUrl::fromLocalFile(util::logDir()));
     });
@@ -198,6 +198,10 @@ void CMainWindow::initUi()
 
     ui->page_1->openAll();
 
+#if 0
+    ui->logoLabel->hide();
+    ui->label_info->hide();
+#endif
 }
 
 void CMainWindow::updateUi()
@@ -264,7 +268,7 @@ void CMainWindow::showEvent(QShowEvent *event)
     default: break;
     }
 
-    // ±ÜÃâ·¢³öcurrentIndexChangedĞÅºÅ
+    // é¿å…å‘å‡ºcurrentIndexChangedä¿¡å·
     ui->cbox_camera->blockSignals(true);
     ui->cbox_camera->setCurrentIndex(index);
     ui->cbox_camera->blockSignals(false);
@@ -285,9 +289,9 @@ void CMainWindow::paintEvent(QPaintEvent *ev)
 {
     if (m_useShade)
     {
-        //´´½¨»æ»­¶ÔÏó
+        //åˆ›å»ºç»˜ç”»å¯¹è±¡
         QPainter painter(this);
-        //Îª´°¿ÚÌí¼ÓÒ»¸ö°ëÍ¸Ã÷µÄ¾ØĞÎÕÚÕÖ
+        //ä¸ºçª—å£æ·»åŠ ä¸€ä¸ªåŠé€æ˜çš„çŸ©å½¢é®ç½©
         painter.fillRect(this->rect(), QColor(0, 0, 0, 100));
 
         update();
@@ -302,10 +306,10 @@ void CMainWindow::refreshBtnCmd()
 {
     switch (m_recordStarted) {
     case 0:
-        ui->btn_cmd->setText(qstr("¿ªÊ¼Â¼ÖÆ"));
+        ui->btn_cmd->setText("å¼€å§‹å½•åˆ¶");
         break;
     case 1:
-        ui->btn_cmd->setText(qstr("½áÊøÂ¼ÖÆ"));
+        ui->btn_cmd->setText("ç»“æŸå½•åˆ¶");
         break;
     }
 }
@@ -381,11 +385,11 @@ void CMainWindow::setUiBlank()
 void CMainWindow::onBtnClose()
 {
     if (m_concatProcessNum > 0) {
-        CMessageBox::info(qstr("ÕıÔÚÉú³ÉÂ¼ÖÆÊÓÆµ£¡\nÇëÉÔºòÔÙ¹Ø±Õ"));
+        CMessageBox::info("æ­£åœ¨ç”Ÿæˆå½•åˆ¶è§†é¢‘ï¼\nè¯·ç¨å€™å†å…³é—­");
         return;
     }
 
-    if (CMessageBox::confirm(qstr("ÊÇ·ñÈ·ÈÏÍË³ö£¿")))
+    if (CMessageBox::confirm("æ˜¯å¦ç¡®è®¤é€€å‡ºï¼Ÿ"))
     {
         close();
     }
@@ -396,8 +400,8 @@ void CMainWindow::onBtnCmd()
     //int status = 0;
     QString text;
     switch (m_recordStarted) {
-    case 0: text = qstr("ÊÇ·ñÈ·ÈÏ¿ªÊ¼Â¼ÖÆ£¿"); break;
-    case 1:  text = qstr("ÊÇ·ñÈ·ÈÏ½áÊøÂ¼ÖÆ£¿"); break;
+    case 0: text = "æ˜¯å¦ç¡®è®¤å¼€å§‹å½•åˆ¶ï¼Ÿ"; break;
+    case 1:  text = "æ˜¯å¦ç¡®è®¤ç»“æŸå½•åˆ¶ï¼Ÿ"; break;
     }
 
     if (!CMessageBox::confirm(text)) return;
@@ -472,18 +476,18 @@ void CMainWindow::onCBoxCamerasCurrentIndexChanged(int idx)
 
 void CMainWindow::openAllVideos()
 {
-    if (CMessageBox::confirm(qstr("ÊÇ·ñ´ò¿ªËùÓĞÉãÏñÍ·£¿")))
+    if (CMessageBox::confirm("æ˜¯å¦æ‰“å¼€æ‰€æœ‰æ‘„åƒå¤´ï¼Ÿ"))
     {
-        qInfo() << qstr("ÊÖ¶¯´ò¿ªËùÓĞÉãÏñÍ·");
+        qInfo() << "æ‰‹åŠ¨æ‰“å¼€æ‰€æœ‰æ‘„åƒå¤´";
         ui->page_1->openAll();
     }
 }
 
 void CMainWindow::closeAllVideos()
 {
-    if (CMessageBox::confirm(qstr("ÊÇ·ñ¹Ø±ÕËùÓĞÉãÏñÍ·£¿")))
+    if (CMessageBox::confirm("æ˜¯å¦å…³é—­æ‰€æœ‰æ‘„åƒå¤´ï¼Ÿ"))
     {
-        qInfo() << qstr("ÊÖ¶¯¹Ø±ÕËùÓĞÉãÏñÍ·");
+        qInfo() << "æ‰‹åŠ¨å…³é—­æ‰€æœ‰æ‘„åƒå¤´";
         ui->page_1->closeAll();
     }
 }
@@ -553,12 +557,12 @@ void CMainWindow::onFocus(QVariantMap data)
 
 void CMainWindow::onBack()
 {
-    qInfo() << qstr("ÍË³öÈ«ÆÁ");
+    qInfo() << "é€€å‡ºå…¨å±";
 
-    // ÖØĞÂ²¥·ÅÊÓÆµ
+    // é‡æ–°æ’­æ”¾è§†é¢‘
     ui->page_1->pause(false);
 
-    // ÏÈÇĞÒ³ÃæÔÙ»¹Ô­£¬·ÀÖ¹ÔÙ´Î´¥·¢µ±Ç°Ò³ÃæµÄshowEvent
+    // å…ˆåˆ‡é¡µé¢å†è¿˜åŸï¼Œé˜²æ­¢å†æ¬¡è§¦å‘å½“å‰é¡µé¢çš„showEvent
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->setWindowFlags(Qt::Widget);
     ui->stackedWidget->showNormal();
@@ -592,8 +596,8 @@ void CMainWindow::onIpcParamsError(const QString &msg)
 
 void CMainWindow::onCrashed()
 {
-    qCritical() << qstr("¼´½«±ÀÀ££¡");
-    // ±ÀÀ£Ê±½áÊøÂ¼ÖÆ
+    qCritical() << "å³å°†å´©æºƒï¼";
+    // å´©æºƒæ—¶ç»“æŸå½•åˆ¶
     ui->page_1->allPeopleStop();
 }
 

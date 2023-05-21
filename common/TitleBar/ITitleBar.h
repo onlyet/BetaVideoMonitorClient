@@ -1,9 +1,9 @@
-#ifndef ITITLEBAR_H
+ï»¿#ifndef ITITLEBAR_H
 #define ITITLEBAR_H
 
 #include <QFrame>
 
-/*! @brief ¿ÉÍÏ¶¯±êÌâÀ¸ */
+/*! @brief å¯æ‹–åŠ¨æ ‡é¢˜æ  */
 class ITitleBar : public QFrame
 {
     Q_OBJECT
@@ -11,21 +11,21 @@ public:
     explicit ITitleBar(QWidget* parent = Q_NULLPTR);
     ~ITitleBar() override;
 
-    /*! @brief ÉèÖÃÍÏ¶¯Ä¿±ê´°¿Ú */
+    /*! @brief è®¾ç½®æ‹–åŠ¨ç›®æ ‡çª—å£ */
     void setWidget(QWidget* wid);
 
 protected:
-    /*! @brief Êó±êÊÂ¼ş, ÓÃÀ´ÒÆ¶¯´°¿Ú */
+    /*! @brief é¼ æ ‡äº‹ä»¶, ç”¨æ¥ç§»åŠ¨çª—å£ */
     void mouseMoveEvent(QMouseEvent *event) override;
-    /*! @brief Êó±êÊÂ¼ş, ÓÃÀ´¿ªÊ¼ÒÆ¶¯´°¿Ú */
+    /*! @brief é¼ æ ‡äº‹ä»¶, ç”¨æ¥å¼€å§‹ç§»åŠ¨çª—å£ */
     void mousePressEvent(QMouseEvent *event) override;
-    /*! @brief Êó±êÊÂ¼ş, ÓÃÀ´½áÊøÒÆ¶¯´°¿Ú */
+    /*! @brief é¼ æ ‡äº‹ä»¶, ç”¨æ¥ç»“æŸç§»åŠ¨çª—å£ */
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
-    QWidget* m_pMoveWidget; ///< ÒÆ¶¯Ä¿±ê´°¿Ú
-    bool m_isMousePressed;  ///< ÊÇ·ñ°´ÏÂÊó±ê, ÓÃÀ´ÒÆ¶¯´°¿Ú
-    QPoint m_mousePoint;    ///< ¼ÇÂ¼Êó±êÎ»ÖÃ, ÓÃÀ´ÒÆ¶¯´°¿Ú
+    QWidget* m_pMoveWidget; ///< ç§»åŠ¨ç›®æ ‡çª—å£
+    bool m_isMousePressed;  ///< æ˜¯å¦æŒ‰ä¸‹é¼ æ ‡, ç”¨æ¥ç§»åŠ¨çª—å£
+    QPoint m_mousePoint;    ///< è®°å½•é¼ æ ‡ä½ç½®, ç”¨æ¥ç§»åŠ¨çª—å£
 };
 
 #endif // ITITLEBAR_H

@@ -1,4 +1,4 @@
-#include "ITitleBar.h"
+﻿#include "ITitleBar.h"
 
 #include <QMouseEvent>
 

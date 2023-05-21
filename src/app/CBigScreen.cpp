@@ -1,4 +1,4 @@
-#include "CBigScreen.h"
+ï»¿#include "CBigScreen.h"
 #include "ui_CBigScreen.h"
 #include "util.h"
 #include <GlobalConfig.h>
@@ -31,7 +31,7 @@ void CBigScreen::init(QVariantMap data)
 {
     m_seat      = data["seat"].toInt();
     ui->label_seat->setText(QStringLiteral("%1.").arg(m_seat));
-    setName("Ëû¹ı½­");
+    setName("ä»–è¿‡æ±Ÿ");
 
     QString leftUrl;
     QString rightUrl;
@@ -74,7 +74,7 @@ void CBigScreen::setName(const QString &name)
     }
     else
     {
-        ui->label_name->setText(QStringLiteral("Ëû¹ı½­"));
+        ui->label_name->setText(QStringLiteral("ä»–è¿‡æ±Ÿ"));
     }
 }
 
@@ -97,10 +97,10 @@ void CBigScreen::contextMenuEvent(QContextMenuEvent *event)
     menu.exec(event->globalPos());
 }
 
-// ´ò¿ªÒ»´Î´óÆÁ´¥·¢ÁËÁ½´ÎshowEvent
+// æ‰“å¼€ä¸€æ¬¡å¤§å±è§¦å‘äº†ä¸¤æ¬¡showEvent
 void CBigScreen::showEvent(QShowEvent *)
 {
-    setFocus();         // ÉèÖÃ½¹µã£¬·ñÔòÎŞ·¨´¥·¢°´¼üÊÂ¼ş
+    setFocus();         // è®¾ç½®ç„¦ç‚¹ï¼Œå¦åˆ™æ— æ³•è§¦å‘æŒ‰é”®äº‹ä»¶
 }
 
 void CBigScreen::keyReleaseEvent(QKeyEvent *event)

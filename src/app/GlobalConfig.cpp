@@ -1,4 +1,4 @@
-#include "GlobalConfig.h"
+Ôªø#include "GlobalConfig.h"
 #include <util.h>
 #include <CMessageBox.h>
 
@@ -13,10 +13,10 @@
 #include <QDir>
 #include <QStorageInfo>
 
-#define Screen24    qstr("24»Àª≠√Ê")
-#define Screen12    qstr("12»Àª≠√Ê")
-#define Screen8     qstr("8»Àª≠√Ê")
-#define Screen28    qstr("28»Àª≠√Ê")
+#define Screen24    "24‰∫∫ÁîªÈù¢"
+#define Screen12    "12‰∫∫ÁîªÈù¢"
+#define Screen8     "8‰∫∫ÁîªÈù¢"
+#define Screen28    "28‰∫∫ÁîªÈù¢"
 
 GlobalConfig::GlobalConfig(QObject *parent)
 	: QObject(parent)
@@ -47,10 +47,10 @@ bool GlobalConfig::isRecordDirExist(QSettings &setting)
     if (m_recordPath.isEmpty())
     {
         m_recordPath = "D:/record/taguojiang";
-        qInfo() << QStringLiteral("¬º÷∆ƒø¬ºŒ™ø’£¨¥¥Ω®ƒ¨»œƒø¬º: %1").arg(m_recordPath);
+        qInfo() << QStringLiteral("ÂΩïÂà∂ÁõÆÂΩï‰∏∫Á©∫ÔºåÂàõÂª∫ÈªòËÆ§ÁõÆÂΩï: %1").arg(m_recordPath);
         if (!dir.mkpath(m_recordPath))
         {
-            QString msg = QStringLiteral("¥¥Ω®ƒ¨»œ¬º÷∆ƒø¬º%1 ß∞‹").arg(m_recordPath);
+            QString msg = QStringLiteral("ÂàõÂª∫ÈªòËÆ§ÂΩïÂà∂ÁõÆÂΩï%1Â§±Ë¥•").arg(m_recordPath);
             qInfo() << msg;
             CMessageBox::info(msg);
             return false;
@@ -72,10 +72,10 @@ bool GlobalConfig::isRecordDirExist(QSettings &setting)
             }
         }
 
-        qInfo() << QStringLiteral("¥¥Ω®ƒø¬º£∫%1").arg(m_recordPath);
+        qInfo() << QStringLiteral("ÂàõÂª∫ÁõÆÂΩïÔºö%1").arg(m_recordPath);
         if (!dir.mkpath(m_recordPath))
         {
-            QString msg = QStringLiteral("¥¥Ω®¬º÷∆ƒø¬º%1 ß∞‹").arg(m_recordPath);
+            QString msg = QStringLiteral("ÂàõÂª∫ÂΩïÂà∂ÁõÆÂΩï%1Â§±Ë¥•").arg(m_recordPath);
             qInfo() << msg;
             CMessageBox::info(msg);
             return false;
@@ -106,7 +106,7 @@ bool GlobalConfig::init()
 		if (!file.open(QIODevice::ReadWrite))
 		{
 			qWarning() << QString("Can not open file: %1").arg(path);
-            QString msg = QStringLiteral("Œﬁ∑®¥Úø™≈‰÷√Œƒº˛£¨≥Ã–ÚÕÀ≥ˆ");
+            QString msg = QStringLiteral("Êó†Ê≥ïÊâìÂºÄÈÖçÁΩÆÊñá‰ª∂ÔºåÁ®ãÂ∫èÈÄÄÂá∫");
             qWarning() << msg;
             CMessageBox::info(msg);
 			return false;
@@ -127,15 +127,15 @@ bool GlobalConfig::init()
     m_disableStartBtnTime = setting.value(DisableStartBtnTime).toInt();
     m_aPageSeatCnt = setting.value(APageSeatCnt, 24).toInt();
 
-    // FIXME: ”–bug
+    // FIXME: Êúâbug
     if (0 && util::haveNvidiaGpu())
     {
-        qInfo() << qstr("«∞%1∏ˆ◊˘Œª”√GPUΩ‚¬Î‰÷»æ").arg(m_gpuSeatCnt);
-        qInfo() << qstr("¥Û∆¡ π”√GPUΩ‚¬Î‰÷»æ");
+        qInfo() << QString("Ââç%1‰∏™Â∫ß‰ΩçÁî®GPUËß£Á†ÅÊ∏≤Êüì").arg(m_gpuSeatCnt);
+        qInfo() << "Â§ßÂ±è‰ΩøÁî®GPUËß£Á†ÅÊ∏≤Êüì";
     }
     else
     {
-        qInfo() << qstr("¥Û∆¡ π”√CPUΩ‚¬Î‰÷»æ");
+        qInfo() << "Â§ßÂ±è‰ΩøÁî®CPUËß£Á†ÅÊ∏≤Êüì";
     }
 
     if (!isRecordDirExist(setting) || !isDiskSpaceEnough())
@@ -200,12 +200,12 @@ bool GlobalConfig::isDiskSpaceEnough()
     float available = (float)si.bytesAvailable() / 1024 / 1024 / 1024;
     float total = (float)si.bytesTotal() / 1024 / 1024 / 1024;
     float percent = available / total;
-    qInfo() << QStringLiteral("¬º÷∆ ”∆µƒø¬º%1À˘‘⁄¥≈≈Ãµƒø…”√ø’º‰Œ™%2%").arg(m_recordPath).arg((int)(percent * 100));
+    qInfo() << QStringLiteral("ÂΩïÂà∂ËßÜÈ¢ëÁõÆÂΩï%1ÊâÄÂú®Á£ÅÁõòÁöÑÂèØÁî®Á©∫Èó¥‰∏∫%2%").arg(m_recordPath).arg((int)(percent * 100));
 #if 0
     if (percent <= 0.1)
     {
         m_recordEnabled = false;
-        CMessageBox::info(qstr("%1≈Ãø’º‰≤ª◊„!\n«Â¿Ì¥≈≈ÃªÚ–ﬁ∏ƒ¬º÷∆ ”∆µ±£¥Ê¬∑æ∂").arg(m_recordPath.left(1)));
+        CMessageBox::info(QString("%1ÁõòÁ©∫Èó¥‰∏çË∂≥!\nÊ∏ÖÁêÜÁ£ÅÁõòÊàñ‰øÆÊîπÂΩïÂà∂ËßÜÈ¢ë‰øùÂ≠òË∑ØÂæÑ").arg(m_recordPath.left(1)));
         return false;
     }
 #endif

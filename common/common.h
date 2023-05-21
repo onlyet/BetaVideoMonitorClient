@@ -1,7 +1,7 @@
-#ifndef COMMON_H
+ï»¿#ifndef COMMON_H
 #define COMMON_H
 
-// ±£´æÂ·¾¶
+// ä¿å­˜è·¯å¾„
 #define LeftRecordPath(rootPath, middlePath, userId)        QString("%1/%2/%3_left.ts").arg(rootPath).arg(middlePath).arg(userId)
 #define RightRecordPath(rootPath, middlePath, userId)       QString("%1/%2/%3_right.ts").arg(rootPath).arg(middlePath).arg(userId)
 

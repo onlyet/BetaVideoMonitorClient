@@ -1,4 +1,4 @@
-#include <QString>
+ï»¿#include <QString>
 
 extern "C"
 {
@@ -15,16 +15,16 @@ namespace FFmpegHelper
     void init_ffmpeg();
     QString parseErr(int errNum);
 
-    /*! @brief ½«ffmpegµÄAVRational×ª»¯Îª¿ÉÓÃµÄfps */
+    /*! @brief å°†ffmpegçš„AVRationalè½¬åŒ–ä¸ºå¯ç”¨çš„fps */
     double r2d(AVRational r);
 
-    /*! @brief ·µ»ØÖ¸ÕëµÄ16½øÖÆ×Ö·û´®ĞÎÊ½ */
+    /*! @brief è¿”å›æŒ‡é’ˆçš„16è¿›åˆ¶å­—ç¬¦ä¸²å½¢å¼ */
     QString getPtrString(void *ptr);
 
     /**
-     * @brief ¼ì²éÍêÕûÎÄ¼şÂ·¾¶, ·µ»ØºÏÀíµÄÍêÕûÎÄ¼şÂ·¾¶. Èç¹ûËùÊôÂ·¾¶²»´æÔÚÔò´´½¨.
-     * @param[in] filepath  ÎÄ¼şÂ·¾¶
-     * @param[in] isCover   ÊÇ·ñÉ¾³ıÍ¬ÃûÎÄ¼ş. ÎªfalseÊ±, »áÔÚÎÄ¼şÃûºóÔö¼ÓĞòºÅ.
+     * @brief æ£€æŸ¥å®Œæ•´æ–‡ä»¶è·¯å¾„, è¿”å›åˆç†çš„å®Œæ•´æ–‡ä»¶è·¯å¾„. å¦‚æœæ‰€å±è·¯å¾„ä¸å­˜åœ¨åˆ™åˆ›å»º.
+     * @param[in] filepath  æ–‡ä»¶è·¯å¾„
+     * @param[in] isCover   æ˜¯å¦åˆ é™¤åŒåæ–‡ä»¶. ä¸ºfalseæ—¶, ä¼šåœ¨æ–‡ä»¶ååå¢åŠ åºå·.
      * */
     QString checkFile(const QString &filepath, bool isCover);
 };

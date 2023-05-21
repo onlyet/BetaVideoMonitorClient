@@ -1,4 +1,4 @@
-#include "LoadingLabel.h"
+﻿#include "LoadingLabel.h"
 
 LoadingLabel::LoadingLabel(QWidget *parent)
 	: QLabel(parent)

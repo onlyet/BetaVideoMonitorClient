@@ -1,4 +1,4 @@
-#include "CTransparentLabel.h"
+﻿#include "CTransparentLabel.h"
 
 #include <QPainter>
 #include <QDebug>

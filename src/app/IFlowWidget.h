@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QWidget>
 #include <QVariant>
@@ -23,9 +23,9 @@ public:
     void addItems(const QList<QWidget*> &wids);
 
     void clear();
-    // ÖØÖÃUIÎª¿Õ°×£¬µ«ÊÇ²»É¾³ıitem
+    // é‡ç½®UIä¸ºç©ºç™½ï¼Œä½†æ˜¯ä¸åˆ é™¤item
     void clearUI();
-    // ÖØÖÃUIÎª¿Õ°×£¬É¾³ıËùÓĞitem
+    // é‡ç½®UIä¸ºç©ºç™½ï¼Œåˆ é™¤æ‰€æœ‰item
     void deleteAll();
 
     QWidget *item(int idx);
@@ -42,11 +42,11 @@ protected:
     QList<QWidget *> items() const;
 
 private:
-    bool                m_byRow;        // ÊÇ·ñÒÔĞĞÊıÎª»ù×¼
-    int                 m_row;          // ĞĞÊı
-    int                 m_col;          // ÁĞÊı
+    bool                m_byRow;        // æ˜¯å¦ä»¥è¡Œæ•°ä¸ºåŸºå‡†
+    int                 m_row;          // è¡Œæ•°
+    int                 m_col;          // åˆ—æ•°
 
-    QList<QWidget *>    m_items;        // itemÁĞ±í
-    FlowLayout          *m_pLayout;     // ²¼¾Ö
+    QList<QWidget *>    m_items;        // itemåˆ—è¡¨
+    FlowLayout          *m_pLayout;     // å¸ƒå±€
 };
 

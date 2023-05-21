@@ -1,4 +1,4 @@
-#include "CMainWindow.h"
+ï»¿#include "CMainWindow.h"
 #include "log.h"
 #include "util.h"
 #include "common.h"
@@ -15,30 +15,30 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // ³õÊ¼»¯ÈÕÖ¾
+    // åˆå§‹åŒ–æ—¥å¿—
     LogInit(util::appName(), a.applicationVersion());
 
-    // ³õÊ¼»¯±ÀÀ£Ä£¿é
+    // åˆå§‹åŒ–å´©æºƒæ¨¡å—
 	DumpInit();
 
-    //Ê¹³ÌĞòÎ¨Ò»
+    //ä½¿ç¨‹åºå”¯ä¸€
 	if (!util::setProgramUnique(util::appName()))
 	{
-        qWarning() << qstr("ÒÑ´æÔÚÒ»¸ö¿Í»§¶ËÊµÀı");
+        qWarning() << "å·²å­˜åœ¨ä¸€ä¸ªå®¢æˆ·ç«¯å®ä¾‹";
 		return -1;
 	}
 
-	// ³õÊ¼»¯È«¾ÖÅäÖÃ
+	// åˆå§‹åŒ–å…¨å±€é…ç½®
 	if (!CONFIG.init())
 	{
 		return -1;
 	}
 
-    // Ö÷´°¿Ú
+    // ä¸»çª—å£
     CMainWindow w;
     w.showFullScreen();
 
-    // ÍË³öÇ°ÇåÀí£¬ÈÎÎñ¹ÜÀíÆ÷»òtaskkillÉ±µô½ø³Ì»á´¥·¢ÕâÀï
+    // é€€å‡ºå‰æ¸…ç†ï¼Œä»»åŠ¡ç®¡ç†å™¨æˆ–taskkillæ€æ‰è¿›ç¨‹ä¼šè§¦å‘è¿™é‡Œ
     QObject::connect(&a, &QApplication::aboutToQuit, [&w](){
         w.aboutToQuit();
     });

@@ -1,4 +1,4 @@
-#ifndef ILISTWIDGET_H
+﻿#ifndef ILISTWIDGET_H
 #define ILISTWIDGET_H
 
 #include <QListWidget>

@@ -1,4 +1,4 @@
-#include "IPlayerCore.h"
+ï»¿#include "IPlayerCore.h"
 #include "FFmpegHelper.h"
 #include "ffmpeg_dxva2.h"
 
@@ -21,8 +21,8 @@
 #include <QFuture>
 #include <QtConcurrent>
 
-#define IS_SET_FPS_WHEN_ERROR   1   ///< µ±ÎŞ·¨½âÎöÖ¡ÂÊÊ±, ÊÇ·ñÊ¹ÓÃ×Ô¶¨ÒåµÄÊıÖµ
-#define FPS_CUSTOM              25  ///< µ±ÎŞ·¨½âÎöÖ¡ÂÊÊ±Ê¹ÓÃµÄ×Ô¶¨ÒåÊıÖµ
+#define IS_SET_FPS_WHEN_ERROR   1   ///< å½“æ— æ³•è§£æå¸§ç‡æ—¶, æ˜¯å¦ä½¿ç”¨è‡ªå®šä¹‰çš„æ•°å€¼
+#define FPS_CUSTOM              25  ///< å½“æ— æ³•è§£æå¸§ç‡æ—¶ä½¿ç”¨çš„è‡ªå®šä¹‰æ•°å€¼
 
 //AVPixelFormat GetHwFormat(AVCodecContext *s, const AVPixelFormat *pix_fmts)
 //{
@@ -89,7 +89,7 @@ IPlayerCore::~IPlayerCore()
     m_mutex_output.unlock();
 
     m_destructed = true;
-    //qDebug() << "~IPlayerCore() 2";
+    qDebug() << "~IPlayerCore() 2";
 }
 
 void IPlayerCore::init()
@@ -105,7 +105,7 @@ void IPlayerCore::init()
     }
     if (m_pAVFormatCtx)
     {
-        avformat_close_input(&m_pAVFormatCtx); // ¹Ø±ÕÃ½Ìå
+        avformat_close_input(&m_pAVFormatCtx); // å…³é—­åª’ä½“
         m_pAVFormatCtx = Q_NULLPTR;
     }
     if (m_swsCtx)
@@ -118,7 +118,7 @@ void IPlayerCore::init()
         //QMutexLocker lock(&m_decodeFrameMtx);
         if (m_pYuv)
         {
-            av_frame_free(&m_pYuv); // ¹Ø±ÕÊ±ÊÍ·Å½âÂëºóµÄÊÓÆµÖ¡¿Õ¼ä
+            av_frame_free(&m_pYuv); // å…³é—­æ—¶é‡Šæ”¾è§£ç åçš„è§†é¢‘å¸§ç©ºé—´
             m_pYuv = Q_NULLPTR;
         }
     }
@@ -127,15 +127,16 @@ void IPlayerCore::init()
 #ifdef Enable_Hardcode
 	// NV12
 #else
-    if (m_yuvBuf)
+    if (m_frameBuf)
     {
-        delete[] m_yuvBuf;
-        m_yuvBuf = nullptr;
+        delete[] m_frameBuf;
+        m_frameBuf = nullptr;
+        m_frameSize = 0;
     }
 #endif
 #endif
 
-    // Êı¾İ³õÊ¼»¯
+    // æ•°æ®åˆå§‹åŒ–
     m_fps = 0;
     m_isEof = false;
 
@@ -163,7 +164,7 @@ bool IPlayerCore::doOpen(const QString &path)
     QTime t = QTime::currentTime();
 	if (m_isOpened)
 	{
-		doClose(); // ´ò¿ªÇ°ÏÈ¹Ø±ÕÇåÀí
+		doClose(); // æ‰“å¼€å‰å…ˆå…³é—­æ¸…ç†
 	}
     if(path.isEmpty())
     {
@@ -174,8 +175,8 @@ bool IPlayerCore::doOpen(const QString &path)
     AVDictionary* options = Q_NULLPTR;
     if (m_path.startsWith("rtsp"))
     {
-        av_dict_set(&options, "stimeout", "10000000", 0);   // 10Ãë£¬Ì«Ğ¡µÄ»°avformat_open_input»á·µ»ØOperation not permitted
-        av_dict_set(&options, "max_delay", "100000", 0);    // 100ºÁÃë
+        av_dict_set(&options, "stimeout", "10000000", 0);   // 10ç§’ï¼Œå¤ªå°çš„è¯avformat_open_inputä¼šè¿”å›Operation not permitted
+        av_dict_set(&options, "max_delay", "100000", 0);    // 100æ¯«ç§’
 
         if (CONFIG.isRtspOverTcp())
         {
@@ -184,7 +185,7 @@ bool IPlayerCore::doOpen(const QString &path)
         else
         {
             av_dict_set(&options, "rtsp_transport", "udp", 0);
-            // UDPĞ­ÒéĞèÒªÔö´óbuffer_size£¬²»È»²¥·Å»á³öÏÖ»¨ÆÁ,10M£¬TCPÓ¦¸Ã²»ĞèÒªÉèÖÃ
+            // UDPåè®®éœ€è¦å¢å¤§buffer_sizeï¼Œä¸ç„¶æ’­æ”¾ä¼šå‡ºç°èŠ±å±,10Mï¼ŒTCPåº”è¯¥ä¸éœ€è¦è®¾ç½®
             av_dict_set(&options, "buffer_size", "10240000", 0);
         }
     }
@@ -197,14 +198,14 @@ bool IPlayerCore::doOpen(const QString &path)
     QMutexLocker locker(&m_mutex);
 
     QString errMsg = util::logRtspError(m_path);
-    re = avformat_open_input(&m_pAVFormatCtx, burl.constData(), iformat, &options); // ´ò¿ª½â·â×°Æ÷
+    re = avformat_open_input(&m_pAVFormatCtx, burl.constData(), iformat, &options); // æ‰“å¼€è§£å°è£…å™¨
     if (re != 0)
     {
         QString err = parseError(re);
         qWarning() << "Open" << util::logRtspUrl(path) << "Fail:" << err;
         //if ("Error number -138 occurred" == err)
         //{
-        errMsg.append(qstr("\nÍøÂçÎÊÌâ£ºÁ¬½ÓÉãÏñÍ·³¬Ê±"));
+        errMsg.append("\nç½‘ç»œé—®é¢˜ï¼šè¿æ¥æ‘„åƒå¤´è¶…æ—¶");
         qInfo() << errMsg;
         emit IpcParamsError(errMsg);
         //}
@@ -213,13 +214,13 @@ bool IPlayerCore::doOpen(const QString &path)
     }
 	//qDebug() << "avformat_open_input time: " << t2.elapsed();
 
-    if (m_pAVFormatCtx->duration <= 0)    // Èç¹û¶ÁÈ¡µ½µÄÃ½ÌåĞÅÏ¢ÓĞÎó
+    if (m_pAVFormatCtx->duration <= 0)    // å¦‚æœè¯»å–åˆ°çš„åª’ä½“ä¿¡æ¯æœ‰è¯¯
     {
-        // ¶ÁÈ¡ÎÄ¼şĞÅÏ¢£¨ÓĞĞ©Ã½ÌåÎÄ¼şÔÚ´ò¿ªÊ±¶Á²»µ½£¬ĞèÒªÊ¹ÓÃ´Ëº¯Êı£©
+        // è¯»å–æ–‡ä»¶ä¿¡æ¯ï¼ˆæœ‰äº›åª’ä½“æ–‡ä»¶åœ¨æ‰“å¼€æ—¶è¯»ä¸åˆ°ï¼Œéœ€è¦ä½¿ç”¨æ­¤å‡½æ•°ï¼‰
         //QTime t3 = QTime::currentTime();
         if (1 && CONFIG.reduceAnalyzeTime())
         {
-            // ÆôÓÃÕâÁ½¸öÑ¡Ïî»á»ñÈ¡²»µ½fps
+            // å¯ç”¨è¿™ä¸¤ä¸ªé€‰é¡¹ä¼šè·å–ä¸åˆ°fps
             m_pAVFormatCtx->probesize = 1024;
             m_pAVFormatCtx->max_analyze_duration = 1000;
         }
@@ -233,7 +234,7 @@ bool IPlayerCore::doOpen(const QString &path)
 		//qDebug() << "avformat_find_stream_info time: " << t3.elapsed();
 	}
 
-	// ´ò¿ª½âÂëÆ÷
+	// æ‰“å¼€è§£ç å™¨
     int ret = 0;
     QString vcodecName, acodecName;
     int64_t videoBitrate;
@@ -252,7 +253,7 @@ bool IPlayerCore::doOpen(const QString &path)
                 return false;
             }
 
-            //´ÓÊÓÆµÁ÷ÖĞ¿½±´²ÎÊıµ½codecCtx
+            //ä»è§†é¢‘æµä¸­æ‹·è´å‚æ•°åˆ°codecCtx
             m_vDecodeCtx = avcodec_alloc_context3(decoder);
             if ((ret = avcodec_parameters_to_context(m_vDecodeCtx, codecpar)) < 0)
             {
@@ -261,7 +262,7 @@ bool IPlayerCore::doOpen(const QString &path)
                 return false;
             }
             m_vDecodeCtx->flags |= AV_CODEC_FLAG_LOW_DELAY;
-            // ³¢ÊÔÏÔÊ¾ËõÂÔÍ¼
+            // å°è¯•æ˜¾ç¤ºç¼©ç•¥å›¾
             m_vDecodeCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
             if (m_hwDecode)
@@ -273,7 +274,7 @@ bool IPlayerCore::doOpen(const QString &path)
                     return false;
                 }
 
-                // dxva³õÊ¼»¯ĞèÒª£¬demoÊÇ£¨1920x1088£©
+                // dxvaåˆå§‹åŒ–éœ€è¦ï¼Œdemoæ˜¯ï¼ˆ1920x1088ï¼‰
                 m_vDecodeCtx->coded_width = m_vDecodeCtx->width;
                 m_vDecodeCtx->coded_height = m_vDecodeCtx->height;
 
@@ -320,6 +321,7 @@ bool IPlayerCore::doOpen(const QString &path)
             }
 
             m_videoStream = i;
+            stream->r_frame_rate;
             m_fps = FFmpegHelper::r2d(stream->avg_frame_rate);
             m_size = QSize(m_vDecodeCtx->width, m_vDecodeCtx->height);
             m_codecCtxWidth = m_vDecodeCtx->width;
@@ -349,11 +351,11 @@ bool IPlayerCore::doOpen(const QString &path)
 
     int errCode = ErrorCode_IPCOk;
     if (w > 1920 || h > 1080) {
-        errMsg.append(qstr("\n·Ö±æÂÊÌ«¸ß:%1x%2").arg(w).arg(h));
+        errMsg.append(QString("\nåˆ†è¾¨ç‡å¤ªé«˜:%1x%2").arg(w).arg(h));
         errCode |= ErrorCode_IPCResolutionError;
     }
     if ("h264" != vcodecName) {
-        errMsg.append(qstr("\nÊÓÆµ±àÂë²»ÊÇH.264"));
+        errMsg.append("\nè§†é¢‘ç¼–ç ä¸æ˜¯H.264");
         errCode |= ErrorCode_IPCCodecTypeError;
     }
 
@@ -378,9 +380,9 @@ bool IPlayerCore::doOpen(const QString &path)
 #ifdef Enable_Hardcode
 	// NV12
 #else
-    m_yuvSize = m_size.width() * m_size.height();
-    m_yuvBuf = new BYTE[m_yuvSize * 3 / 2];
-    memset(m_yuvBuf, 0, m_yuvSize * 3 / 2);
+    m_frameSize = m_size.width() * m_size.height();
+    m_frameBuf = new BYTE[m_frameSize * 3 / 2];
+    memset(m_frameBuf, 0, m_frameSize * 3 / 2);
 #endif
 #endif
 
@@ -459,13 +461,13 @@ AVPacket IPlayerCore::read()
     {
         return pkt;
     }
-    int re = av_read_frame(m_pAVFormatCtx, &pkt); // ¶ÁÈ¡ÊÓÆµÖ¡
-    if (re != 0) // ¶ÁÈ¡Ê§°Ü
+    int re = av_read_frame(m_pAVFormatCtx, &pkt); // è¯»å–è§†é¢‘å¸§
+    if (re != 0) // è¯»å–å¤±è´¥
     {
         if (re == AVERROR_EOF)
         {
-            m_isEof = true;// ÎÄ¼ş¶ÁÈ¡½áÊø
-            // ±ÜÃâÒ»Ö±EOFÔì³É¸ßCPUÕ¼ÓÃ
+            m_isEof = true;// æ–‡ä»¶è¯»å–ç»“æŸ
+            // é¿å…ä¸€ç›´EOFé€ æˆé«˜CPUå ç”¨
             msleep(25);
         }
         qDebug() << QString("av_read_frame failed: %1, %2").arg(parseError(re)).arg(util::logRtspUrl(m_path));
@@ -481,20 +483,20 @@ int IPlayerCore::decode(const AVPacket *pkt)
         return 0;
     }
 
-    // ÈÎÎñ¹ÜÀíÆ÷¿´µ½ÕâÀï»áÔö¼ÓÄÚ´æ
+    // ä»»åŠ¡ç®¡ç†å™¨çœ‹åˆ°è¿™é‡Œä¼šå¢åŠ å†…å­˜
     int ret = avcodec_send_packet(m_vDecodeCtx, pkt);
     if (ret < 0)
     {
         qDebug() << "avcodec_send_packet failed, " << parseError(ret);
         return 0;
     }
-    // web¶ËĞŞ¸ÄIPC·Ö±æÂÊºó£¬avcodec_send_packetºó×îÏÈ»ñÈ¡µ½·Ö±æÂÊµÄ¸Ä±ä
+    // webç«¯ä¿®æ”¹IPCåˆ†è¾¨ç‡åï¼Œavcodec_send_packetåæœ€å…ˆè·å–åˆ°åˆ†è¾¨ç‡çš„æ”¹å˜
     if (m_vDecodeCtx->width != m_codecCtxWidth || m_vDecodeCtx->height != m_codecCtxHeight)
     {
-        // ±ÜÃâ·Ö±æÂÊ¸Ä±äµ¼ÖÂµÄ±ÀÀ£
+        // é¿å…åˆ†è¾¨ç‡æ”¹å˜å¯¼è‡´çš„å´©æºƒ
         m_resolutionChanged = true;
         emit resolutionChanged();
-        qWarning() << qstr("%1·Ö±æÂÊÓÉ%2x%3±ä³É%4x%5").arg(util::logRtspUrl(m_path)).arg(m_codecCtxWidth).arg(m_codecCtxHeight)
+        qWarning() << QString("%1åˆ†è¾¨ç‡ç”±%2x%3å˜æˆ%4x%5").arg(util::logRtspUrl(m_path)).arg(m_codecCtxWidth).arg(m_codecCtxHeight)
             .arg(m_vDecodeCtx->width).arg(m_vDecodeCtx->height);
         return 0;
     }
@@ -522,7 +524,7 @@ int IPlayerCore::decode(const AVPacket *pkt)
                 return ret;
             }
 
-            //»ñÈ¡Êı¾İÍ¬Ê±äÖÈ¾
+            //è·å–æ•°æ®åŒæ—¶æ¸²æŸ“
             dxva2_retrieve_data_call(m_vDecodeCtx, m_pYuv);
         }
     }
@@ -554,80 +556,67 @@ int IPlayerCore::decode(const AVPacket *pkt)
     return 0;
 }
 
-
-// Ö÷Ïß³ÌºÍXScaleThreadÏß³Ì
-bool IPlayerCore::toRgb(uchar *out, int outWidth, int outHeight)
-{
-    if (!out || outWidth <= 0 || outHeight <= 0 || m_videoStream < 0)
-    {
+bool IPlayerCore::toRgb(uchar* out, int outWidth, int outHeight) {
+    if (!out || outWidth <= 0 || outHeight <= 0 || m_videoStream < 0) {
         return false;
     }
 
     try {
 #ifdef Enable_D3dRender
-        if (!m_pYuv || m_pYuv->linesize[0] == 0)
-        {
+        if (!m_pYuv || m_pYuv->linesize[0] == 0) {
             return false;
         }
 
-        int intputWidth = m_size.width();
+        int intputWidth  = m_size.width();
         int intputHeight = m_size.height();
 #ifdef Enable_Hardcode
-        //m_d3d.Render_NV12(m_nv12Buf, intputWidth, intputHeight);
+        // m_d3d.Render_NV12(m_nv12Buf, intputWidth, intputHeight);
         return true;
 #else
-        m_d3d.Render_YUV(m_yuvBuf, intputWidth, intputHeight);
+        m_d3d.Render_YUV(m_frameBuf, intputWidth, intputHeight);
         return true;
-#endif // !Enable_Hardcode
-#endif // Enable_D3dRender
+#endif  // !Enable_Hardcode
+#endif  // !Enable_D3dRender
 
         QMutexLocker locker(&m_mutex);
-        // ±ÜÃâ·Ö±æÂÊ¸Ä±äµ¼ÖÂsws_scale±¼À£
-        if (m_resolutionChanged)
-        {
+        // é¿å…åˆ†è¾¨ç‡æ”¹å˜å¯¼è‡´sws_scaleå¥”æºƒ
+        if (m_resolutionChanged) {
             return false;
         }
 
-        if (!m_pYuv || 0 == m_pYuv->linesize[0] ||
-            m_pYuv->width <= 0 || m_pYuv->height <= 0 ||
-            AV_PIX_FMT_NONE == m_pYuv->format)
-        {
+        if (!m_pYuv || 0 == m_pYuv->linesize[0] || m_pYuv->width <= 0 || m_pYuv->height <= 0 ||
+            AV_PIX_FMT_NONE == m_pYuv->format) {
             return false;
         }
 
         /*
-        * pix_fmtÎªAV_PIX_FMT_NONE£¨-1£©µÄÊ±ºò»á±ÀÀ££¬²¢ÇÒÃ»ÓĞdmpÎÄ¼ş£¬µ÷ÊÔÄ£Ê½ÏÂÖ±½ÓÍË³öÁË
-        * try-catchÒ²²¶»ñ²»µ½
-        * ÈÕÖ¾Êä³ö£ºQObject::~QObject: Timers cannot be stopped from another thread
-        */
-        m_swsCtx = sws_getCachedContext(m_swsCtx,
-            m_pYuv->width, m_pYuv->height, (AVPixelFormat)m_pYuv->format,
-            outWidth, outHeight, AV_PIX_FMT_BGRA,
-            SWS_BICUBIC,
-            nullptr, nullptr, nullptr);
-        if (!m_swsCtx)
-        {
+         * pix_fmtä¸ºAV_PIX_FMT_NONEï¼ˆ-1ï¼‰çš„æ—¶å€™ä¼šå´©æºƒï¼Œå¹¶ä¸”æ²¡æœ‰dmpæ–‡ä»¶ï¼Œè°ƒè¯•æ¨¡å¼ä¸‹ç›´æ¥é€€å‡ºäº†
+         * try-catchä¹Ÿæ•è·ä¸åˆ°
+         * æ—¥å¿—è¾“å‡ºï¼šQObject::~QObject: Timers cannot be stopped from another thread
+         */
+        m_swsCtx = sws_getCachedContext(m_swsCtx, m_pYuv->width, m_pYuv->height,
+                                        (AVPixelFormat)m_pYuv->format, outWidth, outHeight,
+                                        AV_PIX_FMT_BGRA, SWS_BICUBIC, nullptr, nullptr, nullptr);
+        if (!m_swsCtx) {
             qDebug() << "sws_getCachedContext failed";
             return false;
         }
 
-        uint8_t *data[AV_NUM_DATA_POINTERS] = { nullptr };
-        data[0] = out;     // µÚÒ»Î»Êä³öRGB
-        int lineSize[AV_NUM_DATA_POINTERS] = { 0 };
-        lineSize[0] = outWidth * 4; // Ò»ĞĞµÄ¿í¶ÈÎª4¸ö×Ö½Ú£¨32Î»£©
+        uint8_t* data[AV_NUM_DATA_POINTERS] = {nullptr};
+        data[0]                             = out;  // ç¬¬ä¸€ä½è¾“å‡ºRGB
+        int lineSize[AV_NUM_DATA_POINTERS]  = {0};
+        lineSize[0] = outWidth * 4;  // ä¸€è¡Œçš„å®½åº¦ä¸º4ä¸ªå­—èŠ‚ï¼ˆ32ä½ï¼‰
 
         int h = sws_scale(m_swsCtx,
-            m_pYuv->data,             // µ±Ç°´¦ÀíÇøÓòµÄÃ¿¸öÍ¨µÀµÄÊı¾İÖ¸Õë
-            m_pYuv->linesize,         // Ã¿¸öÍ¨µÀĞĞ×Ö½ÚÊı
-            0,
-            m_pYuv->height,           // Ô­ÊÓÆµÖ¡µÄ¸ß¶È
-            data,                     // Êä³öµÄÃ¿¸öÍ¨µÀÊı¾İÖ¸Õë
-            lineSize);                // Ã¿¸öÍ¨µÀĞĞ×Ö½ÚÊı;
+                          m_pYuv->data,      // å½“å‰å¤„ç†åŒºåŸŸçš„æ¯ä¸ªé€šé“çš„æ•°æ®æŒ‡é’ˆ
+                          m_pYuv->linesize,  // æ¯ä¸ªé€šé“è¡Œå­—èŠ‚æ•°
+                          0,
+                          m_pYuv->height,  // åŸè§†é¢‘å¸§çš„é«˜åº¦
+                          data,            // è¾“å‡ºçš„æ¯ä¸ªé€šé“æ•°æ®æŒ‡é’ˆ
+                          lineSize);       // æ¯ä¸ªé€šé“è¡Œå­—èŠ‚æ•°;
 
         return h > 0;
-    }
-    catch (std::exception &e)
-    {
+    } catch (std::exception& e) {
         qCritical() << "std::exception: " << e.what();
         return false;
     }
@@ -676,7 +665,7 @@ int IPlayerCore::stepVideoOnly()
         }
     }
 
-    // Ö÷ÂëÁ÷²»½âÂë£¬´óÆÁ²¥·ÅµÄÊ±ºòĞ¡ÆÁ²»½âÂë
+    // ä¸»ç æµä¸è§£ç ï¼Œå¤§å±æ’­æ”¾çš„æ—¶å€™å°å±ä¸è§£ç 
     if (!m_enableDecode)
     {
         av_packet_unref(&pkt);
@@ -762,7 +751,7 @@ void IPlayerCore::rmOutput(const QString &url)
         m_outputs.remove(url);
     }
     delete pWriter;
-    // Õı³£½áÊøÂ¼ÖÆ²ÅÄÜºÏ²¢ÊÓÆµ
+    // æ­£å¸¸ç»“æŸå½•åˆ¶æ‰èƒ½åˆå¹¶è§†é¢‘
     if (!GSignalSlot.isCrashed()) {
         concatVideo(url);
     }
@@ -852,7 +841,7 @@ void IPlayerCore::concatVideo(const QString& videoPath) {
         QProcess* process = new QProcess;
         process->setWorkingDirectory(QCoreApplication::applicationDirPath());
         process->start(cmd);
-        // -1²»»á³¬Ê±
+        // -1ä¸ä¼šè¶…æ—¶
         if (!process->waitForFinished(-1)) {
             qDebug() << QString("ffmpeg concat failed: %1").arg(process->error());
             delete process;
@@ -860,13 +849,13 @@ void IPlayerCore::concatVideo(const QString& videoPath) {
             return;
         }
 #if 0
-            // ffmpegÖ»ÓĞ±ê×¼´íÎóÃ»ÓĞ±ê×¼Êä³ö
+            // ffmpegåªæœ‰æ ‡å‡†é”™è¯¯æ²¡æœ‰æ ‡å‡†è¾“å‡º
             QString err = QString::fromLocal8Bit(process->readAllStandardError());
             qDebug() << "err:" << err;
 #endif
         delete process;
 
-        // É¾³ıtxtºÍts
+        // åˆ é™¤txtå’Œts
         QDir dir(absolutePath);
         dir.remove(QString("%1.txt").arg(baseName));
         for (const QString& ts : dir.entryList(QStringList() << QString("%1*.ts").arg(baseName))) {
@@ -894,7 +883,7 @@ DecodeThread::DecodeThread(IPlayerCore *iPlayerCore)
 DecodeThread::~DecodeThread()
 {
     stop();
-    //qDebug() << "~DecodeThread()";
+    qDebug() << "~DecodeThread()";
 }
 
 void DecodeThread::stop()
@@ -914,7 +903,7 @@ void DecodeThread::run()
 
     //QTime t;
     while (m_isContinue) {
-        // Ö÷ÂëÁ÷²»½âÂë£¬×ÓÂëÁ÷ÔİÊ±Ò²²»½âÂëÒôÆµ
+        // ä¸»ç æµä¸è§£ç ï¼Œå­ç æµæš‚æ—¶ä¹Ÿä¸è§£ç éŸ³é¢‘
         //t.restart();
         m_playerCore->stepVideoOnly();
         int remainingTime = 1;
@@ -931,6 +920,7 @@ RenderThread::RenderThread(QWidget *wid, int duration)
     , m_wid(wid)
     , m_duration(duration)
 {
+    m_winHandle = (int)wid->winId();
     moveToThread(this);
 }
 
@@ -940,7 +930,7 @@ RenderThread::~RenderThread()
     qDebug().noquote() << QString("Recycle Scaler(0x%1) for QWidget(0x%2)")
                           .arg(FFmpegHelper::getPtrString(this)).arg(FFmpegHelper::getPtrString(m_wid));
 }
-// ºÄÊ±
+// è€—æ—¶
 void RenderThread::setFFmpeg(IPlayerCore *pFFmpeg)
 {
     QMutexLocker lock(&m_iPlayerCoreMtx);
@@ -964,85 +954,111 @@ void RenderThread::pause(bool isPause)
 
 void RenderThread::setDstWinHandle(int handle)
 {
-	m_winHandle = handle;
-}
-
-void RenderThread::run()
-{
-    if (!m_wid)
-    {
-        return;
-    }
-
-	m_isContinue = true;
-	QTime tt;
-	int w = 0;
-	int h = 0;
+	m_winHandle = handle; }
 
 #ifdef Enable_D3dRender
-	while (m_isContinue)
-	{
+bool RenderThread::initD3D_NV12(HWND hwnd, int img_width, int img_height) {
+    m_d3d.InitD3D_NV12(hwnd, img_width, img_height);
+    return true;
+}
+
+bool RenderThread::initD3D_YUVJ420P(HWND hwnd, int img_width, int img_height) {
+    bool b = m_d3d.InitD3D_YUV(hwnd, img_width, img_height);
+    if (!b) {
+        qWarning() << "m_d3d.InitD3D_YUV failed";
+    }
+    return b;
+}
+
+void RenderThread::onD3d9Render() {
+
+    if (!m_playerCore) return;
+    int intputWidth  = m_playerCore->getSize().width();
+    int intputHeight = m_playerCore->getSize().height();
+#ifdef Enable_Hardcode
+    // m_d3d.Render_NV12(m_nv12Buf, intputWidth, intputHeight);
+#else
+    m_d3d.Render_YUV(m_playerCore->frameBuf(), intputWidth, intputHeight);
+#endif  // !Enable_Hardcode
+}
+
+#endif
+
+void RenderThread::run() {
+    qDebug() << "RenderThread started";
+    if (!m_wid) {
+        return;
+    }
+    m_isContinue = true;
+    int w        = 0;
+    int h        = 0;
+
+#ifdef Enable_D3dRender
+    while (m_isContinue) {
         w = m_playerCore->getSize().width();
         h = m_playerCore->getSize().height();
-        if (!m_playerCore || 0 == w || 0 == h)
-		{
-			msleep(40);
-		}
-		else
-		{
-			break;
-		}
-	}
+        if (!m_playerCore || 0 == w || 0 == h) {
+            msleep(40);
+        } else {
+            break;
+        }
+    }
 
-    if (m_playerCore)
-    {
+    if (m_playerCore) {
 #ifdef Enable_Hardcode
         m_playerCore->initD3D_NV12((HWND)m_winHandle, w, h);
 #else
-        m_playerCore->initD3D_YUVJ420P((HWND)m_winHandle, w, h);
-#endif // !Enable_Hardcode
+        //if (!m_playerCore->initD3D_YUVJ420P((HWND)m_winHandle, w, h)) {
+        if (!initD3D_YUVJ420P((HWND)m_winHandle, w, h)) {
+            qDebug() << "RenderThread exited unexpectedly";
+            return;
+        }
+#endif  // !Enable_Hardcode
     }
-#endif // Enable_D3dRender
 
-    while(m_isContinue)
-    {
+#endif  // !Enable_D3dRender
+
+    QTime tt;
+    while (m_isContinue) {
         QMutexLocker lock(&m_iPlayerCoreMtx);
 
-        if (!m_playerCore)
-        {
+        if (!m_playerCore) {
             msleep(40);
             continue;
         }
-        if (m_duration <= 0)
-        {
+        if (m_duration <= 0) {
             m_duration = 1000 / m_playerCore->getFps();
         }
 
         tt.restart();
-        if (!m_isPause && m_wid->isVisible())
-        {
+
+#ifdef Enable_D3dRender
+        if (!m_isPause && m_wid->isVisible()) {
+            onD3d9Render();
+        }
+#else
+        if (!m_isPause && m_wid->isVisible()) {
             w = m_wid->width() / 2 * 2;
             h = m_wid->height() / 2 * 2;
-            if (w > 0 && h > 0)
-            {
+            if (w > 0 && h > 0) {
                 QImage img(w, h, QImage::Format_ARGB32);
-                if (m_playerCore->toRgb(img.bits(), w, h)) // ºÜºÄÊ±£¬ĞèÒªÓÅ»¯
+                if (m_playerCore->toRgb(img.bits(), w, h))  // å¾ˆè€—æ—¶ï¼Œéœ€è¦ä¼˜åŒ–
                 {
-#ifndef Enable_D3dRender
                     emit draw(img, m_playerCore->path());
-#endif // !Enable_D3dRender
                 }
             }
         }
+#endif  // !Enable_D3dRender
 
         lock.unlock();
 
         int remainingTime = m_duration - tt.elapsed();
-        if (m_isContinue && remainingTime > 0)
-        {
+        if (m_isContinue && remainingTime > 0) {
             msleep(remainingTime);
         }
     }
+
+    qDebug() << "RenderThread exit";
 }
 
 void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
@@ -1071,8 +1087,8 @@ void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
         }
         else if (!url.contains("://"))
         {
-            // Í¬ÃûÎÄ¼şÔö¼ÓĞòºÅ
-            m_url = FFmpegHelper::checkFile(m_url, false); // ±¾µØÂ·¾¶
+            // åŒåæ–‡ä»¶å¢åŠ åºå·
+            m_url = FFmpegHelper::checkFile(m_url, false); // æœ¬åœ°è·¯å¾„
         }
 
         QByteArray burl = m_url.toUtf8();
@@ -1090,7 +1106,7 @@ void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
             AVStream* stream = iFmtCtx->streams[i];
             AVCodecParameters* srcCodecpar = stream->codecpar;
 
-            if (srcCodecpar->codec_type == AVMEDIA_TYPE_VIDEO) // Èç¹ûÊÇÊÓÆµÀàĞÍ
+            if (srcCodecpar->codec_type == AVMEDIA_TYPE_VIDEO) // å¦‚æœæ˜¯è§†é¢‘ç±»å‹
             {
                 m_inTimebase = iFmtCtx->streams[i]->time_base;
                 m_vs = avformat_new_stream(m_pFmtCtx, nullptr);
@@ -1110,7 +1126,7 @@ void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
 
                 //if (m_pFmtCtx->oformat->flags & AVFMT_GLOBALHEADER)
                 //{
-                // ÏÔÊ¾ËõÂÔÍ¼
+                // æ˜¾ç¤ºç¼©ç•¥å›¾
                 //m_vs->codec->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
                 //}
             }
@@ -1118,7 +1134,7 @@ void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
 
         if (!(m_pFmtCtx->oformat->flags & AVFMT_NOFILE)) 
 		{
-            // ĞÂ½¨ÁËÊÓÆµÎÄ¼ş
+            // æ–°å»ºäº†è§†é¢‘æ–‡ä»¶
             err = avio_open(&m_pFmtCtx->pb, curl, AVIO_FLAG_WRITE);
             if (err < 0)
             {
@@ -1128,7 +1144,7 @@ void Outputer::open(AVFormatContext *iFmtCtx, const QString &url)
             qDebug() << "avio_open: " << url;
         }
 
-        // FIXME: Ä³µÄÉãÏñÍ·»á³öÏÖ´íÎó£ºInvalid argument
+        // FIXME: æŸçš„æ‘„åƒå¤´ä¼šå‡ºç°é”™è¯¯ï¼šInvalid argument
         err = avformat_write_header(m_pFmtCtx, Q_NULLPTR);
         if (err < 0)
         {
@@ -1165,8 +1181,8 @@ void Outputer::close()
 
 
 /*
-* Óöµ½ÎÊÌâ£ºÂ¼ÖÆµÄÊÓÆµÃ»ÓĞ½ø¶ÈÌõ²¢¿ìËÙ²¥·Å£¬Ô­Òò£ºptsÎª0
-* ËùÒÔptsÎª0Ê±Ôò¸ù¾İFPS_CUSTOM£¨25£©¼ÆËãpts£¬ÕâÊ±ºòIPCÍøÒ³ÉèÖÃµÄÖ¡ÂÊÒªºÍFPS_CUSTOMÏàÍ¬
+* é‡åˆ°é—®é¢˜ï¼šå½•åˆ¶çš„è§†é¢‘æ²¡æœ‰è¿›åº¦æ¡å¹¶å¿«é€Ÿæ’­æ”¾ï¼ŒåŸå› ï¼šptsä¸º0
+* æ‰€ä»¥ptsä¸º0æ—¶åˆ™æ ¹æ®FPS_CUSTOMï¼ˆ25ï¼‰è®¡ç®—ptsï¼Œè¿™æ—¶å€™IPCç½‘é¡µè®¾ç½®çš„å¸§ç‡è¦å’ŒFPS_CUSTOMç›¸åŒ
 */
 void Outputer::write(const AVPacket *pkt)
 {

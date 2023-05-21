@@ -1,4 +1,4 @@
-#include "FFmpegHelper.h"
+ï»¿#include "FFmpegHelper.h"
 
 #include <QDebug>
 #include <QDir>
@@ -10,7 +10,7 @@
     typedef quint32 xhandle;
 #endif
 
-// ´íÎóµÇ¼ÇÉèÖÃ³ÉAV_LOG_ERROR¡£AV_LOG_WARNINGµÄ»°¿ÉÄÜ»áÊä³ö´óÁ¿µÄdeprecatedÈÕÖ¾£¨deprecated pixel format used, make sure you did set range correctly£©
+// é”™è¯¯ç™»è®°è®¾ç½®æˆAV_LOG_ERRORã€‚AV_LOG_WARNINGçš„è¯å¯èƒ½ä¼šè¾“å‡ºå¤§é‡çš„deprecatedæ—¥å¿—ï¼ˆdeprecated pixel format used, make sure you did set range correctlyï¼‰
 #define FFmpegLogLevel AV_LOG_ERROR
 
 void FFmpegLogFunc(void *ptr, int level, const char *fmt, va_list vl) 
@@ -31,7 +31,7 @@ void FFmpegHelper::init_ffmpeg()
     av_register_all();
     avdevice_register_all();
     avformat_network_init();
-    // ½«FFmpegÈÕÖ¾Ğ´µ½ÎÄ¼ş
+    // å°†FFmpegæ—¥å¿—å†™åˆ°æ–‡ä»¶
     av_log_set_callback(FFmpegLogFunc);
     av_log_set_level(FFmpegLogLevel);
     qInfo() << "FFmpeg" << av_version_info();
@@ -65,7 +65,7 @@ QString FFmpegHelper::checkFile(const QString &filepath, bool isCover)
     QDir dir;
     if(!dir.mkpath(path))
     {
-        qWarning() << QStringLiteral("´´½¨Â·¾¶Ê§°Ü£º%1").arg(path);
+        qWarning() << QStringLiteral("åˆ›å»ºè·¯å¾„å¤±è´¥ï¼š%1").arg(path);
     }
 
     QString url = filepath;

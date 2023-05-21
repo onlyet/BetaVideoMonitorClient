@@ -1,4 +1,4 @@
-#include <limits>
+ï»¿#include <limits>
 
 #include "CSmallScreen.h"
 #include "ui_CSmallScreen.h"
@@ -18,9 +18,9 @@
 #include <QScreen>
 #include <QFileInfo>
 
-#define ColumnNum               4   // CPage1Ò»Ò³ÓÐ¶àÉÙÁÐ
-#define TransparentLabelHeight  20  // Í¸Ã÷label¸ß¶È
-#define TitleFrameHeight        60  // ¶¥²¿±êÌâÀ¸¸ß¶È
+#define ColumnNum               4   // CPage1ä¸€é¡µæœ‰å¤šå°‘åˆ—
+#define TransparentLabelHeight  20  // é€æ˜Žlabelé«˜åº¦
+#define TitleFrameHeight        60  // é¡¶éƒ¨æ ‡é¢˜æ é«˜åº¦
 
 CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
     QFrame(parent)
@@ -30,13 +30,17 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
 
     initUi();
 
+#if 1
     ui->camera_left->setWaitPic(CONFIG.logoPixmap());
     ui->camera_right->setWaitPic(CONFIG.logoPixmap());
+#endif
 
-    static int s_num = 0;
     QString tmpLeftUrl = util::getSetting("Url/leftUrl", "").toString();
     QString tmpRightUrl = util::getSetting("Url/rightUrl", "").toString();
-    if (0 == s_num) 
+    static int s_j = 0;
+#if 1
+    if (s_j < 24)
+#endif
     {
         if (!tmpLeftUrl.isEmpty()) {
             setLeftUrl(tmpLeftUrl);
@@ -45,7 +49,7 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
             setRightUrl(tmpRightUrl);
         }
     }
-    ++s_num;
+    ++s_j;
 }
 
 CSmallScreen::~CSmallScreen()
@@ -87,12 +91,12 @@ void CSmallScreen::setSeatInfo(int serialNum)
 			m_serialNumLabel->setText(QString::number(m_seat));
 		}
 
-        setInfo("Ëû¹ý½­", "»¹ÓÐË­");
+        setInfo("ä»–è¿‡æ±Ÿ", "è¿˜æœ‰è°");
     }
     else
     {
         m_seat = m_serialNum;
-        setInfo(qstr("Ëû¹ý½­"), qstr("»¹ÓÐË­"));
+        setInfo("ä»–è¿‡æ±Ÿ", "è¿˜æœ‰è°");
     }
 }
 
@@ -105,7 +109,7 @@ void CSmallScreen::setInfo(const QString &name, const QString &title)
     }
     m_name = name;
     m_title = title;
-    util::setTextWithEllipsis(ui->infoLabel, qstr("%1").arg(name));
+    util::setTextWithEllipsis(ui->infoLabel, QString("%1").arg(name));
 }
 
 void CSmallScreen::setTransparentLabelVisable(bool visable)
@@ -122,8 +126,7 @@ void CSmallScreen::mouseDoubleClickEvent(QMouseEvent *event)
     startPlay();
 }
 
-void CSmallScreen::setLeftUrl(const QString &url)
-{
+void CSmallScreen::setLeftUrl(const QString& url) {
     if (url.isEmpty()) {
         m_leftPlayUrl = "";
         m_leftSaveUrl = "";
@@ -133,13 +136,13 @@ void CSmallScreen::setLeftUrl(const QString &url)
 
     if (url.startsWith("rtsp")) {
         int index = url.size() - 1;
-        // º£¿µ
-        // ×îºóÒ»Î»£º1Ö÷ÂëÁ÷£¬2×ÓÂëÁ÷
+        // æµ·åº·
+        // æœ€åŽä¸€ä½ï¼š1ä¸»ç æµï¼Œ2å­ç æµ
         if (url.contains("Streaming/Channels")) {
             subUrl.replace(index, 1, '2');
         }
-        // ´ó»ª
-        // subtype: 0Ö÷ÂëÁ÷£¬1×ÓÂëÁ÷
+        // å¤§åŽ
+        // subtype: 0ä¸»ç æµï¼Œ1å­ç æµ
         else {
             subUrl.replace(index, 1, '1');
         }
@@ -151,8 +154,7 @@ void CSmallScreen::setLeftUrl(const QString &url)
     m_leftSaveUrl = url;
 }
 
-void CSmallScreen::setRightUrl(const QString &url)
-{
+void CSmallScreen::setRightUrl(const QString& url) {
     if (url.isEmpty()) {
         m_rightPlayUrl = "";
         m_rightSaveUrl = "";
@@ -162,13 +164,13 @@ void CSmallScreen::setRightUrl(const QString &url)
 
     if (url.startsWith("rtsp")) {
         int index = url.size() - 1;
-        // º£¿µ
-        // ×îºóÒ»Î»£º1Ö÷ÂëÁ÷£¬2×ÓÂëÁ÷
+        // æµ·åº·
+        // æœ€åŽä¸€ä½ï¼š1ä¸»ç æµï¼Œ2å­ç æµ
         if (url.contains("Streaming/Channels")) {
             subUrl.replace(index, 1, '2');
         }
-        // ´ó»ª
-        // subtype: 0Ö÷ÂëÁ÷£¬1×ÓÂëÁ÷
+        // å¤§åŽ
+        // subtype: 0ä¸»ç æµï¼Œ1å­ç æµ
         else {
             subUrl.replace(index, 1, '1');
         }
@@ -213,7 +215,7 @@ void CSmallScreen::stopPlay()
     if (!m_leftPlayUrl.isEmpty())
     {
         ui->camera_left->pause(true);
-        ui->camera_left->stop(); // Ö÷ÒªÊÇm_pScaler->setFFmpegºÄÊ±
+        ui->camera_left->stop(); // ä¸»è¦æ˜¯m_pScaler->setFFmpegè€—æ—¶
     }
     if (!m_rightPlayUrl.isEmpty())
     {
@@ -320,7 +322,7 @@ QSize CSmallScreen::getPerferSize(QSize widgetSize, int row, int column, int xSp
     int itemWidth = itemWidthSum / column;
     if (itemWidthSum % column == 0)
     {
-        // Ë®Æ½¿Õ¼ä²»ÄÜÕ¼Âú£¬·ñÔòµÚ4ÁÐ»á±ä³É¿Õ°×£¬¹Ê¶àÁôµãhspace
+        // æ°´å¹³ç©ºé—´ä¸èƒ½å æ»¡ï¼Œå¦åˆ™ç¬¬4åˆ—ä¼šå˜æˆç©ºç™½ï¼Œæ•…å¤šç•™ç‚¹hspace
         itemWidth -= 1;
     }
     int itemHeight = (widgetSize.height() - ySpaceSum - vMargin * 2) / row;
@@ -393,12 +395,12 @@ void CSmallScreen::setSize(const QSize &s, const QVariantMap &spaceInfo)
 
     ui->infoLabel->setMaximumWidth(width() - 6);
     if (!m_name.isEmpty()) {
-    util::setTextWithEllipsis(ui->infoLabel, qstr("%1").arg(m_name));
+        util::setTextWithEllipsis(ui->infoLabel, QString("%1").arg(m_name));
     }
 
     int x, y;
     int num = ((m_serialNum - 1) % aPageSeatNum);
-    // µÚ¼¸ÐÐ£¬µÚ¼¸ÁÐ£¬´Ó0¿ªÊ¼
+    // ç¬¬å‡ è¡Œï¼Œç¬¬å‡ åˆ—ï¼Œä»Ž0å¼€å§‹
     int nRow    = num / ColumnNum;
     int nColumn = num % ColumnNum;
     x           = hMargin + nColumn * (width() + hSpace);
@@ -422,7 +424,7 @@ void CSmallScreen::contextMenuEvent(QContextMenuEvent *event)
 {
     if (CONFIG.enableServer())
     {
-        // ¿Õ×ùÎ»²»Ìí¼ÓÓÒ¼ü²Ëµ¥
+        // ç©ºåº§ä½ä¸æ·»åŠ å³é”®èœå•
         if (m_name.isEmpty()) return;
     }
 
@@ -481,11 +483,11 @@ void CSmallScreen::initTransparentLabel()
         m_serialNumLabel = new CTransparentLabel(QString::number(m_serialNum), this);
         m_serialNumLabel->setFont(QFont("Microsoft YaHei", 16));
 
-        // ÉèÖÃpoint size£¬±ÜÃâÐÞ¸Ä·Ö±æÂÊµ¼ÖÂÎÄ±¾ÏÔÊ¾²»È«
+        // è®¾ç½®point sizeï¼Œé¿å…ä¿®æ”¹åˆ†è¾¨çŽ‡å¯¼è‡´æ–‡æœ¬æ˜¾ç¤ºä¸å…¨
         QFont f("PingFangSC-Regular, PingFang SC");
         f.setPixelSize(22);
         m_serialNumLabel->setFont(f);
-        // ²»ÄÜÓÃsetFixedSize
+        // ä¸èƒ½ç”¨setFixedSize
         m_serialNumLabel->resize(28, 20);
     }
 }

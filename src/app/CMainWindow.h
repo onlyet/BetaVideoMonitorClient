@@ -1,4 +1,4 @@
-#ifndef CMAINWINDOW_H
+ï»¿#ifndef CMAINWINDOW_H
 #define CMAINWINDOW_H
 
 #include <QMainWindow>
@@ -54,10 +54,10 @@ protected:
 
     void refreshBtnCmd();
 
-	// ÊÇ·ñÏÔÊ¾¿Ø¼şºÍÊ¹ÄÜ¿Ø¼ş
+	// æ˜¯å¦æ˜¾ç¤ºæ§ä»¶å’Œä½¿èƒ½æ§ä»¶
     void showInfo(bool ifshow);
 
-    // ¸üĞÂÊ±¼ä±êÇ©
+    // æ›´æ–°æ—¶é—´æ ‡ç­¾
     void updateTimeLabel();
     void updateTime();
 
@@ -70,14 +70,14 @@ protected slots:
     void onBtnClose();
     void onBtnCmd();
     void onBtnSetting();
-    // µã»÷ÉãÏñÍ·ÏÂÀ­ÁĞ±í¿ò
+    // ç‚¹å‡»æ‘„åƒå¤´ä¸‹æ‹‰åˆ—è¡¨æ¡†
     void onCBoxCamerasCurrentIndexChanged(int idx);
 
     void onTimerUpdateServerTime();
 
-    // ´ò¿ª´óÆÁ£¬ËùÓĞĞ¡ÆÁ²¥·ÅÆ÷ÔİÍ£²¥·Å
+    // æ‰“å¼€å¤§å±ï¼Œæ‰€æœ‰å°å±æ’­æ”¾å™¨æš‚åœæ’­æ”¾
     void onFocus(QVariantMap data);
-    // ´Ó´óÆÁ·µ»Ø
+    // ä»å¤§å±è¿”å›
     void onBack();
 
     void currentPageChanged(int page);
@@ -87,17 +87,17 @@ protected slots:
 
 private:
     Ui::CMainWindow*     ui;
-    bool                 m_recordStarted   = false;    // ÊÇ·ñÕıÔÚÂ¼ÖÆ
-    QTimer*              m_updateTimeTimer = nullptr;  // ¸üĞÂÊ±¼ä¶¨Ê±Æ÷
-    LoadingLabel*        m_loadingLabel    = nullptr;  // ¼ÓÔØgif
+    bool                 m_recordStarted   = false;    // æ˜¯å¦æ­£åœ¨å½•åˆ¶
+    QTimer*              m_updateTimeTimer = nullptr;  // æ›´æ–°æ—¶é—´å®šæ—¶å™¨
+    LoadingLabel*        m_loadingLabel    = nullptr;  // åŠ è½½gif
     QMovie*              m_movie           = nullptr;
-    bool                 m_useShade;  // ÊÇ·ñÊ¹ÓÃÕÚÕÖ
+    bool                 m_useShade;  // æ˜¯å¦ä½¿ç”¨é®ç½©
     bool                 m_showPopup        = true;
     QLineEdit*           m_cameraEdit       = nullptr;
-    QAction*             m_recordDirAct     = nullptr;  // ´ò¿ªÂ¼ÖÆÊÓÆµÄ¿Â¼
-    QAction*             m_logAct           = nullptr;  // ´ò¿ªÈÕÖ¾Ä¿Â¼
-    SimplePageNavigator* m_pageNavigator    = nullptr;  // µ×²¿Ò³µ¼º½
-    int                  m_concatProcessNum = 0;        // ºÏ²¢½ø³ÌÊı
+    QAction*             m_recordDirAct     = nullptr;  // æ‰“å¼€å½•åˆ¶è§†é¢‘ç›®å½•
+    QAction*             m_logAct           = nullptr;  // æ‰“å¼€æ—¥å¿—ç›®å½•
+    SimplePageNavigator* m_pageNavigator    = nullptr;  // åº•éƒ¨é¡µå¯¼èˆª
+    int                  m_concatProcessNum = 0;        // åˆå¹¶è¿›ç¨‹æ•°
 };
 
 #endif // CMAINWINDOW_H

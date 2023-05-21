@@ -1,4 +1,4 @@
-
+ï»¿
 #include <QLabel>
 
 class IPlayerCore;
@@ -20,9 +20,9 @@ public:
     void setWaitPic(const QPixmap& pix);
 
     enum ResizeType{
-        Default = 0,    ///< ²»±£³Ö±ÈÀý
-        ByWidth,        ///< ¸ù¾Ý¿í¶È¼ÆËã¸ß¶È
-        ByHeight        ///< ¸ù¾Ý¸ß¶È¼ÆËã¿í¶È
+        Default = 0,    ///< ä¸ä¿æŒæ¯”ä¾‹
+        ByWidth,        ///< æ ¹æ®å®½åº¦è®¡ç®—é«˜åº¦
+        ByHeight        ///< æ ¹æ®é«˜åº¦è®¡ç®—å®½åº¦
     };
 
     void setResizeType(ResizeType resizeType, qreal aspectRatio = 0);
@@ -48,22 +48,22 @@ signals:
 
 private:
     IPlayerCore     *m_playerCore;          
-    QString         m_path;                 // ²¥·ÅÂ·¾¶
-    bool            m_isPause;              // ÊÇ·ñÔÝÍ£
+    QString         m_path;                 // æ’­æ”¾è·¯å¾„
+    bool            m_isPause;              // æ˜¯å¦æš‚åœ
 
-    QString         m_waitStr;              // µÈ´ýµÄÏÔÊ¾×Ö·û´®
+    QString         m_waitStr;              // ç­‰å¾…çš„æ˜¾ç¤ºå­—ç¬¦ä¸²
     QPixmap         m_waitPic;
 
-    ResizeType      m_resizeType;           // ´°¿Ú´óÐ¡±ä»¯ÀàÐÍ
-    qreal           m_aspectRatio;          // ´°¿Ú±ÈÀý
+    ResizeType      m_resizeType;           // çª—å£å¤§å°å˜åŒ–ç±»åž‹
+    qreal           m_aspectRatio;          // çª—å£æ¯”ä¾‹
 
-    QString         m_file;                 // Â¼Ïñ±£´æÂ·¾¶
-    bool            m_isRecord;             // ÊÇ·ñÕýÔÚÂ¼Ïñ
+    QString         m_file;                 // å½•åƒä¿å­˜è·¯å¾„
+    bool            m_isRecord;             // æ˜¯å¦æ­£åœ¨å½•åƒ
 
-    bool            m_isWait;               // ÊÇ·ñ´¦ÓÚµÈ´ý×´Ì¬
+    bool            m_isWait;               // æ˜¯å¦å¤„äºŽç­‰å¾…çŠ¶æ€
 
 	bool            m_doOpenCalled = false;
 
-    bool            m_hwDecode = true;      // ÊÇ·ñÓÃDxva½âÂëäÖÈ¾
+    bool            m_hwDecode = true;      // æ˜¯å¦ç”¨Dxvaè§£ç æ¸²æŸ“
 };
 
