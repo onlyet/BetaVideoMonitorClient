@@ -39,7 +39,7 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
     QString tmpRightUrl = util::getSetting("Url/rightUrl", "").toString();
     static int s_j = 0;
 #if 1
-    if (s_j < 1)
+    if (s_j < 24)
 #endif
     {
         if (!tmpLeftUrl.isEmpty()) {

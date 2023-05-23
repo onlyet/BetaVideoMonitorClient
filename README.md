@@ -8,6 +8,7 @@
 * 支持画面按人数分页（8/12/24/28），默认24人画面  
 * 支持单人切换大屏（鼠标右键）  
 * 可同时播放和录制48路视频  
+* 支持GPU解码和渲染  
 
 ## UI
 单页24人
@@ -29,6 +30,7 @@ https://sf1-hscdn-tos.pstatp.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-de
 * 界面实现用Qt  
 * 拉流解码播放用FFmpeg  
 * 大屏播放和视频存储用IPC主码流，小屏播放用IPC子码流  
+* 使用DXVA2实现GPU解码渲染  
 * 目前已支持d3d9渲染yuv，但是测试多路渲染发现效果不好
 
 ## 环境依赖
@@ -38,6 +40,22 @@ Qt：推荐Qt5.12以后的版本
   
 解决方案仅支持64位的Debug/Release，32位可自行适配
 
+## 配置文件说明
+* [Common]  
+  * ReduceAnalyzeTime 设为1可快速打开播放器  
+  * GpuSeatCnt 使用GPU加速的小屏数量  
+  * APageSeatCnt 主界面默认显示多少人画面  
+* [Volatile]  
+  * RecordPath 录制视频保存路径  
+* [Url]  
+  * leftUrl 左窗口输入url，24人共用该URL
+  * rightUrl 右窗口输入url，24人共用该URL
+
+
 ## TODO
-- [ ] GPU解码和渲染
+- [x] GPU解码和渲染
+
+## 存在问题
+IPC拉流一般有数量限制，我的IPC支持最多6路拉流解码，没有多余的IPC测试，可用HTTP地址测试。  
+小屏目前是相同URL共用1路解码资源，CPU模式下可以用单个URL测试48窗口。而GPU解码渲染不支持复用URL，GPU解码渲染想测试多路需要改代码。  
 
