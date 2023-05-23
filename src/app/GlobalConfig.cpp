@@ -143,8 +143,6 @@ bool GlobalConfig::init()
         return false;
     }
 
-    setLogoPixmap(QPixmap(":/logo2.jpg"));
-
 	return true;
 }
 
@@ -217,13 +215,15 @@ void GlobalConfig::setLogo()
     if ("logo1" == m_logoType)
     {
         m_loginLogo = ":/logo1.png";
-        m_seatLogo = ":/logo1.png";
+        m_seatLogo = ":/logo2.jpg";
     }
     else
     {
         m_loginLogo = "";
         m_seatLogo = "";
     }
+
+    m_logoPixmap = QPixmap(m_seatLogo);
 }
 
 int GlobalConfig::gpuSeatCnt() const
