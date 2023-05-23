@@ -100,6 +100,7 @@ void IPlayerCore::init()
         m_vDecodeCtx->get_buffer2 = nullptr;
         m_vDecodeCtx->thread_safe_callbacks = 0;
         m_vDecodeCtx->get_format            = nullptr;
+        av_freep(&m_vDecodeCtx->hwaccel_context);
         avcodec_free_context(&m_vDecodeCtx);
         m_vDecodeCtx = nullptr;
     }
@@ -410,6 +411,7 @@ void IPlayerCore::close()
 
 void IPlayerCore::doClose()
 {
+    QTime t = QTime::currentTime();
     if (!m_path.isEmpty())
     {
         qDebug() << "Close" << util::logRtspUrl(m_path);
@@ -429,6 +431,7 @@ void IPlayerCore::doClose()
 
     QMutexLocker locker(&m_mutex);
 
+    init();
     if (m_hwDecode)
     {
         //m_dxvaCbEnabled = false;
@@ -439,8 +442,8 @@ void IPlayerCore::doClose()
         //}
 
         if (m_inputStream) {
-            if (m_inputStream->hwaccel_uninit && m_vDecodeCtx) {
-                m_inputStream->hwaccel_uninit(m_vDecodeCtx);
+            if (m_inputStream->hwaccel_uninit /*&& m_vDecodeCtx*/) {
+                m_inputStream->hwaccel_uninit(/*m_vDecodeCtx*/ m_inputStream);
             }
 
             m_inputStream->hwaccel_get_buffer = nullptr;
@@ -449,7 +452,8 @@ void IPlayerCore::doClose()
         }
     }
 
-    init();
+    //init();
+    qDebug() << "stop time:" << t.elapsed();
 }
 
 AVPacket IPlayerCore::read()

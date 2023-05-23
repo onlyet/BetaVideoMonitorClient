@@ -149,8 +149,8 @@ typedef struct DXVA2SurfaceWrapper {
     IDirectXVideoDecoder* decoder;
 } DXVA2SurfaceWrapper;
 
-static void dxva2_destroy_decoder(AVCodecContext* s) {
-    InputStream*  ist = (InputStream*)s->opaque;
+static void dxva2_destroy_decoder(InputStream* ist) {
+    //InputStream*  ist = (InputStream*)s->opaque;
     DXVA2Context* ctx = (DXVA2Context*)ist->hwaccel_ctx;
     int           i;
 
@@ -171,15 +171,15 @@ static void dxva2_destroy_decoder(AVCodecContext* s) {
     }
 }
 
-static void dxva2_uninit(AVCodecContext* s) {
-    InputStream*  ist = (InputStream*)s->opaque;
+static void dxva2_uninit(InputStream* ist) {
+    //InputStream*  ist = (InputStream*)s->opaque;
     DXVA2Context* ctx = (DXVA2Context*)ist->hwaccel_ctx;
 
     ist->hwaccel_uninit        = NULL;
     ist->hwaccel_get_buffer    = NULL;
     ist->hwaccel_retrieve_data = NULL;
 
-    if (ctx->decoder) dxva2_destroy_decoder(s);
+    if (ctx->decoder) dxva2_destroy_decoder(/*s*/ist);
 
     if (ctx->decoder_service)
         // IDirectXVideoDecoderService_Release(ctx->decoder_service);
@@ -204,7 +204,7 @@ static void dxva2_uninit(AVCodecContext* s) {
     av_frame_free(&ctx->tmp_frame);
 
     av_freep(&ist->hwaccel_ctx);
-    av_freep(&s->hwaccel_context);
+    //av_freep(&s->hwaccel_context);
 
     //DeleteCriticalSection(&cs);
 }
@@ -434,7 +434,7 @@ static int dxva2_alloc(AVCodecContext* s, HWND hwnd) {
 
     return 0;
 fail:
-    dxva2_uninit(s);
+    dxva2_uninit(/*s*/ ist);
     return AVERROR(EINVAL);
 }
 
@@ -646,7 +646,7 @@ static int dxva2_create_decoder(AVCodecContext* s) {
 
     return 0;
 fail:
-    dxva2_destroy_decoder(s);
+    dxva2_destroy_decoder(/*s*/ ist);
     return AVERROR(EINVAL);
 }
 
@@ -670,7 +670,7 @@ int dxva2_init(AVCodecContext* s, HWND hwnd) {
         return AVERROR(EINVAL);
     }
 
-    if (ctx->decoder) dxva2_destroy_decoder(s);
+    if (ctx->decoder) dxva2_destroy_decoder(/*s*/ ist);
 
     ret = dxva2_create_decoder(s);
     if (ret < 0) {

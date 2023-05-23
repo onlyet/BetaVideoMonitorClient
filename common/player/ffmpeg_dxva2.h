@@ -119,7 +119,7 @@ typedef struct InputStream {
     /* hwaccel context */
     enum HWAccelID active_hwaccel_id;
     void*          hwaccel_ctx;
-    void (*hwaccel_uninit)(AVCodecContext* s);
+    void (*hwaccel_uninit)(/*AVCodecContext* s*/ InputStream* ist);
     int (*hwaccel_get_buffer)(AVCodecContext* s, AVFrame* frame, int flags);
     int (*hwaccel_retrieve_data)(AVCodecContext* s, AVFrame* frame);
     enum AVPixelFormat hwaccel_pix_fmt;
