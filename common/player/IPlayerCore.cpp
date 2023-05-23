@@ -912,6 +912,7 @@ void DecodeThread::run()
         }
     }
     exec();
+    qDebug() << "DecodeThread exit";
 }
 
 RenderThread::RenderThread(QWidget *wid, int duration)

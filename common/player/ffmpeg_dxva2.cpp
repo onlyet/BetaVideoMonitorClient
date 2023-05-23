@@ -81,7 +81,7 @@ DEFINE_GUID(GUID_NULL, 0x00000000, 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00,
 typedef IDirect3D9* WINAPI pDirect3DCreate9(UINT);
 typedef HRESULT WINAPI     pCreateDeviceManager9(UINT*, IDirect3DDeviceManager9**);
 
-CRITICAL_SECTION cs;
+//CRITICAL_SECTION cs;
 
 typedef struct dxva2_mode {
     const GUID*    guid;
@@ -206,7 +206,7 @@ static void dxva2_uninit(AVCodecContext* s) {
     av_freep(&ist->hwaccel_ctx);
     av_freep(&s->hwaccel_context);
 
-    DeleteCriticalSection(&cs);
+    //DeleteCriticalSection(&cs);
 }
 
 static void dxva2_release_buffer(void* opaque, uint8_t* data) {
@@ -273,29 +273,30 @@ static int dxva2_get_buffer(AVCodecContext* s, AVFrame* frame, int flags) {
     return 0;
 }
 
-D3DPRESENT_PARAMETERS d3dpp = {0};
-RECT                  m_rtViewport;
-IDirect3DSurface9*    m_pDirect3DSurfaceRender = NULL;
-IDirect3DSurface9*    m_pBackBuffer            = NULL;
+//D3DPRESENT_PARAMETERS d3dpp = {0};
+//RECT                  m_rtViewport;
+//IDirect3DSurface9*    m_pDirect3DSurfaceRender = NULL;
+//IDirect3DSurface9*    m_pBackBuffer            = NULL;
 static int            dxva2_retrieve_data(AVCodecContext* s, AVFrame* frame) {
-    LPDIRECT3DSURFACE9 surface = (LPDIRECT3DSURFACE9)frame->data[3];
+    IDirect3DSurface9* pBackBuffer = NULL;
+    LPDIRECT3DSURFACE9 surface       = (LPDIRECT3DSURFACE9)frame->data[3];
     InputStream*       ist     = (InputStream*)s->opaque;
     DXVA2Context*      ctx     = (DXVA2Context*)ist->hwaccel_ctx;
 
-    EnterCriticalSection(&cs);
+    //EnterCriticalSection(&cs);
 
     ctx->d3d9device->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
     ctx->d3d9device->BeginScene();
-    if (m_pBackBuffer) {
-        m_pBackBuffer->Release();
-        m_pBackBuffer = NULL;
-    }
-    ctx->d3d9device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &m_pBackBuffer);
-    ctx->d3d9device->StretchRect(surface, NULL, m_pBackBuffer, NULL, D3DTEXF_LINEAR);
+    ctx->d3d9device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
+    ctx->d3d9device->StretchRect(surface, NULL, pBackBuffer, NULL, D3DTEXF_LINEAR);
     ctx->d3d9device->EndScene();
     ctx->d3d9device->Present(NULL, NULL, NULL, NULL);
-
-    LeaveCriticalSection(&cs);
+    // 渲染后释放内存
+    if (pBackBuffer) {
+        pBackBuffer->Release();
+        pBackBuffer = NULL;
+    }
+    //LeaveCriticalSection(&cs);
 
     return 0;
 }
@@ -356,15 +357,7 @@ static int dxva2_alloc(AVCodecContext* s, HWND hwnd) {
     }
 
     IDirect3D9_GetAdapterDisplayMode(ctx->d3d9, adapter, &d3ddm);
-    d3dpp.Windowed                   = TRUE;
-    d3dpp.BackBufferCount            = 0;
-    d3dpp.hDeviceWindow              = hwnd;
-    d3dpp.SwapEffect                 = D3DSWAPEFFECT_DISCARD;
-    d3dpp.BackBufferFormat           = d3ddm.Format;
-    d3dpp.EnableAutoDepthStencil     = FALSE;
-    d3dpp.Flags                      = D3DPRESENTFLAG_VIDEO;
-    d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-    d3dpp.PresentationInterval       = D3DPRESENT_INTERVAL_IMMEDIATE;
+
 
     D3DCAPS9 caps;
     DWORD    BehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED;
@@ -384,11 +377,24 @@ static int dxva2_alloc(AVCodecContext* s, HWND hwnd) {
         ctx->d3d9device = NULL;
     }
 
-    hr = IDirect3D9_CreateDevice(ctx->d3d9, adapter, D3DDEVTYPE_HAL, hwnd, BehaviorFlags, &d3dpp,
-                                 &ctx->d3d9device);
-    if (FAILED(hr)) {
-        av_log(NULL, loglevel, "Failed to create Direct3D device\n");
-        goto fail;
+    // Add a local scope to avoid d3dpp destructed but not constructed after a goto statement
+    {
+        D3DPRESENT_PARAMETERS d3dpp      = {0};
+        d3dpp.Windowed                   = TRUE;
+        d3dpp.BackBufferCount            = 0;
+        d3dpp.hDeviceWindow              = hwnd;
+        d3dpp.SwapEffect                 = D3DSWAPEFFECT_DISCARD;
+        d3dpp.BackBufferFormat           = d3ddm.Format;
+        d3dpp.EnableAutoDepthStencil     = FALSE;
+        d3dpp.Flags                      = D3DPRESENTFLAG_VIDEO;
+        d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+        d3dpp.PresentationInterval       = D3DPRESENT_INTERVAL_IMMEDIATE;
+        hr = IDirect3D9_CreateDevice(ctx->d3d9, adapter, D3DDEVTYPE_HAL, hwnd, BehaviorFlags,
+                                     &d3dpp, &ctx->d3d9device);
+        if (FAILED(hr)) {
+            av_log(NULL, loglevel, "Failed to create Direct3D device\n");
+            goto fail;
+        }
     }
 
     hr = createDeviceManager(&resetToken, &ctx->d3d9devmgr);
@@ -645,7 +651,7 @@ fail:
 }
 
 int dxva2_init(AVCodecContext* s, HWND hwnd) {
-    InitializeCriticalSection(&cs);
+    //InitializeCriticalSection(&cs);
 
     InputStream*  ist      = (InputStream*)s->opaque;
     int           loglevel = (ist->hwaccel_id == HWACCEL_AUTO) ? AV_LOG_VERBOSE : AV_LOG_ERROR;
