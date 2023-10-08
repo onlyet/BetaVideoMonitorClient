@@ -23,15 +23,14 @@
 leftUrl=rtsp://user:password@192.168.1.20:554/Streaming/Channels/101
 rightUrl=rtsp://user:password@192.168.1.20:554/Streaming/Channels/101
 
-如果你没有网络摄像头，可以用在线HTTP地址试用，例如：
-https://sf1-hscdn-tos.pstatp.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4
+如果你没有网络摄像头，可以用在线HTTP地址测试，例如：
+https://media.w3.org/2010/05/sintel/trailer.mp4
 
 ## 技术实现
 * 界面实现用Qt  
 * 拉流解码播放用FFmpeg  
 * 大屏播放和视频存储用IPC主码流，小屏播放用IPC子码流  
-* 使用DXVA2实现GPU解码渲染  
-* 目前已支持d3d9渲染yuv，但是测试多路渲染发现效果不好
+* 使用DXVA2+D3d9实现纯GPU解码渲染  
 
 ## 环境依赖
 ### windows
@@ -43,10 +42,11 @@ Qt：推荐Qt5.12以后的版本
 ## 配置文件说明
 * [Common]  
   * ReduceAnalyzeTime 设为1可快速打开播放器  
-  * GpuSeatCnt 使用GPU加速的小屏数量  
   * APageSeatCnt 主界面默认显示多少人画面  
 * [Volatile]  
   * RecordPath 录制视频保存路径  
+  * GpuAccelerated =1启用GPU加速  
+  * GpuScreenCnt 使用GPU加速的小屏数量  
 * [Url]  
   * leftUrl 左窗口输入url，24人共用该URL
   * rightUrl 右窗口输入url，24人共用该URL

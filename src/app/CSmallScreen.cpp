@@ -42,12 +42,8 @@ CSmallScreen::CSmallScreen(QWidget *parent, bool isPlaceHolder) :
     if (s_j < 24)
 #endif
     {
-        if (!tmpLeftUrl.isEmpty()) {
-            setLeftUrl(tmpLeftUrl);
-        }
-        if (!tmpRightUrl.isEmpty()) {
-            setRightUrl(tmpRightUrl);
-        }
+        setLeftUrl(tmpLeftUrl);
+        setRightUrl(tmpRightUrl);
     }
     ++s_j;
 }
@@ -66,7 +62,7 @@ void CSmallScreen::setSerialNum(int serialNum)
 {
     m_serialNum = serialNum;
 
-    if (m_serialNum <= CONFIG.gpuSeatCnt())
+    if (CONFIG.gpuAccelerated() && m_serialNum <= CONFIG.gpuScreenCnt())
     {
         ui->camera_left->enableHwDecode(true);
         ui->camera_right->enableHwDecode(true);

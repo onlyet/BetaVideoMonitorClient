@@ -30,7 +30,8 @@ public:
     void enableRecordVideo(bool enabled);
     bool recordVideoEnabled();
 
-    int gpuSeatCnt() const;
+    bool gpuAccelerated() const { return m_gpuAccelerated; }
+    int  gpuScreenCnt() const { return m_gpuScreenCnt; }
 
     QString logoType() const;
     QString loginLogo() const;
@@ -75,7 +76,8 @@ private:
     bool                  m_enableServer;          // 是否有服务器
     QString               m_recordPath;            // 录制视频保存路径
     bool                  m_recordEnabled = true;  // 是否允许录制视频
-    int                   m_gpuSeatCnt;            // 前m_gpuSeatCnt个座位使用GPU解码渲染
+    bool                  m_gpuAccelerated;
+    int                   m_gpuScreenCnt;            // 前m_gpuSeatCnt个座位使用GPU解码渲染
     QString               m_logoType;
     QString               m_loginLogo;
     QString               m_seatLogo;

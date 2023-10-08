@@ -9,15 +9,15 @@
 
 #define APPNAME "BetaVideoMonitorClient"
 
-//#define qstr QStringLiteral
 #define DATETIME_FORMAT_DEFAULT         "yyyy-MM-dd hh:mm:ss"
 
 #define RecordPath                      "Volatile/RecordPath"            // 录像保存路径
+#define GpuAccelerated                  "Volatile/GpuAccelerated"
+#define GpuScreenCnt                    "Volatile/GpuScreenCnt"
 
 #define EnableServer                    "Server/EnableServer"
 
 #define ReduceAnalyzeTime               "Common/ReduceAnalyzeTime"
-#define GpuSeatCnt                      "Common/GpuSeatCnt"
 #define UseVectoredExceptionHandler     "Common/UseVectoredExceptionHandler"
 #define LogoType                        "Common/LogoType"
 #define RtspOverTcp                     "Common/RtspOverTcp"

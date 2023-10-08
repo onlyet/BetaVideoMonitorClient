@@ -116,10 +116,11 @@ bool GlobalConfig::init()
     m_reduceAnalyzeTime = setting.value(ReduceAnalyzeTime, false).toBool();
     m_enableAudioStream = setting.value(EnableAudioStream, false).toBool();
     m_enableServer = setting.value(EnableServer, true).toBool();
-    m_gpuSeatCnt = setting.value(GpuSeatCnt, 20).toInt();
-    if (m_gpuSeatCnt < 0 || m_gpuSeatCnt > 28)
+    m_gpuAccelerated    = setting.value(GpuAccelerated, false).toBool();
+    m_gpuScreenCnt = setting.value(GpuScreenCnt, 20).toInt();
+    if (m_gpuScreenCnt < 0 || m_gpuScreenCnt > 28)
     {
-        m_gpuSeatCnt = 20;
+        m_gpuScreenCnt = 20;
     }
     m_logoType = setting.value(LogoType, "logo1").toString();
     setLogo();
@@ -127,15 +128,14 @@ bool GlobalConfig::init()
     m_disableStartBtnTime = setting.value(DisableStartBtnTime).toInt();
     m_aPageSeatCnt = setting.value(APageSeatCnt, 24).toInt();
 
-    // FIXME: 有bug
-    if (0 && util::haveNvidiaGpu())
+    if (m_gpuAccelerated && util::haveNvidiaGpu())
     {
-        qInfo() << QString("前%1个座位用GPU解码渲染").arg(m_gpuSeatCnt);
+        qInfo() << QString("前%1个小屏用GPU解码渲染").arg(m_gpuScreenCnt);
         qInfo() << "大屏使用GPU解码渲染";
     }
     else
     {
-        qInfo() << "大屏使用CPU解码渲染";
+        qInfo() << "小屏和大屏都使用CPU解码渲染";
     }
 
     if (!isRecordDirExist(setting) || !isDiskSpaceEnough())
@@ -224,11 +224,6 @@ void GlobalConfig::setLogo()
     }
 
     m_logoPixmap = QPixmap(m_seatLogo);
-}
-
-int GlobalConfig::gpuSeatCnt() const
-{
-    return m_gpuSeatCnt;
 }
 
 QString GlobalConfig::logoType() const

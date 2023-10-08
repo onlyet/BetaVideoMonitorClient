@@ -23,7 +23,7 @@ AlphaPlayer::AlphaPlayer(QWidget *parent)
     , m_isWait(true)
 {
     // 有英伟达显卡的时候则大屏使用DXVA解码渲染
-    if (0 && util::haveNvidiaGpu())
+    if (CONFIG.gpuAccelerated() && util::haveNvidiaGpu())
     {
         m_hwDecode = true;
         // 大屏用Dxva渲染，所以不传this

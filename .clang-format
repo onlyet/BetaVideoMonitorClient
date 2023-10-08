@@ -43,6 +43,9 @@ AlignConsecutiveDeclarations: true
 # 让多行的等式以等号对齐
 AlignConsecutiveAssignments: true
 
+# 对齐连续的尾随的注释
+AlignTrailingComments:	true
+
 UseTab: Never
 TabWidth: 4
 
